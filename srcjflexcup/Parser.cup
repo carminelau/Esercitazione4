@@ -1,0 +1,224 @@
+/*Specifiche grammaticali e lessicali del nostro linguaggio MyFun
+
+
+  ************* Specifica grammaticale ****************
+
+ Program ::= VarDeclList FunList Main
+
+ VarDeclList ::= /* empty */
+ /*	| VardDecl VarDeclList
+
+  Main ::= MAIN VarDeclList StatList END MAIN SEMI
+
+  FunList ::= /* empty */
+/*	| Fun FunList
+
+ VarDecl ::= Type IdListInit SEMI
+  	| VAR IdListInitObbl SEMI
+
+  Type ::= INTEGER | BOOL | REAL | STRING
+
+  IdListInit ::= ID
+  	| IdListInit COMMA ID
+  	| ID ASSIGN Expr
+  	| IdListInit COMMA ID ASSIGN Expr
+
+  IdListInitObbl ::= ID ASSIGN Const
+  	| IdListInitObbl COMMA ID ASSIGN Const
+
+  Const ::= INTEGER_CONST | REAL_CONST | BOOL_CONST | STRING_CONST
+
+  Fun := FUN ID LPAR ParamDeclList RPAR COLON Type
+  		VarDeclList StatList END FUN SEMI
+  	| FUN ID LPAR ParamDeclList RPAR
+  		VarDeclList StatList END FUN SEMI
+
+
+  ParamDeclList ::= /*empty */
+ /* 	| NonEmptyParamDeclList
+
+  NonEmptyParamDeclList ::= ParDecl
+  	| NonEmptyParamDeclList COMMA ParDecl
+
+  ParDecl ::= Type ID
+  	| OUT Type ID
+
+  StatList ::= Stat
+  	 | Stat StatList
+
+  Stat ::= IfStat SEMI
+  	| WhileStat SEMI
+  	| ReadStat SEMI
+  	| WriteStat SEMI
+  	| AssignStat SEMI
+  	| CallFun SEMI
+  	| RETURN Expr SEMI
+  	| /* empty */
+
+
+
+ /* IfStat ::= IF Expr THEN VarDeclList StatList Else END IF
+
+  Else ::= /* empty */
+  /*	| ELSE VarDeclList  StatList
+
+  WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
+
+  ReadStat ::= READ IdList Expr // Expr deve essere di tipo stringa
+  	| READ IdList
+
+  IdList ::= ID
+  	| IdList COMMA ID
+
+  WriteStat ::=  WRITE  Expr
+  	| WRITELN  Expr
+  	| WRITET  Expr
+  	| WRITEB  Expr
+
+
+  AssignStat ::=  ID ASSIGN Expr
+
+  CallFun ::= ID LPAR ExprList RPAR
+  	| ID LPAR RPAR
+
+  ExprList ::= Expr
+  	| Expr COMMA ExprList
+
+  Expr ::= TRUE
+  	| FALSE
+  	| INTEGER_CONST
+  	| REAL_CONST
+  	| STRING_CONST
+  	| ID
+  	| CallFun
+  	| Expr  PLUS Expr
+  	| Expr  MINUS Expr
+  	| Expr  TIMES Expr
+  	| Expr  DIV Expr
+  	| Expr  DIVINT Expr
+  	| Expr  AND Expr
+  	| Expr POW Expr
+  	| Expr STR_CONCAT Expr
+  	| Expr  OR Expr
+  	| Expr  GT Expr
+  	| Expr  GE Expr
+  	| Expr  LT Expr
+  	| Expr  LE Expr
+  	| Expr  EQ Expr
+  	| Expr  NE Expr
+  	| MINUS Expr
+  	| NOT Expr
+*/
+
+
+package generated;
+import java_cup.runtime.*;
+import java.util.*;
+import syntax.*;
+import syntax.statements.*;
+import syntax.expression.*;
+import syntax.expression.binary.arithmetic.*;
+import syntax.expression.binary.relation.*;
+import syntax.expression.unary.*;
+import syntax.expression.constant.*;
+import syntax.types.*;
+
+
+class Parser;
+
+parser code{:
+
+public void report_error(String msg, Object info) {
+  Symbol sym = (Symbol)info;
+  System.out.println(msg + ": " + symbl_name_from_id(sym.sym));
+}
+
+public void syntax_error(Symbol cur_token) {
+  System.out.println("Syntax error: " + symbl_name_from_id(cur_token.sym));
+}
+
+:}
+
+/*Terminal*/
+terminal String MAIN,
+                ID,
+               	INTEGER,
+               	STRING,
+               	REAL,
+               	BOOL,
+               	LPAR,
+               	RPAR,
+               	COLON,
+               	FUN,
+               	END,
+               	IF,
+               	THEN,
+               	ELSE,
+               	WHILE,
+               	LOOP,
+               	READ,
+               	WRITE,
+               	WRITELN,
+               	WRITEB,
+               	WRITET,
+               	ASSIGN,
+               	PLUS,
+               	MINUS,
+               	TIMES,
+               	DIVINT,
+               	DIV,
+               	POW,
+               	STR_CONCAT,
+               	EQ,
+               	NE,
+               	LT,
+               	LE,
+               	GT,
+               	GE,
+               	AND,
+               	OR,
+               	NOT,
+               	NULL,
+                STRING_CONST,
+                SEMI,
+               	COMMA,
+               	RETURN;
+
+terminal int INTEGER_CONST;
+terminal double REAL_CONST;
+terminal boolean  TRUE, FALSE;
+
+//Non terminali
+
+non terminal      Program         	             Program;
+non terminal      ArrayList<VarDecl>             VarDeclList;
+non terminal      Main                           Main;
+non terminal      ArrayList<Fun>                 FunList;
+non terminal      VarDecl                        VarDecl;
+non terminal      Type                           Type;
+non terminal      ArrayList<IdInit>              IdListInit;
+non terminal      ArrayList<IdInitObbl>          IdListInitObbl;
+non terminal      Const                          Const ;
+non terminal      Fun                            Fun;
+non terminal      ArrayList<ParamDecl>           ParamDeclList;
+non terminal      ArrayList<NonEmptyParamDecl>   NonEmptyParamDeclList ;
+non terminal      ParDecl                        ParDecl;
+non terminal      ArrayList<Stat>                StatList;
+non terminal      Stat                           Stat;
+non terminal      If                             IfStat;
+non terminal      Else                           Else;
+non terminal      While                          WhileStat;
+non terminal      Read                           ReadStat;
+non terminal      Id                             IdStat;
+non terminal      Write                          WriteStat;
+non terminal      Assign                         AssignStat;
+non terminal      CallFun                        CallFun;
+non terminal      ArrayList<Expr>                ExprList;
+non terminal      Expr                           Expr;
+
+// Precendenze
+precedence left ;
+precedence left ;
+precedence nonassoc ;
+precedence left ;
+
