@@ -216,9 +216,22 @@ non terminal      CallFun                        CallFun;
 non terminal      ArrayList<Expr>                ExprList;
 non terminal      Expr                           Expr;
 
-// Precendenze
-precedence left ;
-precedence left ;
-precedence nonassoc ;
-precedence left ;
+// Precendenze:: partendo dal basso (precedenza maggiore) a salire (precedenza minore)
+precedence left OR;
+precedence left AND;
+precedence right NOT;
+precedence nonassoc EQ, NE, LT, LE, GT, GE;
+precedence left STR_CONCAT;
+precedence left PLUS, MINUS;
+precedence left TIMES,DIV, DIVINT;
+precedence right POW;
+precedence left LPAR, RPAR;
+
+
+
+
+
+
+
+
 
