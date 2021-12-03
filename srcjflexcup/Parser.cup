@@ -300,3 +300,286 @@ Const ::= INTEGER_CONST:integerconst_
             RESULT = new PrimitiveType(stringconst_left, stringconst_right, "STRING_CONST");
         :}
         ;
+
+//Fun := FUN ID LPAR ParamDeclList RPAR COLON Type
+  //            VarDeclList StatList END FUN SEMI
+  //        | FUN ID LPAR ParamDeclList RPAR
+  //            VarDeclList StatList END FUN SEMI
+ Fun ::= FUN ID LPAR ParamDeclist: paramdeclist_ RPAR COLN Type:type_ VarDeclist: vardeclist_ StatList: stalist_ END DUN SEMI
+        {:
+            RESULT = new Fun(paramdeclist_left, paramdeclist_right, paramdeclist_, vardeclist_, statlist_);
+        :}
+        |
+        FUN ID LPAR ParamDeclList:paramdeclist_ RPAR VarDeclList:vardeclist_ StatList:statlist END FUN SEMI
+        {:
+            RESULT = new Fun(paramdeclist_left, paramdeclist_right, paramdeclist_, vardeclist_,statlist_);
+        :}
+        ;
+
+        //ParamDeclList ::= /*empty */
+                  //    /*	| NonEmptyParamDeclList
+ParamDeclList ::= NonEmptyParamDeclList: nonemptyparamdeclist_
+        {:
+            RESULT = new ParamDeclist( nonemptyparamdeclist_left, nonemptyparamdeclist_right, nonemptyparamdeclist_);
+        :}
+        |
+        //EPSILON
+        ;
+
+//NonEmptyParamDeclList ::= ParDecl
+  //        | NonEmptyParamDeclList COMMA ParDecl
+NonEmptyParamDeclList ::= ParDecl: pardecl_
+        {:
+            RESULT = new ParDecl(pardecl_left, pardecl_right, pardecl_);
+        :}
+        |
+        NonEmptyParamDeclist: nonemptyparamdeclist_ COMMA ParDecl: pardecl_
+        {:
+            nonemptyparamdeclist_.add(pardecl_);
+            RESULT = nonemptyparamdeclist_;
+        :}
+        ;
+
+        // ParDecl ::= Type ID
+          //        | OUT Type ID
+ParDecl::= Type: type_ ID
+        {:
+            RETURN = new ParDecl(type_left, type_right, type_);
+        :}
+        |
+        OUT Type: type_ ID
+        {:
+            RETURN = new ParDecl(type_left, type_right, type_);
+        :}
+        ;
+
+//StatList ::= Stat
+  //         | Stat StatList
+StatList::= Stat: stat_
+    {:
+        RETURN = new StatList(stat_left, stat_right, stat_);
+    :}
+    |
+    Stat:stat_ Statlist: statlist_
+    {:
+        statlist_.add(stat_);
+        RESULT = statlist_;
+    :}
+    ;
+
+
+
+
+
+//!!!!!!!!!!!!!!!!   CONTROLLARE DA QUI     !!!!!!!!!!!!!!!!!
+
+
+
+
+//Stat ::= IfStat SEMI
+  //        | WhileStat SEMI
+  //        | ReadStat SEMI
+  //        | WriteStat SEMI
+  //        | AssignStat SEMI
+  //        | CallFun SEMI
+  //        | RETURN Expr SEMI
+  //        | /* empty */
+
+Stat::= IfStat: ifstat_ SEMI
+        {:
+            RETURN = new Stat(ifstat_left,ifstat_right, ifstat_);
+        :}
+    |
+    WhileStat: whilestat_ SEMI
+        {:
+            RETURN = new Stat(whilestat_left, whilestat_right, whilestat_);
+        :}
+    |
+    ReadStat: readstat_ SEMI
+        {:
+            RETURN = new Stat(readstat_left, readstat_right, readstat_);
+        :}
+        |
+    WriteStat: writestat_ SEMI
+        {:
+            RETURN = new Stat(writestat_left, writestat_right, writestat_);
+        :}
+        |
+    AssignStat: assignstat_ SEMI
+        {:
+        RETURN = new Stat(assignstat_left, assignstat_right, assignstat_);
+        :}
+        |
+    CallFun: callfun_ SEMI
+        {:
+        RETURN = new Stat(callfun_left, callfun_right, callfun_);
+        :}
+        |
+    RETURN Expr:expr_ SEMI
+        {:
+        RETURN = new Stat(expr_left, expr_right, expr_);
+        :}
+        |
+        //epsilon
+        ;
+
+//IfStat ::= IF Expr THEN VarDeclList StatList Else END IF
+IfStat::= IF Expr:expr_ THEN VarDeclList:vardecllist_ StatList: statlist_ Else:else_ END IF
+        {:
+        RETURN = new IfStat(expr_left, expr_right, expr_, vardecllist_, statlist_, else_);
+        :}
+        ;
+
+//Else ::= /* empty */
+  //    /*	| ELSE VarDeclList  StatList
+Else::= ELSE VarDeclList: vardecllist_ StatList: statlist_
+        {:
+            RETURN = new Else(vardecllist_left, vardecllist_right, vardecllist_, statlist_);
+        :}
+        |
+        //epsilon
+        ;
+
+// WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
+WhileStat::= WHILE Expr:expr_ LOOP VarDeclList: vardecllist_ StatList: statlist_ END LOOP
+        {:
+            RETURN = new WhileStat(expr_left, expr_right, expr_, vardecllist_, statlist_);
+        :}
+        ;
+
+// WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
+WhileStat ::= WHILE Expr: expr_ LOOP VarDeclList:vardecllist_  StatList:statlist_ END LOOP
+        {:
+            RETURN = new WhileStat(expr_left, expr_right, expr_, vardecllist_, statlist_);
+        :}
+        ;
+
+
+//    ReadStat ::= READ IdList Expr // Expr deve essere di tipo stringa
+//        | READ IdList
+ReadStat ::= READ IdList:idlist_ Expr:expr_
+        {:
+
+        :}
+        ;
+
+
+//    IdList ::= ID
+//        | IdList COMMA ID
+IdList::= ID
+        {:
+
+        :}
+        |
+        IdList:idlist_ COMMA ID
+        {:
+
+        :}
+        ;
+
+
+
+//WriteStat ::=  WRITE  Expr
+  //        | WRITELN  Expr
+  //        | WRITET  Expr
+  //        | WRITEB  Expr
+WriteStat ::=  WRITE  Expr:expr_
+        {:
+            RETURN = new WriteStat(expr_left, expr_right, expr_);
+        :}
+        |
+        WRITELN  Expr:expr_
+        {:
+            RETURN = new WriteStat(expr_left, expr_right, expr_);
+        :}
+        |
+        WRITET  Expr:expr_
+        {:
+            RETURN = new WriteStat(expr_left, expr_right, expr_);
+        :}
+        |
+        WRITEB  Expr:expr_
+        {:
+            RETURN = new WriteStat(expr_left, expr_right, expr_);
+        :}
+        ;
+
+
+//AssignStat ::=  ID ASSIGN Expr
+AssignStat ::=  ID ASSIGN Expr: expr_
+        {:
+            RETURN = new AssignStat(expr_left, expr_right, expr_);
+        :}
+        ;
+
+
+
+//CallFun ::= ID LPAR ExprList RPAR
+  //        | ID LPAR RPAR
+  CallFun ::= ID LPAR ExprList:exprlist_ RPAR
+        {:
+            RETURN = new CallFun(expr_left, expr_right, expr_);
+        :}
+        |
+        ID LPAR RPAR
+        {:
+
+        :}
+        ;
+
+
+
+
+//ExprList ::= Expr
+  //        | Expr COMMA ExprList
+  //        | OUTPAR ID
+  //        | OUTPAR ID COMMA ExprList
+ExprList::= Expr:expr_
+        {:
+
+        :}
+        |
+        Expr COMMA ExprList
+        {:
+
+        :}
+        |
+        OUTPAR ID
+        {:
+
+        :}
+        |
+        OUTPAR ID COMMA ExprList
+        {:
+
+        :}
+        ;
+
+
+
+
+//Expr ::= TRUE
+  //        | FALSE
+  //        | INTEGER_CONST
+  //        | REAL_CONST
+  //        | STRING_CONST
+  //        | ID
+  //        | CallFun
+  //        | Expr  PLUS Expr
+  //        | Expr  MINUS Expr
+  //        | Expr  TIMES Expr
+  //        | Expr  DIV Expr
+  //        | Expr  DIVINT Expr
+  //        | Expr  AND Expr
+  //        | Expr POW Expr
+  //        | Expr STR_CONCAT Expr
+  //        | Expr  OR Expr
+  //        | Expr  GT Expr
+  //        | Expr  GE Expr
+  //        | Expr  LT Expr
+  //        | Expr  LE Expr
+  //        | Expr  EQ Expr
+  //        | Expr  NE Expr
+  //        | MINUS Expr
+  //        | NOT Expr
+  //        | LPAR Expr RPAR
