@@ -3,111 +3,112 @@
 
   ************* Specifica grammaticale ****************
 
- Program ::= VarDeclList FunList Main
+    Program ::= VarDeclList FunList Main
 
- VarDeclList ::= /* empty */
- /*	| VardDecl VarDeclList
+    VarDeclList ::= /* empty */
+    /*	| VardDecl VarDeclList
 
-  Main ::= MAIN VarDeclList StatList END MAIN SEMI
+    Main ::= MAIN VarDeclList StatList END MAIN SEMI
 
-  FunList ::= /* empty */
-/*	| Fun FunList
+    FunList ::= /* empty */
+    /*	| Fun FunList
 
- VarDecl ::= Type IdListInit SEMI
-  	| VAR IdListInitObbl SEMI
+    VarDecl ::= Type IdListInit SEMI
+        | VAR IdListInitObbl SEMI
 
-  Type ::= INTEGER | BOOL | REAL | STRING
+    Type ::= INTEGER | BOOL | REAL | STRING
 
-  IdListInit ::= ID
-  	| IdListInit COMMA ID
-  	| ID ASSIGN Expr
-  	| IdListInit COMMA ID ASSIGN Expr
+    IdListInit ::= ID
+        | IdListInit COMMA ID
+        | ID ASSIGN Expr
+        | IdListInit COMMA ID ASSIGN Expr
 
-  IdListInitObbl ::= ID ASSIGN Const
-  	| IdListInitObbl COMMA ID ASSIGN Const
+    IdListInitObbl ::= ID ASSIGN Const
+        | IdListInitObbl COMMA ID ASSIGN Const
 
-  Const ::= INTEGER_CONST | REAL_CONST | BOOL_CONST | STRING_CONST
+    Const ::= INTEGER_CONST | REAL_CONST | BOOL_CONST | STRING_CONST
 
-  Fun := FUN ID LPAR ParamDeclList RPAR COLON Type
-  		VarDeclList StatList END FUN SEMI
-  	| FUN ID LPAR ParamDeclList RPAR
-  		VarDeclList StatList END FUN SEMI
-
-
-  ParamDeclList ::= /*empty */
- /* 	| NonEmptyParamDeclList
-
-  NonEmptyParamDeclList ::= ParDecl
-  	| NonEmptyParamDeclList COMMA ParDecl
-
-  ParDecl ::= Type ID
-  	| OUT Type ID
-
-  StatList ::= Stat
-  	 | Stat StatList
-
-  Stat ::= IfStat SEMI
-  	| WhileStat SEMI
-  	| ReadStat SEMI
-  	| WriteStat SEMI
-  	| AssignStat SEMI
-  	| CallFun SEMI
-  	| RETURN Expr SEMI
-  	| /* empty */
+    Fun := FUN ID LPAR ParamDeclList RPAR COLON Type
+            VarDeclList StatList END FUN SEMI
+        | FUN ID LPAR ParamDeclList RPAR
+            VarDeclList StatList END FUN SEMI
 
 
+    ParamDeclList ::= /*empty */
+    /*	| NonEmptyParamDeclList
 
- /* IfStat ::= IF Expr THEN VarDeclList StatList Else END IF
+    NonEmptyParamDeclList ::= ParDecl
+        | NonEmptyParamDeclList COMMA ParDecl
 
-  Else ::= /* empty */
-  /*	| ELSE VarDeclList  StatList
+    ParDecl ::= Type ID
+        | OUT Type ID
 
-  WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
+    StatList ::= Stat
+         | Stat StatList
 
-  ReadStat ::= READ IdList Expr // Expr deve essere di tipo stringa
-  	| READ IdList
+    Stat ::= IfStat SEMI
+        | WhileStat SEMI
+        | ReadStat SEMI
+        | WriteStat SEMI
+        | AssignStat SEMI
+        | CallFun SEMI
+        | RETURN Expr SEMI
+        | /* empty */
+    /*
+    IfStat ::= IF Expr THEN VarDeclList StatList Else END IF
 
-  IdList ::= ID
-  	| IdList COMMA ID
+    Else ::= /* empty */
+    /*	| ELSE VarDeclList  StatList
 
-  WriteStat ::=  WRITE  Expr
-  	| WRITELN  Expr
-  	| WRITET  Expr
-  	| WRITEB  Expr
+    WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
+
+    ReadStat ::= READ IdList Expr // Expr deve essere di tipo stringa
+        | READ IdList
+
+    IdList ::= ID
+        | IdList COMMA ID
+
+    WriteStat ::=  WRITE  Expr
+        | WRITELN  Expr
+        | WRITET  Expr
+        | WRITEB  Expr
 
 
-  AssignStat ::=  ID ASSIGN Expr
+    AssignStat ::=  ID ASSIGN Expr
 
-  CallFun ::= ID LPAR ExprList RPAR
-  	| ID LPAR RPAR
+    CallFun ::= ID LPAR ExprList RPAR
+        | ID LPAR RPAR
 
-  ExprList ::= Expr
-  	| Expr COMMA ExprList
+    ExprList ::= Expr
+        | Expr COMMA ExprList
+        | OUTPAR ID
+        | OUTPAR ID COMMA ExprList
 
-  Expr ::= TRUE
-  	| FALSE
-  	| INTEGER_CONST
-  	| REAL_CONST
-  	| STRING_CONST
-  	| ID
-  	| CallFun
-  	| Expr  PLUS Expr
-  	| Expr  MINUS Expr
-  	| Expr  TIMES Expr
-  	| Expr  DIV Expr
-  	| Expr  DIVINT Expr
-  	| Expr  AND Expr
-  	| Expr POW Expr
-  	| Expr STR_CONCAT Expr
-  	| Expr  OR Expr
-  	| Expr  GT Expr
-  	| Expr  GE Expr
-  	| Expr  LT Expr
-  	| Expr  LE Expr
-  	| Expr  EQ Expr
-  	| Expr  NE Expr
-  	| MINUS Expr
-  	| NOT Expr
+    Expr ::= TRUE
+        | FALSE
+        | INTEGER_CONST
+        | REAL_CONST
+        | STRING_CONST
+        | ID
+        | CallFun
+        | Expr  PLUS Expr
+        | Expr  MINUS Expr
+        | Expr  TIMES Expr
+        | Expr  DIV Expr
+        | Expr  DIVINT Expr
+        | Expr  AND Expr
+        | Expr POW Expr
+        | Expr STR_CONCAT Expr
+        | Expr  OR Expr
+        | Expr  GT Expr
+        | Expr  GE Expr
+        | Expr  LT Expr
+        | Expr  LE Expr
+        | Expr  EQ Expr
+        | Expr  NE Expr
+        | MINUS Expr
+        | NOT Expr
+        | LPAR Expr RPAR
 */
 
 

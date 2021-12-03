@@ -30,6 +30,7 @@ import java_cup.runtime.Symbol;import jdk.incubator.foreign.SymbolLookup;
     stringTable.put("end", new Symbol(Token.END,"END"));
     stringTable.put("main", new Symbol(Token.MAIN,"MAIN"));
     stringTable.put("string", new Symbol(Token.STRING,"STRING"));
+    stringTable.put("outpar", new Symbol(Token.OUTPAR,"OUTPAR"));
 %init}
 
 %{
@@ -136,7 +137,7 @@ StringWithApex = [^'.*'$]
     "<=" { return Symbol(Token.LE, "LE"); }
     "<>" { return Symbol(Token.NE, "NE"); }
     "!=" { return Symbol(Token.NE, "NE"); }
-    "<-" { return Symbol(Token.ASSIGN, "ASSIGN"); }
+    ":=" { return Symbol(Token.ASSIGN, "ASSIGN"); }
     ">=" { return Symbol(Token.GE, "GE"); }
 
     //OPERATIONS
@@ -146,6 +147,7 @@ StringWithApex = [^'.*'$]
     "/" { return Symbol(Token.DIV, "DIV"); }
     "^" { return Symbol(Token.POW,"POW"); }
     "&" { return Symbol(Token.STR_CONCAT,"STR_CONCAT"); }
+    "@" { return Symbol(Token.OUTPAR,"OUTPAR"); }
 
     //IDENTIFIERS
     {Ident} { return installID(yytext()); }

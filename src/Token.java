@@ -48,6 +48,7 @@ public class Token {
     public static final int ID = 45;
     public static final int EOF = 46;
     public static final int ERROR = 47;
+    public static final int OUTPAR = 48;
 
     public static String terminal_name(int tok_type) {
         switch (tok_type) {
@@ -147,6 +148,8 @@ public class Token {
                 return "EOF";
             case 47:
                 return "ERROR";
+            case 48:
+                return "OUTPAR";
             default:
                 throw new java.lang.IllegalStateException("Unexpected value: " + tok_type);
         }
