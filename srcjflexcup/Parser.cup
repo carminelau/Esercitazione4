@@ -129,14 +129,14 @@ class Parser;
 
 parser code{:
 
-public void report_error(String msg, Object info) {
-  Symbol sym = (Symbol)info;
-  System.out.println(msg + ": " + symbl_name_from_id(sym.sym));
-}
+    public void report_error(String msg, Object info) {
+      Symbol sym = (Symbol)info;
+      System.out.println(msg + ": " + symbl_name_from_id(sym.sym));
+    }
 
-public void syntax_error(Symbol cur_token) {
-  System.out.println("Syntax error: " + symbl_name_from_id(cur_token.sym));
-}
+    public void syntax_error(Symbol cur_token) {
+      System.out.println("Syntax error: " + symbl_name_from_id(cur_token.sym));
+    }
 
 :}
 
@@ -231,27 +231,72 @@ precedence left LPAR, RPAR;
 
 /*Program ::= VarDeclList FunList Main */
 Program ::= VarDeclList:vardecllist_ FunList:funlist_ Main:main_
-{:
-    RESULT = new Program(main_left,main_right,vardecllist_,funlist_,main_);
-:}
-;
+            {:
+                RESULT = new Program(main_left,main_right,vardecllist_,funlist_,main_);
+            :}
+            ;
 
 /* VarDeclList ::= empty  | VardDecl VarDeclList */
 VarDeclList ::= VarDecl:vardecl_ VarDeclList:vardecllist_
-{:
-    vardecllist_.add(vardecl_);
-    RESULT = vardecllist_;
-:}
-|
-//epsilon
-;
+                {:
+                    vardecllist_.add(vardecl_);
+                    RESULT = vardecllist_;
+                :}
+                |
+                //epsilon
+                ;
 
 /* Main ::= MAIN VarDeclList StatList END MAIN SEMI */
 Main ::= MAIN VarDeclList:vardecllist_ StatList:statlist_ END MAIN SEMI
-{:
-    RESULT= new Main(vardeclist_left,vardecllist_right, vardecllist_, statlist_);
-:}
-;
+        {:
+            RESULT= new Main(vardeclist_left,vardecllist_right, vardecllist_, statlist_);
+        :}
+        ;
 
+// FunList ::= Fun FunList
+//    | /* empty */
 
+FunList ::= Fun:fun_ FunList:funlist_
+            {:
+                funlist_.add(fun_);
+                RESULT = funlist_;
+            :}
+            |
+            //epsilon
+            ;
 
+// VarDecl ::= Type IdListInit SEMI
+//        | VAR IdListInitObbl SEMI
+
+VarDecl ::= Type:type_  IdListInitd:idlistinit_ SEMI
+            {:
+                RESULT = new VarDecl(type_left,type_right,type_, idlistinit_);
+            :}
+            |
+            VAR IdListInitObbl:idlistobbl_ SEMI
+            {:
+                RESULT = new VarDecl(idlistobbl_left, idlistobbl_right, idlistobbl_);
+            :}
+            ;
+
+// Const ::= INTEGER_CONST | REAL_CONST | BOOL_CONST | STRING_CONST
+Const ::= INTEGER_CONST:integerconst_
+        {:
+            RESULT = new PrimitiveType(integerconst_left, integerconst_right, "INTEGER_CONST");
+        :}
+        |
+        REAL_CONST:realconst_
+        {:
+            RESULT = new PrimitiveType(realconst_left, realconst_right, "REAL_CONST");
+        :}
+        |
+        BOOL_CONST:boolconst_
+        {:
+            RESULT = new PrimitiveType(boolconst_left, boolconst_right, "BOOL_CONST");
+        :}
+        |
+        STRING_CONST:stringconst_
+        {:
+            RESULT = new PrimitiveType(stringconst_left, stringconst_right, "STRING_CONST");
+        :}
+        ;
