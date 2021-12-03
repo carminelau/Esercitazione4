@@ -305,14 +305,14 @@ Const ::= INTEGER_CONST:integerconst_
   //            VarDeclList StatList END FUN SEMI
   //        | FUN ID LPAR ParamDeclList RPAR
   //            VarDeclList StatList END FUN SEMI
- Fun ::= FUN ID LPAR ParamDeclist: paramdeclist_ RPAR COLN Type:type_ VarDeclist: vardeclist_ StatList: stalist_ END DUN SEMI
+ Fun ::= FUN:fun_ ID:Id_ LPAR ParamDeclist: paramdeclist_ RPAR COLN Type:type_ VarDeclist: vardeclist_ StatList: stalist_ END DUN SEMI
         {:
-            RESULT = new Fun(paramdeclist_left, paramdeclist_right, paramdeclist_, vardeclist_, statlist_);
+            RESULT = new Fun(fun_left, fun_right, new Id(Id_left,Id_right,Id_),paramdeclist_, vardeclist_, statlist_);
         :}
         |
-        FUN ID LPAR ParamDeclList:paramdeclist_ RPAR VarDeclList:vardeclist_ StatList:statlist END FUN SEMI
+        FUN:fun_ ID:Id_ LPAR ParamDeclList:paramdeclist_ RPAR VarDeclList:vardeclist_ StatList:statlist END FUN SEMI
         {:
-            RESULT = new Fun(paramdeclist_left, paramdeclist_right, paramdeclist_, vardeclist_,statlist_);
+            RESULT = new Fun(fun_left,fun_right, new Id(Id_left,Id_right,Id_), paramdeclist_, vardeclist_,statlist_);
         :}
         ;
 
@@ -330,7 +330,8 @@ ParamDeclList ::= NonEmptyParamDeclList: nonemptyparamdeclist_
   //        | NonEmptyParamDeclList COMMA ParDecl
 NonEmptyParamDeclList ::= ParDecl: pardecl_
         {:
-            RESULT = new ParDecl(pardecl_left, pardecl_right, pardecl_);
+            RESULT = new ArrayList<ParDecl>();
+            RESULT.add(pardecl_);
         :}
         |
         NonEmptyParamDeclist: nonemptyparamdeclist_ COMMA ParDecl: pardecl_
@@ -344,12 +345,12 @@ NonEmptyParamDeclList ::= ParDecl: pardecl_
           //        | OUT Type ID
 ParDecl::= Type: type_ ID
         {:
-            RETURN = new ParDecl(type_left, type_right, type_);
+            RESULT = new ParDecl(type_left, type_right, type_);
         :}
         |
         OUT Type: type_ ID
         {:
-            RETURN = new ParDecl(type_left, type_right, type_);
+            RESULT = new ParDecl(type_left, type_right, type_);
         :}
         ;
 
@@ -357,7 +358,8 @@ ParDecl::= Type: type_ ID
   //         | Stat StatList
 StatList::= Stat: stat_
     {:
-        RETURN = new StatList(stat_left, stat_right, stat_);
+        RESULT = new ArrayList<Stat>();
+        RESULT.add(stat_);
     :}
     |
     Stat:stat_ Statlist: statlist_
@@ -366,15 +368,6 @@ StatList::= Stat: stat_
         RESULT = statlist_;
     :}
     ;
-
-
-
-
-
-//!!!!!!!!!!!!!!!!   CONTROLLARE DA QUI     !!!!!!!!!!!!!!!!!
-
-
-
 
 //Stat ::= IfStat SEMI
   //        | WhileStat SEMI
@@ -387,37 +380,37 @@ StatList::= Stat: stat_
 
 Stat::= IfStat: ifstat_ SEMI
         {:
-            RETURN = new Stat(ifstat_left,ifstat_right, ifstat_);
+            RESULT = new Stat(ifstat_left,ifstat_right, ifstat_);
         :}
     |
     WhileStat: whilestat_ SEMI
         {:
-            RETURN = new Stat(whilestat_left, whilestat_right, whilestat_);
+            RESULT = new Stat(whilestat_left, whilestat_right, whilestat_);
         :}
     |
     ReadStat: readstat_ SEMI
         {:
-            RETURN = new Stat(readstat_left, readstat_right, readstat_);
+            RESULT = new Stat(readstat_left, readstat_right, readstat_);
         :}
         |
     WriteStat: writestat_ SEMI
         {:
-            RETURN = new Stat(writestat_left, writestat_right, writestat_);
+            RESULT = new Stat(writestat_left, writestat_right, writestat_);
         :}
         |
     AssignStat: assignstat_ SEMI
         {:
-        RETURN = new Stat(assignstat_left, assignstat_right, assignstat_);
+        RESULT = new Stat(assignstat_left, assignstat_right, assignstat_);
         :}
         |
     CallFun: callfun_ SEMI
         {:
-        RETURN = new Stat(callfun_left, callfun_right, callfun_);
+        RESULT = new Stat(callfun_left, callfun_right, callfun_);
         :}
         |
     RETURN Expr:expr_ SEMI
         {:
-        RETURN = new Stat(expr_left, expr_right, expr_);
+        RESULT = new Stat(expr_left, expr_right, expr_);
         :}
         |
         //epsilon
@@ -426,7 +419,7 @@ Stat::= IfStat: ifstat_ SEMI
 //IfStat ::= IF Expr THEN VarDeclList StatList Else END IF
 IfStat::= IF Expr:expr_ THEN VarDeclList:vardecllist_ StatList: statlist_ Else:else_ END IF
         {:
-        RETURN = new IfStat(expr_left, expr_right, expr_, vardecllist_, statlist_, else_);
+        RESULT = new IfStat(expr_left, expr_right, expr_, vardecllist_, statlist_, else_);
         :}
         ;
 
@@ -434,7 +427,7 @@ IfStat::= IF Expr:expr_ THEN VarDeclList:vardecllist_ StatList: statlist_ Else:e
   //    /*	| ELSE VarDeclList  StatList
 Else::= ELSE VarDeclList: vardecllist_ StatList: statlist_
         {:
-            RETURN = new Else(vardecllist_left, vardecllist_right, vardecllist_, statlist_);
+            RESULT = new Else(vardecllist_left, vardecllist_right, vardecllist_, statlist_);
         :}
         |
         //epsilon
@@ -443,14 +436,14 @@ Else::= ELSE VarDeclList: vardecllist_ StatList: statlist_
 // WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
 WhileStat::= WHILE Expr:expr_ LOOP VarDeclList: vardecllist_ StatList: statlist_ END LOOP
         {:
-            RETURN = new WhileStat(expr_left, expr_right, expr_, vardecllist_, statlist_);
+            RESULT = new WhileStat(expr_left, expr_right, expr_, vardecllist_, statlist_);
         :}
         ;
 
 // WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
 WhileStat ::= WHILE Expr: expr_ LOOP VarDeclList:vardecllist_  StatList:statlist_ END LOOP
         {:
-            RETURN = new WhileStat(expr_left, expr_right, expr_, vardecllist_, statlist_);
+            RESULT = new WhileStat(expr_left, expr_right, expr_, vardecllist_, statlist_);
         :}
         ;
 
@@ -459,21 +452,22 @@ WhileStat ::= WHILE Expr: expr_ LOOP VarDeclList:vardecllist_  StatList:statlist
 //        | READ IdList
 ReadStat ::= READ IdList:idlist_ Expr:expr_
         {:
-
+            RESULT = new ReadStat(idlist_left,idlist_right,idlist_,expr_);
         :}
         ;
 
 
 //    IdList ::= ID
 //        | IdList COMMA ID
-IdList::= ID
+IdList::= ID:id_
         {:
-
+            RESULT = new ArrayList<Id>();
+            RESULT.add(new Id(id_left,id_right , id_));
         :}
         |
         IdList:idlist_ COMMA ID
         {:
-
+            RESULT = new IdList(idlist_left,idlist_right,idlist_);
         :}
         ;
 
@@ -485,22 +479,22 @@ IdList::= ID
   //        | WRITEB  Expr
 WriteStat ::=  WRITE  Expr:expr_
         {:
-            RETURN = new WriteStat(expr_left, expr_right, expr_);
+            RESULT = new WriteStat(expr_left, expr_right, expr_);
         :}
         |
         WRITELN  Expr:expr_
         {:
-            RETURN = new WriteStat(expr_left, expr_right, expr_);
+            RESULT = new WriteLnStat(expr_left, expr_right, expr_);
         :}
         |
         WRITET  Expr:expr_
         {:
-            RETURN = new WriteStat(expr_left, expr_right, expr_);
+            RESULT = new WriteTStat(expr_left, expr_right, expr_);
         :}
         |
         WRITEB  Expr:expr_
         {:
-            RETURN = new WriteStat(expr_left, expr_right, expr_);
+            RESULT = new WriteBStat(expr_left, expr_right, expr_);
         :}
         ;
 
@@ -508,7 +502,7 @@ WriteStat ::=  WRITE  Expr:expr_
 //AssignStat ::=  ID ASSIGN Expr
 AssignStat ::=  ID ASSIGN Expr: expr_
         {:
-            RETURN = new AssignStat(expr_left, expr_right, expr_);
+            RESULT = new AssignStat(expr_left, expr_right, expr_);
         :}
         ;
 
@@ -516,14 +510,14 @@ AssignStat ::=  ID ASSIGN Expr: expr_
 
 //CallFun ::= ID LPAR ExprList RPAR
   //        | ID LPAR RPAR
-  CallFun ::= ID LPAR ExprList:exprlist_ RPAR
+  CallFun ::= ID:id_ LPAR ExprList:exprlist_ RPAR
         {:
-            RETURN = new CallFun(expr_left, expr_right, expr_);
+            RESULT = new CallFun(id_left, id_right, id_, exprlist_);
         :}
         |
-        ID LPAR RPAR
+        ID:id_ LPAR RPAR
         {:
-
+            RESULT = new CallFun(id_left, id_right, id_);
         :}
         ;
 
@@ -536,50 +530,152 @@ AssignStat ::=  ID ASSIGN Expr: expr_
   //        | OUTPAR ID COMMA ExprList
 ExprList::= Expr:expr_
         {:
-
+            RESULT = new ArrayList<Expr,Id>();
+            RESULT.add(expr_);
         :}
         |
-        Expr COMMA ExprList
+        Expr:expr_ COMMA ExprList:exprlist_
         {:
-
+            exprlist_.add(expr_);
+            RESULT = exprlist_;
         :}
         |
-        OUTPAR ID
+        OUTPAR ID:Id_
         {:
-
+            RESULT = new ArrayList<Expr,Id>();
+            RESULT.add(Id_);
         :}
         |
-        OUTPAR ID COMMA ExprList
+        OUTPAR ID:Id_ COMMA ExprList:exprlist_
         {:
-
+            exprlist_.add(Id_);
+            RESULT = exprlist_;
         :}
         ;
 
-
-
-
-//Expr ::= TRUE
-  //        | FALSE
-  //        | INTEGER_CONST
-  //        | REAL_CONST
-  //        | STRING_CONST
-  //        | ID
-  //        | CallFun
-  //        | Expr  PLUS Expr
-  //        | Expr  MINUS Expr
-  //        | Expr  TIMES Expr
-  //        | Expr  DIV Expr
-  //        | Expr  DIVINT Expr
-  //        | Expr  AND Expr
-  //        | Expr POW Expr
-  //        | Expr STR_CONCAT Expr
-  //        | Expr  OR Expr
-  //        | Expr  GT Expr
-  //        | Expr  GE Expr
-  //        | Expr  LT Expr
-  //        | Expr  LE Expr
-  //        | Expr  EQ Expr
-  //        | Expr  NE Expr
-  //        | MINUS Expr
-  //        | NOT Expr
-  //        | LPAR Expr RPAR
+Expr ::= TRUE:true_
+        {:
+            RESULT = new BooleanConst(true_left, true_right, true);
+        :}
+        |
+        FALSE:false_
+        {:
+            RESULT = new BooleanConst(false_left, false_right, false);
+        :}
+        |
+        INTEGER_CONST:intconst_
+        {:
+            RESULT = new IntegerConst(intconst_left, intconst_right, intconst_);
+        :}
+        |
+        REAL_CONST:realconst_
+        {:
+            RESULT = new RealConst(realconst_left, realconst_right, realconst_);
+        :}
+        |
+        STRING_CONST:stringconst_
+        {:
+            RESULT = new StringConst(stringconst_left, stringconst_right, stringconst_);
+        :}
+        |
+        ID:id_
+        {:
+            RESULT = new Id(id_left, id_right, id_);
+        :}
+        |
+        CallFun:callfun_
+        {:
+            RESULT = new CallingFun(callfun_left,callfun_right,callfun_);
+        :}
+        |
+        Expr:expr_ PLUS Expr:expr1_
+        {:
+            RESULT = new PlusOperation(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ MINUS Expr:expr1_
+        {:
+            RESULT = new MinusOperation(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ TIMES Expr:expr1_
+        {:
+            RESULT = new TimesOperation(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ DIV Expr:expr1_
+        {:
+            RESULT = new DivOperation(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ DIVINT Expr:expr1_
+        {:
+            RESULT = new DivIntOperation(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ AND Expr:expr1_
+        {:
+            RESULT = new AndOperation(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ POW Expr:expr1_
+        {:
+            RESULT = new PowOperation(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ STR_CONCAT Expr:expr1_
+        {:
+            RESULT = new StringConcat(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ OR Expr:expr1_
+        {:
+            RESULT = new OrOperation(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ GT Expr:expr1_
+        {:
+            RESULT = new GreaterThan(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ GE Expr:expr1_
+        {:
+            RESULT = new GreaterEqual(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ LT Expr:Expr1_
+        {:
+            RESULT = new LessThan(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ LE Expr:Expr1_
+        {:
+            RESULT = new LessEqual(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ EQ Expr:expr1_
+        {:
+            RESULT = new Equal(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        Expr:expr_ NE Expr:expr1_
+        {:
+            RESULT = new NotEqual(expr_left,expr_right,expr_,expr1_);
+        :}
+        |
+        MINUS Expr:expr_
+        {:
+            RESULT = new UminusExpression(expr_left, expr_right, expr_);
+        :}
+        %prec MINUS
+        |
+        NOT Expr:expr_
+        {:
+            RESULT = new NotExpression(expr_left, expr_right, expr_);
+        :}
+        |
+        LPAR Expr:expr_ RPAR
+        {:
+            RESULT = new FunctionParam(expr_left, expr_right, expr_);
+        :}
+        ;
