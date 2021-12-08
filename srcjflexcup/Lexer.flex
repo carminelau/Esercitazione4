@@ -21,7 +21,7 @@ import java_cup.runtime.Symbol;import jdk.incubator.foreign.SymbolLookup;
     stringTable.put("real", new Symbol(ParserSym.REAL,"REAL"));
     stringTable.put("bool", new Symbol(ParserSym.BOOL,"BOOL"));
     stringTable.put("fun", new Symbol(ParserSym.FUN,"FUN"));
-    stringTable.put("do", new Symbol(ParserSym.LOOP,"LOOP"));
+    stringTable.put("loop", new Symbol(ParserSym.LOOP,"LOOP"));
     stringTable.put("and", new Symbol(ParserSym.AND,"AND"));
     stringTable.put("or", new Symbol(ParserSym.OR,"OR"));
     stringTable.put("not", new Symbol(ParserSym.NOT,"NOT"));
@@ -34,6 +34,8 @@ import java_cup.runtime.Symbol;import jdk.incubator.foreign.SymbolLookup;
     stringTable.put("main", new Symbol(ParserSym.MAIN,"MAIN"));
     stringTable.put("string", new Symbol(ParserSym.STRING,"STRING"));
     stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
+    stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
+    stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
 %init}
 
 %{
