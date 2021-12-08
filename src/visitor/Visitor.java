@@ -53,7 +53,7 @@ public interface Visitor<T,P> {
 
     T visit(ArrayReadElement arrayReadElement, P arg);
 
-    T visit(FunctionCall functionCall, P arg);
+    T visit(CallingFun functionCall, P arg);
 
     T visit(ArrayAssignStatement arrayAssignStatement, P arg);
 

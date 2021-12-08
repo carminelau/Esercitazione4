@@ -1,4 +1,4 @@
-package syntax.binary;
+package syntax.expression.binary;
 
 public class BinaryOperation {
 }
