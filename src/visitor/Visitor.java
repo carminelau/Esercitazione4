@@ -5,7 +5,7 @@ import syntax.expression.binary.relation.*;
 import syntax.expression.*;
 import syntax.expression.constant.*;
 import syntax.expression.unary.*;
-import syntax.statements.*;
+import syntax.statement.*;
 import syntax.*;
 import syntax.types.ArrayType;
 import syntax.types.FunctionType;
@@ -47,17 +47,17 @@ public interface Visitor<T,P> {
 
     T visit(IntegerConst integerConst, P arg);
 
-    T visit(NilConst nilConst, P arg);
-
     T visit(StringConst stringConst, P arg);
 
     T visit(ArrayReadElement arrayReadElement, P arg);
 
     T visit(CallingFun functionCall, P arg);
 
+    T visit(FunctionParam functionParam, P arg);
+
     T visit(ArrayAssignStatement arrayAssignStatement, P arg);
 
-    T visit(AssignStatement assignStatement, P arg);
+    T visit(AssignStat assignStatement, P arg);
 
     T visit(CallFunctionStatement callFunctionStatement, P arg);
 
@@ -71,13 +71,13 @@ public interface Visitor<T,P> {
 
     T visit(NopStatement nopStatement, P arg);
 
-    T visit(ReadStatement readStatement, P arg);
+    T visit(ReadStat readStatement, P arg);
 
     T visit(ReturnStatement returnStatement, P arg);
 
     T visit(WhileStatement whileStatement, P arg);
 
-    T visit(WriteStatement writeStatement, P arg);
+    T visit(WriteStat writeStatement, P arg);
 
     T visit(Global global, P arg);
 

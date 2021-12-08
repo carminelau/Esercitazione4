@@ -183,7 +183,12 @@ terminal String MAIN,
                 STRING_CONST,
                 SEMI,
                	COMMA,
-               	RETURN;
+               	UMINUS,
+               	RETURN,
+               	OUTPAR,
+               	OUT,
+               	VAR,
+               	UMINUS;
 
 terminal int INTEGER_CONST;
 terminal double REAL_CONST;
@@ -663,11 +668,11 @@ Expr ::= TRUE:true_
             RESULT = new NotEqual(expr_left,expr_right,expr_,expr1_);
         :}
         |
-        MINUS Expr:expr_
+        UMINUS Expr:expr_
         {:
             RESULT = new UminusExpression(expr_left, expr_right, expr_);
         :}
-        %prec MINUS
+        %prec UMINUS
         |
         NOT Expr:expr_
         {:
