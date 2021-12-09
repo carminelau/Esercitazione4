@@ -10,6 +10,8 @@ import java.util.*;
 import syntax.*;
 import syntax.statement.*;
 import syntax.expression.*;
+import syntax.expression.binary.arithmetic.*;
+import syntax.expression.binary.relation.*;
 import syntax.expression.unary.*;
 import syntax.expression.constant.*;
 import syntax.types.*;
@@ -1018,7 +1020,7 @@ class CUP$Parser$actions {
 		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new AndOperation(expr_left,expr_right,expr_,expr1_);
+            RESULT = new AndRelOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1052,7 +1054,7 @@ class CUP$Parser$actions {
 		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new StringConcat(expr_left,expr_right,expr_,expr1_);
+            RESULT = new Str_ConcatOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1069,7 +1071,7 @@ class CUP$Parser$actions {
 		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new OrOperation(expr_left,expr_right,expr_,expr1_);
+            RESULT = new OrRelOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1086,7 +1088,7 @@ class CUP$Parser$actions {
 		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new GreaterThan(expr_left,expr_right,expr_,expr1_);
+            RESULT = new GreatThanRelOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1103,7 +1105,7 @@ class CUP$Parser$actions {
 		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new GreaterEqual(expr_left,expr_right,expr_,expr1_);
+            RESULT = new GreatThanEqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1116,11 +1118,11 @@ class CUP$Parser$actions {
 		int expr_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
 		int expr_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
 		Expr expr_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
-		int Expr1_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
-		int Expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		Expr Expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		int expr1_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new LessThan(expr_left,expr_right,expr_,expr1_);
+            RESULT = new LessThanRelOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1133,11 +1135,11 @@ class CUP$Parser$actions {
 		int expr_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
 		int expr_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
 		Expr expr_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
-		int Expr1_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
-		int Expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		Expr Expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		int expr1_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new LessEqual(expr_left,expr_right,expr_,expr1_);
+            RESULT = new LessThanEqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1154,7 +1156,7 @@ class CUP$Parser$actions {
 		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new Equal(expr_left,expr_right,expr_,expr1_);
+            RESULT = new EqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1171,7 +1173,7 @@ class CUP$Parser$actions {
 		int expr1_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Expr expr1_ = (Expr)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new NotEqual(expr_left,expr_right,expr_,expr1_);
+            RESULT = new NotEqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }

@@ -118,8 +118,8 @@ import java.util.*;
 import syntax.*;
 import syntax.statement.*;
 import syntax.expression.*;
-//import syntax.expression.binary.arithmetic.*;
-//import syntax.expression.binary.relation.*;
+import syntax.expression.binary.arithmetic.*;
+import syntax.expression.binary.relation.*;
 import syntax.expression.unary.*;
 import syntax.expression.constant.*;
 import syntax.types.*;
@@ -636,7 +636,7 @@ Expr ::= TRUE:true_
         |
         Expr:expr_ AND Expr:expr1_
         {:
-            RESULT = new AndOperation(expr_left,expr_right,expr_,expr1_);
+            RESULT = new AndRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
         Expr:expr_ POW Expr:expr1_
@@ -646,42 +646,42 @@ Expr ::= TRUE:true_
         |
         Expr:expr_ STR_CONCAT Expr:expr1_
         {:
-            RESULT = new StringConcat(expr_left,expr_right,expr_,expr1_);
+            RESULT = new Str_ConcatOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
         Expr:expr_ OR Expr:expr1_
         {:
-            RESULT = new OrOperation(expr_left,expr_right,expr_,expr1_);
+            RESULT = new OrRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
         Expr:expr_ GT Expr:expr1_
         {:
-            RESULT = new GreaterThan(expr_left,expr_right,expr_,expr1_);
+            RESULT = new GreatThanRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
         Expr:expr_ GE Expr:expr1_
         {:
-            RESULT = new GreaterEqual(expr_left,expr_right,expr_,expr1_);
+            RESULT = new GreatThanEqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
-        Expr:expr_ LT Expr:Expr1_
+        Expr:expr_ LT Expr:expr1_
         {:
-            RESULT = new LessThan(expr_left,expr_right,expr_,expr1_);
+            RESULT = new LessThanRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
-        Expr:expr_ LE Expr:Expr1_
+        Expr:expr_ LE Expr:expr1_
         {:
-            RESULT = new LessEqual(expr_left,expr_right,expr_,expr1_);
+            RESULT = new LessThanEqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
         Expr:expr_ EQ Expr:expr1_
         {:
-            RESULT = new Equal(expr_left,expr_right,expr_,expr1_);
+            RESULT = new EqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
         Expr:expr_ NE Expr:expr1_
         {:
-            RESULT = new NotEqual(expr_left,expr_right,expr_,expr1_);
+            RESULT = new NotEqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
         |
         UMINUS Expr:expr_
