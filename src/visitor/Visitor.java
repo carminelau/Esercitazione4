@@ -6,7 +6,6 @@ import syntax.expression.*;
 import syntax.expression.constant.*;
 import syntax.expression.unary.*;
 import syntax.statement.*;
-import syntax.*;
 import syntax.types.ArrayType;
 import syntax.types.FunctionType;
 import syntax.types.PrimitiveType;
@@ -65,7 +64,7 @@ public interface Visitor<T,P> {
 
     T visit(IfElseStatement ifElseStatement, P arg);
 
-    T visit(IfStatement ifStatement, P arg);
+    T visit(IfStat ifStatement, P arg);
 
     T visit(LocalStatement localStatement, P arg);
 

@@ -1,5 +1,7 @@
-package syntax.expression;
+package syntax.statement;
 
+import syntax.expression.Expr;
+import syntax.expression.Id;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -18,6 +20,16 @@ public class CallingFun extends Expr {
         super(leftPosition, rightPosition);
         this.id = id;
         this.exprs = exprs;
+    }
+
+    /**
+     * @param leftPosition  the left position
+     * @param rightPosition the right position
+     * @param id id
+     */
+    public CallingFun(int leftPosition, int rightPosition, Id id) {
+        super(leftPosition, rightPosition);
+        this.id = id;
     }
 
     /**

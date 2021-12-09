@@ -55,9 +55,9 @@
         | RETURN Expr SEMI
         | /* empty */
     /*
-    IfStat ::= IF Expr THEN VarDeclList StatList Else END IF
+    IfStat ::= IF Expr THEN VarDeclList StatList ElseStat END IF
 
-    Else ::= /* empty */
+    ElseStat ::= /* empty */
     /*	| ELSE VarDeclList  StatList
 
     WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
@@ -116,13 +116,13 @@ package generated;
 import java_cup.runtime.*;
 import java.util.*;
 import syntax.*;
-import syntax.statements.*;
+import syntax.statement.*;
 import syntax.expression.*;
-import syntax.expression.binary.arithmetic.*;
-import syntax.expression.binary.relation.*;
+//import syntax.expression.binary.arithmetic.*;
+//import syntax.expression.binary.relation.*;
 import syntax.expression.unary.*;
 import syntax.expression.constant.*;
-import syntax.types.*;
+//import syntax.types.*;
 
 
 class Parser;
@@ -187,11 +187,10 @@ terminal String MAIN,
                	RETURN,
                	OUTPAR,
                	OUT,
-               	VAR,
-               	UMINUS;
+               	VAR;
 
 terminal int INTEGER_CONST;
-terminal double REAL_CONST;
+terminal float REAL_CONST;
 terminal boolean  TRUE, FALSE;
 
 //Non terminali
@@ -211,16 +210,16 @@ non terminal      ArrayList<NonEmptyParamDecl>   NonEmptyParamDeclList ;
 non terminal      ParDecl                        ParDecl;
 non terminal      ArrayList<Stat>                StatList;
 non terminal      Stat                           Stat;
-non terminal      If                             IfStat;
-non terminal      Else                           Else;
-non terminal      While                          WhileStat;
-non terminal      Read                           ReadStat;
-non terminal      Id                             IdStat;
-non terminal      Write                          WriteStat;
-non terminal      Assign                         AssignStat;
-non terminal      CallFun                        CallFun;
+non terminal      IfStat                         IfStat;
+non terminal      ElseStat                       Else;
+non terminal      WhileStat                      WhileStat;
+non terminal      ReadStat                       ReadStat;
+non terminal      WriteStat                      WriteStat;
+non terminal      AssignStat                     AssignStat;
+non terminal      CallingFun                     CallFun;
 non terminal      ArrayList<Expr>                ExprList;
 non terminal      Expr                           Expr;
+non terminal      ArrayList<Id>                  IdList;
 
 // Precendenze:: partendo dal basso (precedenza maggiore) a salire (precedenza minore)
 precedence left OR;
@@ -234,14 +233,14 @@ precedence right POW;
 precedence left LPAR, RPAR;
 
 
-/*Program ::= VarDeclList FunList Main */
+/*Program ::= VarDeclList FunList Main *//*
 Program ::= VarDeclList:vardecllist_ FunList:funlist_ Main:main_
             {:
                 RESULT = new Program(main_left,main_right,vardecllist_,funlist_,main_);
             :}
             ;
 
-/* VarDeclList ::= empty  | VardDecl VarDeclList */
+*//* VarDeclList ::= empty  | VardDecl VarDeclList *//*
 VarDeclList ::= VarDecl:vardecl_ VarDeclList:vardecllist_
                 {:
                     vardecllist_.add(vardecl_);
@@ -251,7 +250,7 @@ VarDeclList ::= VarDecl:vardecl_ VarDeclList:vardecllist_
                 //epsilon
                 ;
 
-/* Main ::= MAIN VarDeclList StatList END MAIN SEMI */
+*//* Main ::= MAIN VarDeclList StatList END MAIN SEMI *//*
 Main ::= MAIN VarDeclList:vardecllist_ StatList:statlist_ END MAIN SEMI
         {:
             RESULT= new Main(vardeclist_left,vardecllist_right, vardecllist_, statlist_);
@@ -259,7 +258,7 @@ Main ::= MAIN VarDeclList:vardecllist_ StatList:statlist_ END MAIN SEMI
         ;
 
 // FunList ::= Fun FunList
-//    | /* empty */
+//    | *//* empty *//*
 
 FunList ::= Fun:fun_ FunList:funlist_
             {:
@@ -321,8 +320,8 @@ Const ::= INTEGER_CONST:integerconst_
         :}
         ;
 
-        //ParamDeclList ::= /*empty */
-                  //    /*	| NonEmptyParamDeclList
+        //ParamDeclList ::= *//*empty *//*
+                  //    *//*	| NonEmptyParamDeclList
 ParamDeclList ::= NonEmptyParamDeclList: nonemptyparamdeclist_
         {:
             RESULT = new ParamDeclist( nonemptyparamdeclist_left, nonemptyparamdeclist_right, nonemptyparamdeclist_);
@@ -367,7 +366,7 @@ StatList::= Stat: stat_
         RESULT.add(stat_);
     :}
     |
-    Stat:stat_ Statlist: statlist_
+    Stat:stat_ StatList: statlist_
     {:
         statlist_.add(stat_);
         RESULT = statlist_;
@@ -381,7 +380,8 @@ StatList::= Stat: stat_
   //        | AssignStat SEMI
   //        | CallFun SEMI
   //        | RETURN Expr SEMI
-  //        | /* empty */
+  //        | *//* empty */
+/*
 
 Stat::= IfStat: ifstat_ SEMI
         {:
@@ -421,18 +421,18 @@ Stat::= IfStat: ifstat_ SEMI
         //epsilon
         ;
 
-//IfStat ::= IF Expr THEN VarDeclList StatList Else END IF
-IfStat::= IF Expr:expr_ THEN VarDeclList:vardecllist_ StatList: statlist_ Else:else_ END IF
+//IfStat ::= IF Expr THEN VarDeclList StatList ElseStat END IF
+IfStat::= IF Expr:expr_ THEN VarDeclList:vardecllist_ StatList: statlist_ Else:else_Stat_ END IF
         {:
-        RESULT = new IfStat(expr_left, expr_right, expr_, vardecllist_, statlist_, else_);
+        RESULT = new IfStat(expr_left, expr_right, expr_, vardecllist_, statlist_, else_Stat_);
         :}
         ;
 
-//Else ::= /* empty */
-  //    /*	| ELSE VarDeclList  StatList
+//ElseStat ::=  empty
+//	| ELSE VarDeclList  StatList
 Else::= ELSE VarDeclList: vardecllist_ StatList: statlist_
         {:
-            RESULT = new Else(vardecllist_left, vardecllist_right, vardecllist_, statlist_);
+            RESULT = new ElseStat(vardecllist_left, vardecllist_right, vardecllist_, statlist_);
         :}
         |
         //epsilon
@@ -445,14 +445,6 @@ WhileStat::= WHILE Expr:expr_ LOOP VarDeclList: vardecllist_ StatList: statlist_
         :}
         ;
 
-// WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
-WhileStat ::= WHILE Expr: expr_ LOOP VarDeclList:vardecllist_  StatList:statlist_ END LOOP
-        {:
-            RESULT = new WhileStat(expr_left, expr_right, expr_, vardecllist_, statlist_);
-        :}
-        ;
-
-
 //    ReadStat ::= READ IdList Expr // Expr deve essere di tipo stringa
 //        | READ IdList
 ReadStat ::= READ IdList:idlist_ Expr:expr_
@@ -461,7 +453,7 @@ ReadStat ::= READ IdList:idlist_ Expr:expr_
         :}
         ;
 
-
+*/
 //    IdList ::= ID
 //        | IdList COMMA ID
 IdList::= ID:id_
@@ -470,13 +462,11 @@ IdList::= ID:id_
             RESULT.add(new Id(id_left,id_right , id_));
         :}
         |
-        IdList:idlist_ COMMA ID
+        IdList:idlist_ COMMA ID:id_
         {:
-            RESULT = new IdList(idlist_left,idlist_right,idlist_);
+            RESULT.add(new Id(id_left,id_right , id_));
         :}
         ;
-
-
 
 //WriteStat ::=  WRITE  Expr
   //        | WRITELN  Expr
@@ -489,25 +479,25 @@ WriteStat ::=  WRITE  Expr:expr_
         |
         WRITELN  Expr:expr_
         {:
-            RESULT = new WriteLnStat(expr_left, expr_right, expr_);
+            RESULT = new WriteStat(expr_left, expr_right, expr_);
         :}
         |
         WRITET  Expr:expr_
         {:
-            RESULT = new WriteTStat(expr_left, expr_right, expr_);
+            RESULT = new WriteStat(expr_left, expr_right, expr_);
         :}
         |
         WRITEB  Expr:expr_
         {:
-            RESULT = new WriteBStat(expr_left, expr_right, expr_);
+            RESULT = new WriteStat(expr_left, expr_right, expr_);
         :}
         ;
 
 
 //AssignStat ::=  ID ASSIGN Expr
-AssignStat ::=  ID ASSIGN Expr: expr_
+AssignStat ::=  ID:id_ ASSIGN Expr: expr_
         {:
-            RESULT = new AssignStat(expr_left, expr_right, expr_);
+            RESULT = new AssignStat(expr_left, expr_right,new Id(id_left,id_right,id_),expr_);
         :}
         ;
 
@@ -517,16 +507,14 @@ AssignStat ::=  ID ASSIGN Expr: expr_
   //        | ID LPAR RPAR
   CallFun ::= ID:id_ LPAR ExprList:exprlist_ RPAR
         {:
-            RESULT = new CallFun(id_left, id_right, id_, exprlist_);
+            RESULT = new CallingFun(exprlist_left, exprlist_right, new Id(id_left,id_right,id_), exprlist_);
         :}
         |
         ID:id_ LPAR RPAR
         {:
-            RESULT = new CallFun(id_left, id_right, id_);
+            RESULT = new CallingFun(id_left, id_right, new Id(id_left,id_right,id_));
         :}
         ;
-
-
 
 
 //ExprList ::= Expr
@@ -535,7 +523,7 @@ AssignStat ::=  ID ASSIGN Expr: expr_
   //        | OUTPAR ID COMMA ExprList
 ExprList::= Expr:expr_
         {:
-            RESULT = new ArrayList<Expr,Id>();
+            RESULT = new ArrayList<Expr>();
             RESULT.add(expr_);
         :}
         |
@@ -545,15 +533,15 @@ ExprList::= Expr:expr_
             RESULT = exprlist_;
         :}
         |
-        OUTPAR ID:Id_
+        OUTPAR ID:id_
         {:
-            RESULT = new ArrayList<Expr,Id>();
-            RESULT.add(Id_);
+            RESULT = new ArrayList<Expr>();
+            RESULT.add(new Id(id_left, id_right, id_));
         :}
         |
-        OUTPAR ID:Id_ COMMA ExprList:exprlist_
+        OUTPAR ID:id_ COMMA ExprList:exprlist_
         {:
-            exprlist_.add(Id_);
+            exprlist_.add(new Id(id_left, id_right, id_));
             RESULT = exprlist_;
         :}
         ;
@@ -590,7 +578,7 @@ Expr ::= TRUE:true_
         |
         CallFun:callfun_
         {:
-            RESULT = new CallingFun(callfun_left,callfun_right,callfun_);
+            RESULT = new CallinFun(callfun_left,callfun_right,callfun_);
         :}
         |
         Expr:expr_ PLUS Expr:expr1_
