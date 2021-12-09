@@ -1,5 +1,7 @@
 package visitor;
 
+import syntax.Fun;
+import syntax.ParDecl;
 import syntax.expression.binary.arithmetic.*;
 import syntax.expression.binary.relation.*;
 import syntax.expression.*;
@@ -12,7 +14,7 @@ import syntax.types.PrimitiveType;
 
 
 public interface Visitor<T,P> {
-    T visit(Function function, P arg);
+    T visit(Fun function, P arg);
     T visit(Id id, P arg);
     T visit(DivOperation divOperation, P arg);
 

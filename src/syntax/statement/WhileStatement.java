@@ -26,6 +26,10 @@ public class WhileStatement extends Statement {
             this.statements = statements;
         }
 
+    public WhileStatement (int leftPosition, int rightPosition){
+        super(leftPosition, rightPosition);
+    }
+
         /**
          * @return the condition
          */

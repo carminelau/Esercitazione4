@@ -3,29 +3,24 @@ package syntax.statement;
 import syntax.expression.Expr;
 import visitor.Visitor;
 
-public class WriteStatement extends Statement {
-
-    private Expr expression;
+public class ReturnStatement extends Statement {
+    private Expr returnExpression;
 
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param expression
+     * @param returnExpression
      */
-    public WriteStatement(int leftPosition, int rightPosition, Expr expression) {
+    public ReturnStatement(int leftPosition, int rightPosition, Expr returnExpression) {
         super(leftPosition, rightPosition);
-        this.expression = expression;
-    }
-
-    public WriteStatement (int leftPosition, int rightPosition){
-        super(leftPosition, rightPosition);
+        this.returnExpression = returnExpression;
     }
 
     /**
-     * @return the expressions list
+     * @return the return expression
      */
-    public Expr getExpression() {
-        return expression;
+    public Expr getReturnExpression() {
+        return returnExpression;
     }
 
     /**

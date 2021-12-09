@@ -8,7 +8,7 @@
     VarDeclList ::= /* empty */
     /*	| VardDecl VarDeclList
 
-    Main ::= MAIN VarDeclList statementList END MAIN SEMI
+    Main ::= MAIN VarDeclList StatList END MAIN SEMI
 
     FunList ::= /* empty */
     /*	| Fun FunList
@@ -29,9 +29,9 @@
     Const ::= INTEGER_CONST | REAL_CONST | BOOL_CONST | STRING_CONST
 
     Fun := FUN ID LPAR ParamDeclList RPAR COLON Type
-            VarDeclList statementList END FUN SEMI
+            VarDeclList StatList END FUN SEMI
         | FUN ID LPAR ParamDeclList RPAR
-            VarDeclList statementList END FUN SEMI
+            VarDeclList StatList END FUN SEMI
 
 
     ParamDeclList ::= /*empty */
@@ -43,8 +43,8 @@
     ParDecl ::= Type ID
         | OUT Type ID
 
-    statementList ::= Statement
-         | Statement statementList
+    StatList ::= Statement
+         | Statement StatList
 
     Statement ::= IfStatement SEMI
         | WhileStatement SEMI
@@ -55,12 +55,12 @@
         | RETURN Expr SEMI
         | /* empty */
     /*
-    IfStatement ::= IF Expr THEN VarDeclList statementList ElseStatement END IF
+    IfStatement ::= IF Expr THEN VarDeclList StatList ElseStatement END IF
 
     ElseStatement ::= /* empty */
-    /*	| ELSE VarDeclList  statementList
+    /*	| ELSE VarDeclList  StatList
 
-    WhileStatement ::= WHILE Expr LOOP VarDeclList  statementList END LOOP
+    WhileStatement ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
 
     ReadStatement ::= READ IdList Expr // Expr deve essere di tipo stringa
         | READ IdList
@@ -122,7 +122,7 @@ import syntax.expression.*;
 //import syntax.expression.binary.relation.*;
 import syntax.expression.unary.*;
 import syntax.expression.constant.*;
-//import syntax.types.*;
+import syntax.types.*;
 
 
 class Parser;
@@ -181,6 +181,7 @@ terminal String MAIN,
                	NOT,
                	NULL,
                 STRING_CONST,
+                BOOL_CONST,
                 SEMI,
                	COMMA,
                	UMINUS,
@@ -203,12 +204,12 @@ non terminal      VarDecl                        VarDecl;
 non terminal      Type                           Type;
 non terminal      ArrayList<IdInit>              IdListInit;
 non terminal      ArrayList<IdInitObbl>          IdListInitObbl;
-non terminal      Const                          Const ;
+non terminal      Expr                           Const ;
 non terminal      Fun                            Fun;
-non terminal      ArrayList<ParamDecl>           ParamDeclList;
-non terminal      ArrayList<NonEmptyParamDecl>   NonEmptyParamDeclList ;
+non terminal      ArrayList<ParDecl>             ParamDeclList;
+non terminal      ArrayList<ParDecl>             NonEmptyParamDeclList ;
 non terminal      ParDecl                        ParDecl;
-non terminal      ArrayList<Statement>           statementList;
+non terminal      ArrayList<Statement>           StatList;
 non terminal      Statement                      Stat;
 non terminal      IfStatement                    IfStat;
 non terminal      ElseStatement                  Else;
@@ -250,8 +251,8 @@ VarDeclList ::= VarDecl:vardecl_ VarDeclList:vardecllist_
                 //epsilon
                 ;
 
-*//* Main ::= MAIN VarDeclList statementList END MAIN SEMI *//*
-Main ::= MAIN VarDeclList:vardecllist_ statementList:statlist_ END MAIN SEMI
+*//* Main ::= MAIN VarDeclList StatList END MAIN SEMI *//*
+Main ::= MAIN VarDeclList:vardecllist_ StatList:statlist_ END MAIN SEMI
         {:
             RESULT= new Main(vardeclist_left,vardecllist_right, vardecllist_, statlist_);
         :}
@@ -283,48 +284,51 @@ VarDecl ::= Type:type_  IdListInitd:idlistinit_ SEMI
             :}
             ;
 
+*/
+
 // Const ::= INTEGER_CONST | REAL_CONST | BOOL_CONST | STRING_CONST
-Const ::= INTEGER_CONST:integerconst_
+Const ::= INTEGER_CONST:int_
         {:
-            RESULT = new PrimitiveType(integerconst_left, integerconst_right, "INTEGER_CONST");
+            RESULT = new IntegerConst(int_left, int_right, int_);
         :}
         |
         REAL_CONST:realconst_
         {:
-            RESULT = new PrimitiveType(realconst_left, realconst_right, "REAL_CONST");
+            RESULT = new RealConst(realconst_left, realconst_right, realconst_);
         :}
         |
         BOOL_CONST:boolconst_
         {:
-            RESULT = new PrimitiveType(boolconst_left, boolconst_right, "BOOL_CONST");
+            RESULT = new BooleanConst(boolconst_left, boolconst_right, boolconst_);
         :}
         |
         STRING_CONST:stringconst_
         {:
-            RESULT = new PrimitiveType(stringconst_left, stringconst_right, "STRING_CONST");
+            RESULT = new StringConst(stringconst_left, stringconst_right, stringconst_);
         :}
         ;
 
+
 //Fun := FUN ID LPAR ParamDeclList RPAR COLON Type
-  //            VarDeclList statementList END FUN SEMI
+  //            VarDeclList StatList END FUN SEMI
   //        | FUN ID LPAR ParamDeclList RPAR
-  //            VarDeclList statementList END FUN SEMI
- Fun ::= FUN:fun_ ID:Id_ LPAR ParamDeclist: paramdeclist_ RPAR COLN Type:type_ VarDeclist: vardeclist_ statementList: stalist_ END DUN SEMI
+  //            VarDeclList StatList END FUN SEMI
+ Fun ::= FUN:fun_ ID:Id_ LPAR ParamDeclList: paramdeclist_ RPAR COLON Type:type_ VarDeclList: vardeclist_ StatList: statlist_ END FUN SEMI
         {:
-            RESULT = new Fun(fun_left, fun_right, new Id(Id_left,Id_right,Id_),paramdeclist_, vardeclist_, statlist_);
+            RESULT = new Fun(fun_left, fun_right, new Id(Id_left,Id_right,Id_),paramdeclist_, type_, vardeclist_, statlist_);
         :}
         |
-        FUN:fun_ ID:Id_ LPAR ParamDeclList:paramdeclist_ RPAR VarDeclList:vardeclist_ statementList:statlist END FUN SEMI
+        FUN:fun_ ID:Id_ LPAR ParamDeclList: paramdeclist_ RPAR VarDeclList:vardeclist_ StatList:statlist_ END FUN SEMI
         {:
             RESULT = new Fun(fun_left,fun_right, new Id(Id_left,Id_right,Id_), paramdeclist_, vardeclist_,statlist_);
         :}
         ;
 
-        //ParamDeclList ::= *//*empty *//*
-                  //    *//*	| NonEmptyParamDeclList
+        //ParamDeclList ::= empty
+        //         | NonEmptyParamDeclList
 ParamDeclList ::= NonEmptyParamDeclList: nonemptyparamdeclist_
         {:
-            RESULT = new ParamDeclist( nonemptyparamdeclist_left, nonemptyparamdeclist_right, nonemptyparamdeclist_);
+            RESULT = nonemptyparamdeclist_;
         :}
         |
         //EPSILON
@@ -338,7 +342,7 @@ NonEmptyParamDeclList ::= ParDecl: pardecl_
             RESULT.add(pardecl_);
         :}
         |
-        NonEmptyParamDeclist: nonemptyparamdeclist_ COMMA ParDecl: pardecl_
+        NonEmptyParamDeclList: nonemptyparamdeclist_ COMMA ParDecl: pardecl_
         {:
             nonemptyparamdeclist_.add(pardecl_);
             RESULT = nonemptyparamdeclist_;
@@ -347,101 +351,125 @@ NonEmptyParamDeclList ::= ParDecl: pardecl_
 
         // ParDecl ::= Type ID
           //        | OUT Type ID
-ParDecl::= Type: type_ ID
+ParDecl::= Type: type_ ID:id_
         {:
-            RESULT = new ParDecl(type_left, type_right, type_);
+            RESULT = new ParDecl(type_left, type_right, type_,new Id(id_left,id_right,id_));
         :}
         |
-        OUT Type: type_ ID
+        OUT:out_ Type: type_ ID:id_
         {:
-            RESULT = new ParDecl(type_left, type_right, type_);
+            RESULT = new ParDecl(out_left, out_right, type_,new Id(id_left,id_right,id_));
         :}
         ;
 
-//statementList ::= Statement
-  //         | Statement statementList
-statementList::= Statement: stat_
+//Type ::= INTEGER | BOOL | REAL | STRING
+Type ::= INTEGER:int_
+    {:
+        RESULT = new PrimitiveType(int_left,int_right,"INTEGER");
+    :}
+    |
+    BOOL:bool_
+    {:
+        RESULT = new PrimitiveType(bool_left,bool_right,"BOOL");
+    :}
+    |
+    REAL:real_
+    {:
+        RESULT =new PrimitiveType(real_left,real_right,"REAL");
+    :}
+    |
+    STRING:string_
+    {:
+        RESULT = new PrimitiveType(string_left,string_right,"STRING");
+    :}
+    ;
+
+/*
+//StatList ::= Stat
+  //         | Stat StatList
+StatList::= Stat: stat_
     {:
         RESULT = new ArrayList<Statement>();
         RESULT.add(stat_);
     :}
     |
-    Statement:stat_ statementList: statlist_
+    Stat:stat_ StatList: statlist_
     {:
         statlist_.add(stat_);
         RESULT = statlist_;
     :}
     ;
+*/
 
-//Statement ::= IfStatement SEMI
-  //        | WhileStatement SEMI
-  //        | ReadStatement SEMI
-  //        | WriteStatement SEMI
-  //        | AssignStatement SEMI
+//Stat ::= IfStat SEMI
+  //        | WhileStat SEMI
+  //        | ReadStat SEMI
+  //        | WriteStat SEMI
+  //        | AssignStat SEMI
   //        | CallFun SEMI
   //        | RETURN Expr SEMI
-  //        | *//* empty */
+  //        | empty
 
 
-Stat::= IfStat: ifstat_ SEMI
+Stat ::= IfStat: ifstat_ SEMI
         {:
-            RESULT = new Statement(ifstat_left,ifstat_right, ifstat_);
+            RESULT = new IfStatement(ifstat_left,ifstat_right);
         :}
     |
     WhileStat: whilestat_ SEMI
         {:
-            RESULT = new Statement(whilestat_left, whilestat_right, whilestat_);
+            RESULT = new WhileStatement(whilestat_left, whilestat_right);
         :}
     |
     ReadStat: readstat_ SEMI
         {:
-            RESULT = new Statement(readstat_left, readstat_right, readstat_);
+            RESULT = new ReadStatement(readstat_left, readstat_right);
         :}
         |
     WriteStat: writestat_ SEMI
         {:
-            RESULT = new Statement(writestat_left, writestat_right, writestat_);
+            RESULT = new WriteStatement(writestat_left, writestat_right);
         :}
         |
     AssignStat: assignstat_ SEMI
         {:
-        RESULT = new Statement(assignstat_left, assignstat_right, assignstat_);
+            RESULT = new AssignStatement(assignstat_left, assignstat_right);
         :}
         |
     CallFun: callfun_ SEMI
         {:
-        RESULT = new Statement(callfun_left, callfun_right, callfun_);
+            RESULT = new CallingFun(callfun_left,callfun_right) ;
         :}
         |
     RETURN Expr:expr_ SEMI
         {:
-        RESULT = new Statement(expr_left, expr_right, expr_);
+            RESULT = new ReturnStatement(expr_left, expr_right, expr_);
         :}
         |
         //epsilon
         ;
 
-//IfStatement ::= IF Expr THEN VarDeclList statementList ElseStatement END IF
-IfStat::= IF Expr:expr_ THEN VarDeclList:vardecllist_ statementList: statlist_ Else:else_Stat_ END IF
+//IfStatement ::= IF Expr THEN VarDeclList StatList ElseStatement END IF
+IfStat::= IF Expr:expr_ THEN VarDeclList:vardecllist_ StatList: statlist_ Else:else_Stat_ END IF
         {:
-        RESULT = new IfStat(expr_left, expr_right, expr_, vardecllist_, statlist_, else_Stat_);
+            RESULT = new IfStatement(expr_left, expr_right, expr_, vardecllist_, statlist_, else_Stat_);
         :}
         ;
 
 //ElseStatement ::=  empty
-//	| ELSE VarDeclList  statementList
-Else::= ELSE VarDeclList: vardecllist_ statementList: statlist_
+//	| ELSE VarDeclList  StatList
+Else::= ELSE VarDeclList: vardecllist_ StatList: statlist_
         {:
-            RESULT = new ElseStat(vardecllist_left, vardecllist_right, vardecllist_, statlist_);
+            RESULT = new ElseStatement(vardecllist_left, vardecllist_right, vardecllist_, statlist_);
         :}
         |
         //epsilon
         ;
 
-// WhileStatement ::= WHILE Expr LOOP VarDeclList  statementList END LOOP
-WhileStat::= WHILE Expr:expr_ LOOP VarDeclList: vardecllist_ statementList: statlist_ END LOOP
+// WhileStatement ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
+WhileStat::= WHILE Expr:expr_ LOOP VarDeclList: vardecllist_ StatList: statlist_ END LOOP
         {:
-            RESULT = new WhileStat(expr_left, expr_right, expr_, vardecllist_, statlist_);
+            RESULT = new WhileStatement(expr_left, expr_right, expr_, vardecllist_, statlist_);
         :}
         ;
 
@@ -449,7 +477,7 @@ WhileStat::= WHILE Expr:expr_ LOOP VarDeclList: vardecllist_ statementList: stat
 //        | READ IdList
 ReadStat ::= READ IdList:idlist_ Expr:expr_
         {:
-            RESULT = new ReadStat(idlist_left,idlist_right,idlist_,expr_);
+            RESULT = new ReadStatement(idlist_left,idlist_right,idlist_,expr_);
         :}
         ;
 
@@ -474,22 +502,22 @@ IdList::= ID:id_
   //        | WRITEB  Expr
 WriteStat ::=  WRITE  Expr:expr_
         {:
-            RESULT = new WriteStat(expr_left, expr_right, expr_);
+            RESULT = new WriteStatement(expr_left, expr_right, expr_);
         :}
         |
         WRITELN  Expr:expr_
         {:
-            RESULT = new WriteStat(expr_left, expr_right, expr_);
+            RESULT = new WriteStatement(expr_left, expr_right, expr_);
         :}
         |
         WRITET  Expr:expr_
         {:
-            RESULT = new WriteStat(expr_left, expr_right, expr_);
+            RESULT = new WriteStatement(expr_left, expr_right, expr_);
         :}
         |
         WRITEB  Expr:expr_
         {:
-            RESULT = new WriteStat(expr_left, expr_right, expr_);
+            RESULT = new WriteStatement(expr_left, expr_right, expr_);
         :}
         ;
 
@@ -497,7 +525,7 @@ WriteStat ::=  WRITE  Expr:expr_
 //AssignStatement ::=  ID ASSIGN Expr
 AssignStat ::=  ID:id_ ASSIGN Expr: expr_
         {:
-            RESULT = new AssignStat(expr_left, expr_right,new Id(id_left,id_right,id_),expr_);
+            RESULT = new AssignStatement(expr_left, expr_right,new Id(id_left,id_right,id_),expr_);
         :}
         ;
 
@@ -578,7 +606,7 @@ Expr ::= TRUE:true_
         |
         CallFun:callfun_
         {:
-            RESULT = new CallinFun(callfun_left,callfun_right,callfun_);
+            RESULT = callfun_;
         :}
         |
         Expr:expr_ PLUS Expr:expr1_

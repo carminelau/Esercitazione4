@@ -6,7 +6,7 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class CallingFun extends Expr {
+public class CallingFun extends Statement {
     private Id id;
     private ArrayList<Expr> exprs;
 
@@ -30,6 +30,10 @@ public class CallingFun extends Expr {
     public CallingFun(int leftPosition, int rightPosition, Id id) {
         super(leftPosition, rightPosition);
         this.id = id;
+    }
+
+    public CallingFun (int leftPosition, int rightPosition){
+        super(leftPosition, rightPosition);
     }
 
     /**

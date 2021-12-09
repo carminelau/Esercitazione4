@@ -28,6 +28,10 @@ public class IfStatement extends Statement {
         this.else_Stat_ = else_Stat_;
     }
 
+    public IfStatement (int leftPosition, int rightPosition){
+        super(leftPosition, rightPosition);
+    }
+
     /**
      * @return
      */

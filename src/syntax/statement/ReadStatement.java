@@ -23,6 +23,10 @@ public class ReadStatement extends Statement {
         this.expr=expr;
     }
 
+    public ReadStatement (int leftPosition, int rightPosition){
+        super(leftPosition, rightPosition);
+    }
+
     /**
      * @return the variables
      */

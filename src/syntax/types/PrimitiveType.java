@@ -1,31 +1,26 @@
-package syntax.statement;
+package syntax.types;
 
-import syntax.expression.Expr;
 import visitor.Visitor;
 
-public class WriteStatement extends Statement {
-
-    private Expr expression;
+public class PrimitiveType extends Type{
+    private String nameType;
 
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param expression
+     * @param nameType the name of type
      */
-    public WriteStatement(int leftPosition, int rightPosition, Expr expression) {
+    public PrimitiveType(int leftPosition, int rightPosition, String nameType) {
         super(leftPosition, rightPosition);
-        this.expression = expression;
+        this.nameType = nameType;
     }
 
-    public WriteStatement (int leftPosition, int rightPosition){
-        super(leftPosition, rightPosition);
-    }
 
     /**
-     * @return the expressions list
+     * @return the name of type eg String, int, boolean,...
      */
-    public Expr getExpression() {
-        return expression;
+    public String getNameType() {
+        return nameType;
     }
 
     /**

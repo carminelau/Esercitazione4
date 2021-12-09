@@ -1,31 +1,37 @@
-package syntax.statement;
+package syntax;
 
-import syntax.expression.Expr;
+import syntax.expression.Id;
+import syntax.types.Type;
 import visitor.Visitor;
 
-public class WriteStatement extends Statement {
-
-    private Expr expression;
+public class ParDecl extends ASTNode{
+    private Id id;
+    private Type type;
 
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param expression
+     * @param id id
+     * @param type type
      */
-    public WriteStatement(int leftPosition, int rightPosition, Expr expression) {
+    public ParDecl(int leftPosition, int rightPosition, Type type, Id id) {
         super(leftPosition, rightPosition);
-        this.expression = expression;
-    }
-
-    public WriteStatement (int leftPosition, int rightPosition){
-        super(leftPosition, rightPosition);
+        this.id = id;
+        this.type = type;
     }
 
     /**
-     * @return the expressions list
+     * @return the id
      */
-    public Expr getExpression() {
-        return expression;
+    public Id getId() {
+        return id;
+    }
+
+    /**
+     * @return the type
+     */
+    public Type getType() {
+        return type;
     }
 
     /**
