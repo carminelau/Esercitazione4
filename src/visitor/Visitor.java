@@ -56,7 +56,7 @@ public interface Visitor<T,P> {
 
     T visit(ArrayAssignStatement arrayAssignStatement, P arg);
 
-    T visit(AssignStat assignStatement, P arg);
+    T visit(AssignStatement assignStatement, P arg);
 
     T visit(CallFunctionStatement callFunctionStatement, P arg);
 
@@ -64,19 +64,19 @@ public interface Visitor<T,P> {
 
     T visit(IfElseStatement ifElseStatement, P arg);
 
-    T visit(IfStat ifStatement, P arg);
+    T visit(IfStatement ifStatement, P arg);
 
     T visit(LocalStatement localStatement, P arg);
 
     T visit(NopStatement nopStatement, P arg);
 
-    T visit(ReadStat readStatement, P arg);
+    T visit(ReadStatement readStatement, P arg);
 
     T visit(ReturnStatement returnStatement, P arg);
 
     T visit(WhileStatement whileStatement, P arg);
 
-    T visit(WriteStat writeStatement, P arg);
+    T visit(WriteStatement writeStatement, P arg);
 
     T visit(Global global, P arg);
 

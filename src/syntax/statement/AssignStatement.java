@@ -4,7 +4,7 @@ import syntax.expression.Expr;
 import syntax.expression.Id;
 import visitor.Visitor;
 
-public class AssignStat extends Stat {
+public class AssignStatement extends Statement {
     private Id id;
     private Expr expression;
 
@@ -14,7 +14,7 @@ public class AssignStat extends Stat {
      * @param id
      * @param expression
      */
-    public AssignStat(int leftPosition, int rightPosition, Id id, Expr expression) {
+    public AssignStatement(int leftPosition, int rightPosition, Id id, Expr expression) {
         super(leftPosition, rightPosition);
         this.id = id;
         this.expression = expression;

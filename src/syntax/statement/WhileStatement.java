@@ -1,24 +1,28 @@
 package syntax.statement;
 
 import syntax.expression.Expr;
+import visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class WhileStat extends Stat{
+public class WhileStatement extends Statement {
 
         private Expr conditionExpression;
-        private ArrayList<Stat> statements;
+        private ArrayList<Statement> statements;
+        private ArrayList<VarDecl> varDeclList;
 
 
         /**
          * @param leftPosition  the left position
          * @param rightPosition the right position
          * @param conditionExpression
+         * @param varDeclList
          * @param statements
          */
-        public WhileStat(int leftPosition, int rightPosition, Expr conditionExpression, ArrayList<Stat> statements) {
+        public WhileStatement(int leftPosition, int rightPosition, Expr conditionExpression, ArrayList<VarDecl> varDeclList, ArrayList<Statement> statements) {
             super(leftPosition, rightPosition);
             this.conditionExpression = conditionExpression;
+            this.varDeclList=varDeclList;
             this.statements = statements;
         }
 

@@ -1,23 +1,21 @@
 package syntax.statement;
 
-import syntax.expression.Expr;
-
 import java.util.ArrayList;
 
-public class ElseStat extends Stat{
+public class ElseStatement extends Statement {
 
     private ArrayList<VarDecl> varDecllist;
-    private ArrayList<Stat> StatList;
+    private ArrayList<Statement> statementList;
 
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
      * @param varDecllist
-     * @param StatList
+     * @param statementList
      */
-    public ElseStat (int leftPosition, int rightPosition, ArrayList<VarDecl> varDecllist, ArrayList<Stat> StatList){
+    public ElseStatement(int leftPosition, int rightPosition, ArrayList<VarDecl> varDecllist, ArrayList<Statement> statementList){
         super(leftPosition, rightPosition);
-        this.StatList=StatList;
+        this.statementList = statementList;
         this.varDecllist = varDecllist;
     }
 }

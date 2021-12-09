@@ -6,7 +6,7 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class ReadStat extends Stat{
+public class ReadStatement extends Statement {
 
     private ArrayList<Id> variables;
     private Expr expr;
@@ -17,7 +17,7 @@ public class ReadStat extends Stat{
      * @param variables
      * @param expr
      */
-    public ReadStat(int leftPosition, int rightPosition, ArrayList<Id> variables, Expr expr) {
+    public ReadStatement(int leftPosition, int rightPosition, ArrayList<Id> variables, Expr expr) {
         super(leftPosition, rightPosition);
         this.variables = variables;
         this.expr=expr;

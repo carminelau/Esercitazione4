@@ -5,26 +5,26 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class IfStat extends Stat{
+public class IfStatement extends Statement {
 
     private Expr condition;
     private ArrayList<VarDecl> varDecllist;
-    private ArrayList<Stat> StatList;
-    private ElseStat else_Stat_;
+    private ArrayList<Statement> statementList;
+    private ElseStatement else_Stat_;
 
     /**
      * @param leftPosition  the left position
      * @param rightPosition the right position
      * @param condition
      * @param varDecllist
-     * @param StatList
+     * @param statementList
      * @param else_Stat_
      */
-    public IfStat(int leftPosition, int rightPosition, Expr condition,ArrayList<VarDecl> varDecllist,ArrayList<Stat> StatList, ElseStat else_Stat_) {
+    public IfStatement(int leftPosition, int rightPosition, Expr condition, ArrayList<VarDecl> varDecllist, ArrayList<Statement> statementList, ElseStatement else_Stat_) {
         super(leftPosition, rightPosition);
         this.condition = condition;
         this.varDecllist = varDecllist;
-        this.StatList = StatList;
+        this.statementList = statementList;
         this.else_Stat_ = else_Stat_;
     }
 
@@ -38,8 +38,8 @@ public class IfStat extends Stat{
     /**
      * @return
      */
-    public ArrayList<Stat> getThenStatement() {
-        return StatList;
+    public ArrayList<Statement> getThenStatement() {
+        return statementList;
     }
 
     /**
@@ -52,7 +52,7 @@ public class IfStat extends Stat{
     /**
      * @return
      */
-    public ElseStat getElse_() {
+    public ElseStatement getElse_() {
         return else_Stat_;
     }
 

@@ -3,7 +3,7 @@ package syntax.statement;
 import syntax.expression.Expr;
 import visitor.Visitor;
 
-public class WriteStat extends Stat {
+public class WriteStatement extends Statement {
 
     private Expr expression;
 
@@ -12,7 +12,7 @@ public class WriteStat extends Stat {
      * @param rightPosition the right position
      * @param expression
      */
-    public WriteStat(int leftPosition, int rightPosition, Expr expression) {
+    public WriteStatement(int leftPosition, int rightPosition, Expr expression) {
         super(leftPosition, rightPosition);
         this.expression = expression;
     }
