@@ -1,6 +1,5 @@
 package visitor;
 
-import syntax.Fun;
 import syntax.ParDecl;
 import syntax.expression.binary.arithmetic.*;
 import syntax.expression.binary.relation.*;
@@ -12,15 +11,23 @@ import syntax.types.ArrayType;
 import syntax.types.FunctionType;
 import syntax.types.PrimitiveType;
 
+import java.util.function.Function;
+
 
 public interface Visitor<T,P> {
-    T visit(Fun function, P arg);
+    T visit(Function function, P arg);
+
     T visit(Id id, P arg);
+
     T visit(DivOperation divOperation, P arg);
 
     T visit(MinusOperation minusOperation, P arg);
 
     T visit(PlusOperation plusOperation, P arg);
+
+    T visit(PowOperation powOperation, P arg);
+
+    T visit(Str_ConcatOperation str_concatOperation, P arg);
 
     T visit(TimesOperation timesOperation, P arg);
 

@@ -7,8 +7,8 @@ import syntax.expression.ArrayReadElement;
 import syntax.expression.FunctionCall;
 import syntax.expression.Id;
 import syntax.expression.binary.arithmetic.DivOperation;
-import syntax.expression.binary.arithmetic.MinusOperation;
 import syntax.expression.binary.arithmetic.PlusOperation;
+import syntax.expression.binary.arithmetic.Str_ConcatOperation;
 import syntax.expression.binary.arithmetic.TimesOperation;
 import syntax.expression.binary.relation.*;
 import syntax.expression.constant.*;
@@ -255,6 +255,13 @@ public class ConcreteVisitor implements Visitor<Element, Document> {
     }
 
     @Override
+    public Element visit(Str_ConcatOperation str_concatOperationOperation, Document arg) {
+        Element element = arg.createElement(str_concatOperationOperation.getClass().getSimpleName());
+        element.appendChild(str_concatOperationOperation.getLeftOperand().accept(this, arg));
+        element.appendChild(str_concatOperationOperation.getRightOperand().accept(this, arg));
+        return element;
+
+    @Override
     public Element visit(TimesOperation timesOperation, Document arg) {
         Element element = arg.createElement(timesOperation.getClass().getSimpleName());
         element.appendChild(timesOperation.getLeftOperand().accept(this, arg));
@@ -269,6 +276,13 @@ public class ConcreteVisitor implements Visitor<Element, Document> {
         element.appendChild(divOperation.getRightOperand().accept(this, arg));
         return element;
     }
+
+    @Override
+    public Element visit(PowOperation powOperation, Document arg) {
+        Element element = arg.createElement(powOperation.getClass().getSimpleName());
+        element.appendChild(powOperation.getLeftOperand().accept(this, arg));
+        element.appendChild(powOperation.getRightOperand().accept(this, arg));
+        return element;
 
     @Override
     public Element visit(AndRelOperation andRelOperation, Document arg) {
