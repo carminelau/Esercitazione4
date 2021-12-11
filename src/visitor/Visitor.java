@@ -1,25 +1,23 @@
 package visitor;
 
-import syntax.ParDecl;
+import syntax.*;
 import syntax.expression.binary.arithmetic.*;
 import syntax.expression.binary.relation.*;
 import syntax.expression.*;
 import syntax.expression.constant.*;
 import syntax.expression.unary.*;
 import syntax.statement.*;
-import syntax.types.ArrayType;
-import syntax.types.FunctionType;
 import syntax.types.PrimitiveType;
-
-import java.util.function.Function;
 
 
 public interface Visitor<T,P> {
-    T visit(Function function, P arg);
+    T visit(Fun function, P arg);
 
     T visit(Id id, P arg);
 
     T visit(DivOperation divOperation, P arg);
+
+    T visit(DivIntOperation divIntOperation, P arg);
 
     T visit(MinusOperation minusOperation, P arg);
 
@@ -47,8 +45,6 @@ public interface Visitor<T,P> {
 
     T visit(OrRelOperation orRelOperation, P arg);
 
-    T visit(ArrayConst arrayConst, P arg);
-
     T visit(BooleanConst booleanConst, P arg);
 
     T visit(RealConst floatConst, P arg);
@@ -57,27 +53,15 @@ public interface Visitor<T,P> {
 
     T visit(StringConst stringConst, P arg);
 
-    T visit(ArrayReadElement arrayReadElement, P arg);
-
     T visit(CallingFun functionCall, P arg);
+
+    T visit(CallingFunStatement functionCall, P arg);
 
     T visit(FunctionParam functionParam, P arg);
 
-    T visit(ArrayAssignStatement arrayAssignStatement, P arg);
-
     T visit(AssignStatement assignStatement, P arg);
 
-    T visit(CallFunctionStatement callFunctionStatement, P arg);
-
-    T visit(ForStatement forStatement, P arg);
-
-    T visit(IfElseStatement ifElseStatement, P arg);
-
     T visit(IfStatement ifStatement, P arg);
-
-    T visit(LocalStatement localStatement, P arg);
-
-    T visit(NopStatement nopStatement, P arg);
 
     T visit(ReadStatement readStatement, P arg);
 
@@ -87,25 +71,19 @@ public interface Visitor<T,P> {
 
     T visit(WriteStatement writeStatement, P arg);
 
-    T visit(Global global, P arg);
+    T visit(ElseStatement global, P arg);
 
     T visit(ParDecl parDecl, P arg);
 
-    T visit(Program program, P arg);
+    T visit(Main program, P arg);
 
     T visit(VarDecl varDecl, P arg);
 
-    T visit(VarInitValue varInitValue, P arg);
-
-    T visit(ArrayType arrayType, P arg);
-
-    T visit(FunctionType functionType, P arg);
+    T visit(Program varInitValue, P arg);
 
     T visit(PrimitiveType primitiveType, P arg);
 
     T visit(NotExpression notExpression, P arg);
-
-    T visit(SharpExpression sharpExpression, P arg);
 
     T visit(UminusExpression uminusExpression, P arg);
 }

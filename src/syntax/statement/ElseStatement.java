@@ -1,5 +1,8 @@
 package syntax.statement;
 
+import syntax.VarDecl;
+import visitor.Visitor;
+
 import java.util.ArrayList;
 
 public class ElseStatement extends Statement {
@@ -17,5 +20,18 @@ public class ElseStatement extends Statement {
         super(leftPosition, rightPosition);
         this.statementList = statementList;
         this.varDecllist = varDecllist;
+    }
+
+    @Override
+    public <T, P> T accept(Visitor<T, P> visitor, P arg) {
+        return visitor.visit(this, arg);
+    }
+
+    public ArrayList<VarDecl> getVarDecllist() {
+        return varDecllist;
+    }
+
+    public ArrayList<Statement> getStatementList() {
+        return statementList;
     }
 }

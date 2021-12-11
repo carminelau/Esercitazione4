@@ -1,5 +1,6 @@
 package syntax.statement;
 
+import syntax.VarDecl;
 import syntax.expression.Expr;
 import visitor.Visitor;
 
@@ -30,7 +31,8 @@ public class WhileStatement extends Statement {
         super(leftPosition, rightPosition);
     }
 
-        /**
+
+    /**
          * @return the condition
          */
         public Expr getConditionExpression() {

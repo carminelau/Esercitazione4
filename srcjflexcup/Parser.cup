@@ -123,6 +123,7 @@ import syntax.expression.binary.relation.*;
 import syntax.expression.unary.*;
 import syntax.expression.constant.*;
 import syntax.types.*;
+import java.lang.Boolean;
 
 
 class Parser;
@@ -192,7 +193,7 @@ terminal String MAIN,
 
 terminal int INTEGER_CONST;
 terminal float REAL_CONST;
-terminal boolean  TRUE, FALSE;
+terminal boolean TRUE, FALSE;
 
 //Non terminali
 
@@ -202,8 +203,8 @@ non terminal      Main                           Main;
 non terminal      ArrayList<Fun>                 FunList;
 non terminal      VarDecl                        VarDecl;
 non terminal      Type                           Type;
-non terminal      ArrayList<IdInit>              IdListInit;
-non terminal      ArrayList<IdInitObbl>          IdListInitObbl;
+non terminal      ArrayList<AssignStatement>     IdListInit;
+non terminal      ArrayList<AssignStatement>     IdListInitObbl;
 non terminal      Expr                           Const ;
 non terminal      Fun                            Fun;
 non terminal      ArrayList<ParDecl>             ParamDeclList;
@@ -234,14 +235,21 @@ precedence right POW;
 precedence left LPAR, RPAR;
 
 
-/*Program ::= VarDeclList FunList Main *//*
+//Program ::= VarDeclList FunList Main
 Program ::= VarDeclList:vardecllist_ FunList:funlist_ Main:main_
             {:
                 RESULT = new Program(main_left,main_right,vardecllist_,funlist_,main_);
             :}
             ;
 
-*//* VarDeclList ::= empty  | VardDecl VarDeclList *//*
+// Main ::= MAIN VarDeclList StatList END MAIN SEMI
+Main ::= MAIN VarDeclList:vardecllist_ StatList:statlist_ END MAIN SEMI
+        {:
+            RESULT= new Main(vardecllist_left,vardecllist_right, vardecllist_, statlist_);
+        :}
+        ;
+
+// VarDeclList ::= empty  | VardDecl VarDeclList /*
 VarDeclList ::= VarDecl:vardecl_ VarDeclList:vardecllist_
                 {:
                     vardecllist_.add(vardecl_);
@@ -251,15 +259,8 @@ VarDeclList ::= VarDecl:vardecl_ VarDeclList:vardecllist_
                 //epsilon
                 ;
 
-*//* Main ::= MAIN VarDeclList StatList END MAIN SEMI *//*
-Main ::= MAIN VarDeclList:vardecllist_ StatList:statlist_ END MAIN SEMI
-        {:
-            RESULT= new Main(vardeclist_left,vardecllist_right, vardecllist_, statlist_);
-        :}
-        ;
-
 // FunList ::= Fun FunList
-//    | *//* empty *//*
+//    |  empty
 
 FunList ::= Fun:fun_ FunList:funlist_
             {:
@@ -273,7 +274,7 @@ FunList ::= Fun:fun_ FunList:funlist_
 // VarDecl ::= Type IdListInit SEMI
 //        | VAR IdListInitObbl SEMI
 
-VarDecl ::= Type:type_  IdListInitd:idlistinit_ SEMI
+VarDecl ::= Type:type_  IdListInit:idlistinit_ SEMI
             {:
                 RESULT = new VarDecl(type_left,type_right,type_, idlistinit_);
             :}
@@ -284,9 +285,7 @@ VarDecl ::= Type:type_  IdListInitd:idlistinit_ SEMI
             :}
             ;
 
-*/
-
-// Const ::= INTEGER_CONST | REAL_CONST | BOOL_CONST | STRING_CONST
+// Const ::= INTEGER_CONST | REAL_CONST | TRUE | FALSE | STRING_CONST
 Const ::= INTEGER_CONST:int_
         {:
             RESULT = new IntegerConst(int_left, int_right, int_);
@@ -297,9 +296,14 @@ Const ::= INTEGER_CONST:int_
             RESULT = new RealConst(realconst_left, realconst_right, realconst_);
         :}
         |
-        BOOL_CONST:boolconst_
+        TRUE:true_
         {:
-            RESULT = new BooleanConst(boolconst_left, boolconst_right, boolconst_);
+            RESULT = new BooleanConst(true_left, true_right, true);
+        :}
+        |
+        FALSE:false_
+        {:
+            RESULT = new BooleanConst(false_left, false_right, false);
         :}
         |
         STRING_CONST:stringconst_
@@ -384,22 +388,69 @@ Type ::= INTEGER:int_
     :}
     ;
 
-/*
-//StatList ::= Stat
-  //         | Stat StatList
-StatList::= Stat: stat_
+//IdListInit ::= ID
+//      | IdListInit COMMA ID
+//      | ID ASSIGN Expr
+//      | IdListInit COMMA ID ASSIGN Expr
+
+IdListInit ::= ID:id_
     {:
-        RESULT = new ArrayList<Statement>();
-        RESULT.add(stat_);
+        RESULT = new ArrayList<AssignStatement>();
+        RESULT.add(new AssignStatement(id_left,id_right,new Id(id_left,id_right, id_)));
     :}
     |
-    Stat:stat_ StatList: statlist_
+    IdListInit:idlistinit COMMA ID:id_
     {:
-        statlist_.add(stat_);
-        RESULT = statlist_;
+        idlistinit.add(new AssignStatement(id_left,id_right,new Id(id_left,id_right, id_)));
+        RESULT = idlistinit;
+    :}
+    |
+    ID:id_ ASSIGN Expr:expr_
+    {:
+        RESULT = new ArrayList<AssignStatement>();
+        RESULT.add(new AssignStatement(id_left,id_right,new Id(id_left,id_right, id_), expr_));
+    :}
+    |
+    IdListInit:idlistinit_ COMMA ID:id_ ASSIGN Expr:expr_
+    {:
+        idlistinit_.add(new AssignStatement(id_left,id_right,new Id(id_left,id_right, id_), expr_));
+        RESULT = idlistinit_;
     :}
     ;
-*/
+
+//  IdListInitObbl ::= ID ASSIGN Const
+//      | IdListInitObbl COMMA ID ASSIGN Const
+
+IdListInitObbl ::= ID:id_ ASSIGN Const:const_
+    {:
+        RESULT = new ArrayList<AssignStatement>();
+        RESULT.add(new AssignStatement(id_left,id_right,new Id(id_left,id_right, id_), const_));
+    :}
+    |
+    IdListInitObbl:idlistinitobbl_ COMMA ID:id_ ASSIGN Const:const_
+    {:
+        idlistinitobbl_.add(new AssignStatement(id_left,id_right,new Id(id_left,id_right, id_), const_));
+        RESULT = idlistinitobbl_;
+    :}
+    ;
+
+
+
+//StatList ::= Stat
+  //         | Stat StatList
+// StatList::= Stat:stat_
+//    {:
+//        RESULT = new ArrayList<Statement>();
+//        RESULT.add(stat_);
+//    :}
+//    |
+//    Stat:stat_ StatList: statlist_
+//    {:
+//        statlist_.add(stat_);
+//        RESULT = statlist_;
+//    :}
+//    ;
+
 
 //Stat ::= IfStat SEMI
   //        | WhileStat SEMI
@@ -438,7 +489,7 @@ Stat ::= IfStat: ifstat_ SEMI
         |
     CallFun: callfun_ SEMI
         {:
-            RESULT = new CallingFun(callfun_left,callfun_right) ;
+            RESULT = new CallingFunStatement(callfun_left,callfun_right, callfun_) ;
         :}
         |
     RETURN Expr:expr_ SEMI
@@ -533,7 +584,7 @@ AssignStat ::=  ID:id_ ASSIGN Expr: expr_
 
 //CallFun ::= ID LPAR ExprList RPAR
   //        | ID LPAR RPAR
-  CallFun ::= ID:id_ LPAR ExprList:exprlist_ RPAR
+CallFun ::= ID:id_ LPAR ExprList:exprlist_ RPAR
         {:
             RESULT = new CallingFun(exprlist_left, exprlist_right, new Id(id_left,id_right,id_), exprlist_);
         :}
@@ -606,7 +657,7 @@ Expr ::= TRUE:true_
         |
         CallFun:callfun_
         {:
-            RESULT = callfun_;
+            RESULT = new CallingFun(callfun_left,callfun_right, callfun_);
         :}
         |
         Expr:expr_ PLUS Expr:expr1_

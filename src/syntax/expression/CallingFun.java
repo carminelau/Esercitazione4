@@ -1,12 +1,11 @@
-package syntax.statement;
+package syntax.expression;
 
-import syntax.expression.Expr;
-import syntax.expression.Id;
+import syntax.ASTNode;
 import visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class CallingFun extends Statement {
+public class CallingFun extends Expr {
     private Id id;
     private ArrayList<Expr> exprs;
 
@@ -30,6 +29,12 @@ public class CallingFun extends Statement {
     public CallingFun(int leftPosition, int rightPosition, Id id) {
         super(leftPosition, rightPosition);
         this.id = id;
+    }
+
+    public CallingFun ( int left, int right, CallingFun callfun){
+        super (left, right);
+        this.id = callfun.getId();
+        this.exprs = callfun.getExprs();
     }
 
     public CallingFun (int leftPosition, int rightPosition){

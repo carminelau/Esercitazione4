@@ -1,5 +1,6 @@
 package syntax.statement;
 
+import syntax.VarDecl;
 import syntax.expression.Expr;
 import visitor.Visitor;
 
@@ -31,6 +32,7 @@ public class IfStatement extends Statement {
     public IfStatement (int leftPosition, int rightPosition){
         super(leftPosition, rightPosition);
     }
+
 
     /**
      * @return

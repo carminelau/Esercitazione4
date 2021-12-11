@@ -1,29 +1,20 @@
-package syntax.expression.constant;
+package syntax.expression.binary.arithmetic;
 
-import syntax.Leaf;
 import syntax.expression.Expr;
+import syntax.expression.binary.BinaryOperation;
 import visitor.Visitor;
-import java.lang.Boolean;
 
-public class BooleanConst extends Expr implements Leaf<Boolean> {
-    private Boolean value;
-
+public class DivIntOperation extends BinaryOperation {
     /**
+     * Initialize a new generic binary Operation.
+     *
      * @param leftPosition  the left position
      * @param rightPosition the right position
-     * @param value the value
+     * @param leftOperand   the left operand
+     * @param rightOperand  the right operand
      */
-    public BooleanConst(int leftPosition, int rightPosition, Boolean value) {
-        super(leftPosition, rightPosition);
-        this.value = value;
-    }
-
-    /**
-     * @return the value
-     */
-    @Override
-    public Boolean getValue() {
-        return value;
+    public DivIntOperation(int leftPosition, int rightPosition, Expr leftOperand, Expr rightOperand) {
+        super(leftPosition, rightPosition, leftOperand, rightOperand);
     }
 
     /**

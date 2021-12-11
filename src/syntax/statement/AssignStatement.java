@@ -20,6 +20,16 @@ public class AssignStatement extends Statement {
         this.expression = expression;
     }
 
+    /**
+     * @param leftPosition  the left position
+     * @param rightPosition the right position
+     * @param id
+     */
+    public AssignStatement(int leftPosition, int rightPosition, Id id) {
+        super(leftPosition, rightPosition);
+        this.id = id;
+    }
+
     public AssignStatement (int leftPosition, int rightPosition){
         super(leftPosition, rightPosition);
     }
