@@ -180,9 +180,7 @@ terminal String MAIN,
                	AND,
                	OR,
                	NOT,
-               	NULL,
                 STRING_CONST,
-                BOOL_CONST,
                 SEMI,
                	COMMA,
                	UMINUS,
@@ -438,18 +436,12 @@ IdListInitObbl ::= ID:id_ ASSIGN Const:const_
 
 //StatList ::= Stat
   //         | Stat StatList
-// StatList::= Stat:stat_
-//    {:
-//        RESULT = new ArrayList<Statement>();
-//        RESULT.add(stat_);
-//    :}
-//    |
-//    Stat:stat_ StatList: statlist_
-//    {:
-//        statlist_.add(stat_);
-//        RESULT = statlist_;
-//    :}
-//    ;
+ StatList::= Stat:stat_ StatList: statlist_
+    {:
+        statlist_.add(stat_);
+        RESULT = statlist_;
+    :}
+    ;
 
 
 //Stat ::= IfStat SEMI
@@ -496,8 +488,6 @@ Stat ::= IfStat: ifstat_ SEMI
         {:
             RESULT = new ReturnStatement(expr_left, expr_right, expr_);
         :}
-        |
-        //epsilon
         ;
 
 //IfStatement ::= IF Expr THEN VarDeclList StatList ElseStatement END IF
