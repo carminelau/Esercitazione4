@@ -15,7 +15,6 @@ public class LexerTest {
             try {
                 while ((token = lexicalAnalyzer.next_token()) != null) {
                     if(token.sym == ParserSym.EOF) {
-                        System.out.println("<EOF>");
                         break;
                     }
                     System.out.println("<" + ParserSym.terminalNames[token.sym] + (token.value == null ? "" : ", "+token.value) + ">");

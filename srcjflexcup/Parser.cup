@@ -135,8 +135,9 @@ parser code{:
       System.out.println(msg + ": " + symbl_name_from_id(sym.sym));
     }
 
-    public void syntax_error(Symbol cur_token) {
-      System.out.println("Syntax error: " + symbl_name_from_id(cur_token.sym));
+    public void syntax_error(Symbol s){
+        System.out.println("compiler has detected a syntax error at line " + s.left
+            + " column " + s.right);
     }
 
 :}
@@ -191,8 +192,8 @@ terminal String MAIN,
                	OUT,
                	VAR;
 
-terminal int INTEGER_CONST;
-terminal float REAL_CONST;
+terminal String INTEGER_CONST;
+terminal String REAL_CONST;
 terminal boolean TRUE, FALSE;
 
 //Non terminali
@@ -252,6 +253,7 @@ Main ::= MAIN VarDeclList:vardecllist_ StatList:statlist_ END MAIN SEMI
 // VarDeclList ::= empty  | VardDecl VarDeclList /*
 VarDeclList ::= VarDecl:vardecl_ VarDeclList:vardecllist_
                 {:
+                    vardecllist_ = new ArrayList();
                     vardecllist_.add(vardecl_);
                     RESULT = vardecllist_;
                 :}
@@ -288,12 +290,12 @@ VarDecl ::= Type:type_  IdListInit:idlistinit_ SEMI
 // Const ::= INTEGER_CONST | REAL_CONST | TRUE | FALSE | STRING_CONST
 Const ::= INTEGER_CONST:int_
         {:
-            RESULT = new IntegerConst(int_left, int_right, int_);
+            RESULT = new IntegerConst(int_left, int_right, Integer.parseInt(int_));
         :}
         |
         REAL_CONST:realconst_
         {:
-            RESULT = new RealConst(realconst_left, realconst_right, realconst_);
+            RESULT = new RealConst(realconst_left, realconst_right, Float.parseFloat(realconst_));
         :}
         |
         TRUE:true_
@@ -629,12 +631,12 @@ Expr ::= TRUE:true_
         |
         INTEGER_CONST:intconst_
         {:
-            RESULT = new IntegerConst(intconst_left, intconst_right, intconst_);
+            RESULT = new IntegerConst(intconst_left, intconst_right, Integer.parseInt(intconst_));
         :}
         |
         REAL_CONST:realconst_
         {:
-            RESULT = new RealConst(realconst_left, realconst_right, realconst_);
+            RESULT = new RealConst(realconst_left, realconst_right, Float.parseFloat(realconst_));
         :}
         |
         STRING_CONST:stringconst_

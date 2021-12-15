@@ -1,3 +1,17 @@
-MAIN
-i := "Ciao "
-END MAIN;
+fun sommac(integer a, real b, out string size): real
+
+	real result;
+
+	result  :=  a + b + c;
+
+	if result > 100 then
+		var valore := 'grande';
+ 		size := valore;
+	else
+		var valore := 'piccola';
+ 		size := valore;
+	end if;
+
+	return result;
+
+end fun;

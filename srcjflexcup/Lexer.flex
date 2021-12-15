@@ -14,28 +14,28 @@ import java_cup.runtime.Symbol;
 
 %init{
 // inserimento delle parole chiavi nella stringTable per evitare di scrivere un diagramma di transizione per ciascuna di esse (le parole chiavi verranno "catturate" dal diagramma di transizione e gestite e di conseguenza).
-    stringTable.put("IF", new Symbol(ParserSym.IF,"IF"));
-    stringTable.put("THEN", new Symbol(ParserSym.THEN,"THEN"));
-    stringTable.put("ELSE", new Symbol(ParserSym.ELSE,"ELSE"));
-    stringTable.put("WHILE", new Symbol(ParserSym.WHILE,"WHILE"));
-    stringTable.put("INTEGER", new Symbol(ParserSym.INTEGER,"INTEGER"));
-    stringTable.put("REAL", new Symbol(ParserSym.REAL,"REAL"));
-    stringTable.put("BOOL", new Symbol(ParserSym.BOOL,"BOOL"));
-    stringTable.put("FUN", new Symbol(ParserSym.FUN,"FUN"));
-    stringTable.put("LOOP", new Symbol(ParserSym.LOOP,"LOOP"));
-    stringTable.put("AND", new Symbol(ParserSym.AND,"AND"));
-    stringTable.put("OR", new Symbol(ParserSym.OR,"OR"));
-    stringTable.put("NOT", new Symbol(ParserSym.NOT,"NOT"));
-    stringTable.put("TRUE", new Symbol(ParserSym.TRUE,"TRUE"));
-    stringTable.put("FALSE", new Symbol(ParserSym.FALSE,"FALSE"));
-    stringTable.put("NULL", new Symbol(ParserSym.NULL,"NULL"));
-    stringTable.put("RETURN", new Symbol(ParserSym.RETURN,"RETURN"));
-    stringTable.put("END", new Symbol(ParserSym.END,"END"));
-    stringTable.put("MAIN", new Symbol(ParserSym.MAIN,"MAIN"));
-    stringTable.put("STRING", new Symbol(ParserSym.STRING,"STRING"));
-    stringTable.put("OUTPAR", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
-    stringTable.put("VAR", new Symbol(ParserSym.VAR,"VAR"));
-    stringTable.put("OUT", new Symbol(ParserSym.OUT,"OUT"));
+    stringTable.put("if", new Symbol(ParserSym.IF,"IF"));
+    stringTable.put("then", new Symbol(ParserSym.THEN,"THEN"));
+    stringTable.put("else", new Symbol(ParserSym.ELSE,"ELSE"));
+    stringTable.put("while", new Symbol(ParserSym.WHILE,"WHILE"));
+    stringTable.put("integer", new Symbol(ParserSym.INTEGER,"INTEGER"));
+    stringTable.put("real", new Symbol(ParserSym.REAL,"REAL"));
+    stringTable.put("bool", new Symbol(ParserSym.BOOL,"BOOL"));
+    stringTable.put("fun", new Symbol(ParserSym.FUN,"FUN"));
+    stringTable.put("loop", new Symbol(ParserSym.LOOP,"LOOP"));
+    stringTable.put("and", new Symbol(ParserSym.AND,"AND"));
+    stringTable.put("or", new Symbol(ParserSym.OR,"OR"));
+    stringTable.put("not", new Symbol(ParserSym.NOT,"NOT"));
+    stringTable.put("true", new Symbol(ParserSym.TRUE,"TRUE"));
+    stringTable.put("false", new Symbol(ParserSym.FALSE,"FALSE"));
+    stringTable.put("null", new Symbol(ParserSym.NULL,"NULL"));
+    stringTable.put("return", new Symbol(ParserSym.RETURN,"RETURN"));
+    stringTable.put("end", new Symbol(ParserSym.END,"END"));
+    stringTable.put("main", new Symbol(ParserSym.MAIN,"MAIN"));
+    stringTable.put("string", new Symbol(ParserSym.STRING,"STRING"));
+    stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
+    stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
+    stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
 %init}
 
 %{
@@ -56,7 +56,8 @@ StringBuffer string = new StringBuffer();
 
         if(stringTable.containsKey(lex)){
             System.err.println( "Obtain token " + ParserSym.terminalNames[stringTable.get(lex).sym] + " \"" + lex + "\"" );
-            return stringTable.get(lex);
+
+            return new Symbol(stringTable.get(lex).sym);
         }
         else{
             sym = new Symbol(ParserSym.ID,lex);
@@ -76,28 +77,28 @@ StringBuffer string = new StringBuffer();
             }
         }
     public  Lexer() {
-        stringTable.put("IF", new Symbol(ParserSym.IF,"IF"));
-        stringTable.put("THEN", new Symbol(ParserSym.THEN,"THEN"));
-        stringTable.put("ELSE", new Symbol(ParserSym.ELSE,"ELSE"));
-        stringTable.put("WHILE", new Symbol(ParserSym.WHILE,"WHILE"));
-        stringTable.put("INTEGER", new Symbol(ParserSym.INTEGER,"INTEGER"));
-        stringTable.put("REAL", new Symbol(ParserSym.REAL,"REAL"));
-        stringTable.put("BOOL", new Symbol(ParserSym.BOOL,"BOOL"));
-        stringTable.put("FUN", new Symbol(ParserSym.FUN,"FUN"));
-        stringTable.put("LOOP", new Symbol(ParserSym.LOOP,"LOOP"));
-        stringTable.put("AND", new Symbol(ParserSym.AND,"AND"));
-        stringTable.put("OR", new Symbol(ParserSym.OR,"OR"));
-        stringTable.put("NOT", new Symbol(ParserSym.NOT,"NOT"));
-        stringTable.put("TRUE", new Symbol(ParserSym.TRUE,"TRUE"));
-        stringTable.put("FALSE", new Symbol(ParserSym.FALSE,"FALSE"));
-        stringTable.put("NULL", new Symbol(ParserSym.NULL,"NULL"));
-        stringTable.put("RETURN", new Symbol(ParserSym.RETURN,"RETURN"));
-        stringTable.put("END", new Symbol(ParserSym.END,"END"));
-        stringTable.put("MAIN", new Symbol(ParserSym.MAIN,"MAIN"));
-        stringTable.put("STRING", new Symbol(ParserSym.STRING,"STRING"));
-        stringTable.put("OUTPAR", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
-        stringTable.put("VAR", new Symbol(ParserSym.VAR,"VAR"));
-        stringTable.put("OUT", new Symbol(ParserSym.OUT,"OUT"));
+        stringTable.put("if", new Symbol(ParserSym.IF,"IF"));
+        stringTable.put("then", new Symbol(ParserSym.THEN,"THEN"));
+        stringTable.put("else", new Symbol(ParserSym.ELSE,"ELSE"));
+        stringTable.put("while", new Symbol(ParserSym.WHILE,"WHILE"));
+        stringTable.put("integer", new Symbol(ParserSym.INTEGER,"INTEGER"));
+        stringTable.put("real", new Symbol(ParserSym.REAL,"REAL"));
+        stringTable.put("bool", new Symbol(ParserSym.BOOL,"BOOL"));
+        stringTable.put("fun", new Symbol(ParserSym.FUN,"FUN"));
+        stringTable.put("loop", new Symbol(ParserSym.LOOP,"LOOP"));
+        stringTable.put("and", new Symbol(ParserSym.AND,"AND"));
+        stringTable.put("or", new Symbol(ParserSym.OR,"OR"));
+        stringTable.put("not", new Symbol(ParserSym.NOT,"NOT"));
+        stringTable.put("true", new Symbol(ParserSym.TRUE,"TRUE"));
+        stringTable.put("false", new Symbol(ParserSym.FALSE,"FALSE"));
+        stringTable.put("null", new Symbol(ParserSym.NULL,"NULL"));
+        stringTable.put("return", new Symbol(ParserSym.RETURN,"RETURN"));
+        stringTable.put("end", new Symbol(ParserSym.END,"END"));
+        stringTable.put("main", new Symbol(ParserSym.MAIN,"MAIN"));
+        stringTable.put("string", new Symbol(ParserSym.STRING,"STRING"));
+        stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
+        stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
+        stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
     }
 %}
 
@@ -169,28 +170,28 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
 <YYINITIAL> {
 
     //KEYWORDS
-    IF { return installID(yytext()); }
-    THEN { return installID(yytext()); }
-    ELSE { return installID(yytext()); }
-    WHILE { return installID(yytext()); }
-    INTEGER {return installID(yytext());}
-    REAL {return installID(yytext());}
-    BOOL {return installID(yytext());}
-    FUN {return installID(yytext());}
-    LOOP {return installID(yytext());}
-    AND {return installID(yytext());}
-    OR {return installID(yytext());}
-    NOT {return installID(yytext());}
-    TRUE {return installID(yytext());}
-    FALSE {return installID(yytext());}
-    NULL {return installID(yytext());}
-    RETURN {return installID(yytext());}
-    END {return installID(yytext());}
-    MAIN {return installID(yytext());}
-    STRING {return installID(yytext());}
-    VAR {return installID(yytext());}
-    OUT {return installID(yytext());}
-    OUTPAR {return installID(yytext());}
+    if { return installID(yytext()); }
+    then { return installID(yytext()); }
+    else { return installID(yytext()); }
+    while { return installID(yytext()); }
+    integer {return installID(yytext());}
+    real {return installID(yytext());}
+    bool {return installID(yytext());}
+    fun {return installID(yytext());}
+    loop {return installID(yytext());}
+    and {return installID(yytext());}
+    or {return installID(yytext());}
+    not {return installID(yytext());}
+    true {return installID(yytext());}
+    false {return installID(yytext());}
+    null {return installID(yytext());}
+    return {return installID(yytext());}
+    end {return installID(yytext());}
+    main {return installID(yytext());}
+    string {return installID(yytext());}
+    var {return installID(yytext());}
+    out {return installID(yytext());}
+    outpar {return installID(yytext());}
 
     //NUMBER
     {INTEGER_CONST} { return Symbol(ParserSym.INTEGER_CONST, yytext()); }
@@ -242,7 +243,7 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
 
     //ERRORS
     <<EOF>> { return Symbol(ParserSym.EOF); }
-    . { return Symbol(ParserSym.ERROR, "ERROR"); }
+    . { return Symbol(ParserSym.error, "ERROR"); }
 
     }
 

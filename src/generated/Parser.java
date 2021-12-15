@@ -490,8 +490,9 @@ public class Parser extends java_cup.runtime.lr_parser {
       System.out.println(msg + ": " + symbl_name_from_id(sym.sym));
     }
 
-    public void syntax_error(Symbol cur_token) {
-      System.out.println("Syntax error: " + symbl_name_from_id(cur_token.sym));
+    public void syntax_error(Symbol s){
+        System.out.println("compiler has detected a syntax error at line " + s.left
+            + " column " + s.right);
     }
 
 
@@ -582,6 +583,7 @@ class CUP$Parser$actions {
 		int vardecllist_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		ArrayList<VarDecl> vardecllist_ = (ArrayList<VarDecl>)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
+                    vardecllist_ = new ArrayList();
                     vardecllist_.add(vardecl_);
                     RESULT = vardecllist_;
                 
@@ -662,9 +664,9 @@ class CUP$Parser$actions {
               Expr RESULT =null;
 		int int_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int int_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		int int_ = (int)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		String int_ = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new IntegerConst(int_left, int_right, int_);
+            RESULT = new IntegerConst(int_left, int_right, Integer.parseInt(int_));
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Const",8, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -676,9 +678,9 @@ class CUP$Parser$actions {
               Expr RESULT =null;
 		int realconst_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int realconst_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		float realconst_ = (float)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		String realconst_ = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new RealConst(realconst_left, realconst_right, realconst_);
+            RESULT = new RealConst(realconst_left, realconst_right, Float.parseFloat(realconst_));
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Const",8, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1479,9 +1481,9 @@ class CUP$Parser$actions {
               Expr RESULT =null;
 		int intconst_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int intconst_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		int intconst_ = (int)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		String intconst_ = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new IntegerConst(intconst_left, intconst_right, intconst_);
+            RESULT = new IntegerConst(intconst_left, intconst_right, Integer.parseInt(intconst_));
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1493,9 +1495,9 @@ class CUP$Parser$actions {
               Expr RESULT =null;
 		int realconst_left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int realconst_right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		float realconst_ = (float)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		String realconst_ = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-            RESULT = new RealConst(realconst_left, realconst_right, realconst_);
+            RESULT = new RealConst(realconst_left, realconst_right, Float.parseFloat(realconst_));
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Expr",23, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
