@@ -11,10 +11,10 @@ public class ParserSym {
   public static final int POW = 29;
   public static final int GE = 36;
   public static final int UMINUS = 43;
-  public static final int INTEGER_CONST = 48;
+  public static final int INTEGER_CONST = 50;
   public static final int INTEGER = 4;
   public static final int SEMI = 41;
-  public static final int OUT = 46;
+  public static final int OUT = 48;
   public static final int MINUS = 25;
   public static final int WRITE = 19;
   public static final int NOT = 39;
@@ -37,12 +37,14 @@ public class ParserSym {
   public static final int LE = 34;
   public static final int EOF = 0;
   public static final int WRITEB = 21;
-  public static final int RETURN = 44;
-  public static final int TRUE = 50;
+  public static final int RETURN = 46;
+  public static final int TRUE = 52;
   public static final int error = 1;
+  public static final int NULL = 44;
   public static final int DIVINT = 27;
   public static final int EQ = 31;
-  public static final int OUTPAR = 45;
+  public static final int ERROR = 45;
+  public static final int OUTPAR = 47;
   public static final int REAL = 6;
   public static final int TIMES = 26;
   public static final int COLON = 10;
@@ -50,16 +52,16 @@ public class ParserSym {
   public static final int READ = 18;
   public static final int WHILE = 16;
   public static final int STR_CONCAT = 30;
-  public static final int REAL_CONST = 49;
+  public static final int REAL_CONST = 51;
   public static final int THEN = 14;
   public static final int NE = 32;
   public static final int END = 12;
   public static final int LPAR = 8;
   public static final int STRING = 5;
-  public static final int FALSE = 51;
+  public static final int FALSE = 53;
   public static final int STRING_CONST = 40;
   public static final int GT = 35;
-  public static final int VAR = 47;
+  public static final int VAR = 49;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -105,6 +107,8 @@ public class ParserSym {
   "SEMI",
   "COMMA",
   "UMINUS",
+  "NULL",
+  "ERROR",
   "RETURN",
   "OUTPAR",
   "OUT",

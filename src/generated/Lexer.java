@@ -3,11 +3,8 @@
 // source: srcjflexcup/Lexer.flex
 
 package generated;
-import java.io.*;
-import java.util.HashMap;
-import java_cup.runtime.Scanner;
+import java.io.*;import java.util.HashMap;
 import java_cup.runtime.Symbol;
-import jdk.incubator.foreign.SymbolLookup;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -21,6 +18,8 @@ public class Lexer implements java_cup.runtime.Scanner {
 
   // Lexical states.
   public static final int YYINITIAL = 0;
+  public static final int STRING = 2;
+  public static final int STRINGSINGLE = 4;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -29,7 +28,7 @@ public class Lexer implements java_cup.runtime.Scanner {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = {
-     0, 0
+     0,  0,  1,  1,  2, 2
   };
 
   /**
@@ -66,12 +65,14 @@ public class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\12\0\1\1\2\0\1\2\23\0\1\3\2\0\1\4"+
+    "\11\0\1\1\1\2\1\3\1\1\1\4\22\0\1\1"+
     "\1\5\1\6\1\0\1\7\1\10\1\11\1\12\1\13"+
-    "\1\14\1\15\1\16\1\17\11\20\1\21\1\22\1\23"+
-    "\1\24\1\25\1\26\1\27\4\4\1\30\25\4\3\0"+
-    "\1\31\1\4\1\0\6\4\1\32\1\4\1\33\4\4"+
-    "\1\34\3\4\1\35\1\36\1\37\6\4\u0385\0";
+    "\1\14\1\15\1\16\1\17\1\20\1\21\1\22\1\23"+
+    "\11\24\1\25\1\26\1\27\1\30\1\31\1\32\1\33"+
+    "\4\7\1\34\25\7\1\0\1\35\1\0\1\36\1\7"+
+    "\1\0\3\7\1\37\4\7\1\40\4\7\1\41\3\7"+
+    "\1\42\1\7\1\43\1\7\1\44\4\7\12\0\1\3"+
+    "\u01a2\0\2\3\326\0\u0100\3";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[1024];
@@ -98,14 +99,16 @@ public class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\3\1\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\12\1\13\1\14\2\15\1\16\1\17"+
-    "\1\20\1\21\1\22\1\23\1\24\1\25\1\2\1\26"+
-    "\1\27\1\0\1\26\2\0\1\30\1\31\1\32\1\33"+
-    "\1\34\1\35\1\2\1\36\1\0\1\36\3\2\1\37";
+    "\3\0\1\1\2\2\1\1\1\3\1\4\1\5\1\6"+
+    "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
+    "\2\17\1\20\1\21\1\22\1\23\1\24\1\25\1\26"+
+    "\1\27\1\4\1\30\1\31\1\32\1\30\1\32\1\33"+
+    "\1\0\1\2\2\0\1\34\1\35\1\36\1\37\1\40"+
+    "\1\41\1\4\1\42\1\43\1\44\1\45\1\46\1\47"+
+    "\1\0\1\47\1\50";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[46];
+    int [] result = new int[56];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -130,15 +133,16 @@ public class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\40\0\100\0\140\0\200\0\40\0\40\0\40"+
-    "\0\40\0\40\0\240\0\40\0\240\0\40\0\300\0\340"+
-    "\0\u0100\0\u0120\0\40\0\u0140\0\40\0\u0160\0\u0180\0\200"+
-    "\0\40\0\u01a0\0\40\0\40\0\340\0\u01c0\0\u01e0\0\u0200"+
-    "\0\40\0\40\0\40\0\40\0\40\0\40\0\u0220\0\u0240"+
-    "\0\u0260\0\u0260\0\u0280\0\u02a0\0\u02c0\0\200";
+    "\0\0\0\45\0\112\0\157\0\157\0\224\0\271\0\157"+
+    "\0\336\0\157\0\157\0\157\0\157\0\157\0\157\0\u0103"+
+    "\0\157\0\u0103\0\u0128\0\u014d\0\u0172\0\u0197\0\157\0\u01bc"+
+    "\0\157\0\u01e1\0\u0206\0\157\0\157\0\u022b\0\u0250\0\157"+
+    "\0\u0275\0\u029a\0\u02bf\0\157\0\u014d\0\u02e4\0\u0309\0\u032e"+
+    "\0\157\0\157\0\157\0\157\0\157\0\157\0\u0353\0\157"+
+    "\0\157\0\157\0\157\0\157\0\u0378\0\u039d\0\u039d\0\336";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[46];
+    int [] result = new int[56];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -161,26 +165,30 @@ public class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\2\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11"+
-    "\1\12\1\13\1\14\1\15\1\16\1\17\1\20\1\21"+
-    "\1\22\1\23\1\24\1\25\1\26\1\27\1\30\1\5"+
-    "\1\31\4\5\1\32\1\5\41\0\1\33\62\0\1\34"+
-    "\17\0\1\5\12\0\2\5\6\0\2\5\1\0\6\5"+
-    "\17\0\2\35\35\0\1\36\36\0\1\37\1\0\2\35"+
-    "\7\0\1\40\24\0\1\37\1\0\2\21\7\0\1\40"+
-    "\33\0\1\41\37\0\1\42\1\34\36\0\1\43\26\0"+
-    "\1\44\1\0\1\45\3\0\1\46\22\0\1\5\12\0"+
-    "\2\5\6\0\2\5\1\0\5\5\1\47\1\36\2\0"+
-    "\35\36\17\0\2\50\31\0\1\51\1\0\1\51\2\0"+
-    "\2\52\23\0\1\5\12\0\2\5\6\0\2\5\1\0"+
-    "\3\5\1\53\2\5\17\0\2\50\7\0\1\40\26\0"+
-    "\2\52\23\0\1\5\12\0\2\5\6\0\2\5\1\0"+
-    "\1\5\1\54\4\5\4\0\1\5\12\0\2\5\6\0"+
-    "\2\5\1\0\2\5\1\55\3\5\4\0\1\5\12\0"+
-    "\2\5\6\0\2\5\1\0\1\56\5\5";
+    "\1\4\2\5\1\0\1\6\1\7\1\10\1\11\1\12"+
+    "\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22"+
+    "\1\4\1\23\1\24\1\25\1\26\1\27\1\30\1\31"+
+    "\1\32\1\33\1\34\1\11\1\4\1\35\1\36\5\11"+
+    "\2\37\1\0\1\37\1\0\1\37\1\40\26\37\1\41"+
+    "\7\37\2\42\1\0\1\42\1\0\5\42\1\40\22\42"+
+    "\1\43\7\42\47\0\1\5\72\0\1\44\23\0\1\11"+
+    "\13\0\2\11\7\0\1\11\2\0\6\11\23\0\2\45"+
+    "\42\0\1\46\43\0\1\47\1\0\2\45\7\0\1\50"+
+    "\31\0\1\47\1\0\2\25\7\0\1\50\40\0\1\51"+
+    "\44\0\1\52\1\44\43\0\1\53\33\0\1\54\1\0"+
+    "\1\55\3\0\1\56\26\0\1\11\13\0\2\11\7\0"+
+    "\1\11\2\0\1\11\1\57\4\11\2\37\1\0\1\37"+
+    "\1\0\1\37\1\0\26\37\1\0\7\37\6\0\1\60"+
+    "\32\0\1\61\1\62\1\63\1\0\2\42\1\0\1\42"+
+    "\1\0\5\42\1\0\22\42\1\0\7\42\12\0\1\64"+
+    "\26\0\1\61\1\62\1\63\1\0\2\46\1\0\1\46"+
+    "\1\0\40\46\23\0\2\65\36\0\1\66\1\0\1\66"+
+    "\2\0\2\67\27\0\1\11\13\0\2\11\7\0\1\11"+
+    "\2\0\5\11\1\70\23\0\2\65\7\0\1\50\33\0"+
+    "\2\67\20\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[736];
+    int [] result = new int[962];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -223,12 +231,13 @@ public class Lexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\3\1\5\11\1\1\1\11\1\1\1\11"+
-    "\4\1\1\11\1\1\1\11\3\1\1\11\1\1\2\11"+
-    "\1\0\1\1\2\0\6\11\2\1\1\0\5\1";
+    "\3\0\2\11\2\1\1\11\1\1\6\11\1\1\1\11"+
+    "\5\1\1\11\1\1\1\11\2\1\2\11\2\1\1\11"+
+    "\3\1\1\11\1\0\1\1\2\0\6\11\1\1\5\11"+
+    "\1\1\1\0\2\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[46];
+    int [] result = new int[56];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -307,12 +316,12 @@ public class Lexer implements java_cup.runtime.Scanner {
   /* user code: */
 StringBuffer string = new StringBuffer();
   public Symbol Symbol( int tokenType ) {
-      System.err.println( "Obtain token " + ParserSym.terminal_name( tokenType ) );
+      System.err.println( "Obtain token " + ParserSym.terminalNames[tokenType] );
       return new Symbol( tokenType, yyline, yycolumn);
   }
 
   public Symbol Symbol( int tokenType, Object value ) {
-      System.err.println( "Obtain token " +value + " \"" + yytext() + "\"" );
+      System.err.println( "Obtain token " +ParserSym.terminalNames[tokenType] + " \"" + value + "\"" );
         return new Symbol( tokenType, yyline, yycolumn, value);
     }
     private static HashMap<String, Symbol> stringTable= new HashMap<>();
@@ -321,15 +330,49 @@ StringBuffer string = new StringBuffer();
         Symbol sym;
 
         if(stringTable.containsKey(lex)){
-            System.out.println( "Obtain token " + ParserSym.terminal_name( stringTable.get(lex).sym ) + " \"" + lex + "\"" );
+            System.err.println( "Obtain token " + ParserSym.terminalNames[stringTable.get(lex).sym] + " \"" + lex + "\"" );
             return stringTable.get(lex);
         }
         else{
             sym = new Symbol(ParserSym.ID,lex);
-            System.out.println( "Obtain token " + "ID" + " \"" + lex + "\"" );
+            System.err.println( "Obtain token " + "ID" + " \"" + lex + "\"" );
             stringTable.put(lex,sym);
             return sym;
         }
+    }
+
+    public boolean initialize(String filePath) {
+            try {
+                /* the input device */
+                this.zzReader = new java.io.FileReader(filePath);
+                return true;
+            } catch (java.io.FileNotFoundException e) {
+                return false;
+            }
+        }
+    public  Lexer() {
+        stringTable.put("IF", new Symbol(ParserSym.IF,"IF"));
+        stringTable.put("THEN", new Symbol(ParserSym.THEN,"THEN"));
+        stringTable.put("ELSE", new Symbol(ParserSym.ELSE,"ELSE"));
+        stringTable.put("WHILE", new Symbol(ParserSym.WHILE,"WHILE"));
+        stringTable.put("INTEGER", new Symbol(ParserSym.INTEGER,"INTEGER"));
+        stringTable.put("REAL", new Symbol(ParserSym.REAL,"REAL"));
+        stringTable.put("BOOL", new Symbol(ParserSym.BOOL,"BOOL"));
+        stringTable.put("FUN", new Symbol(ParserSym.FUN,"FUN"));
+        stringTable.put("LOOP", new Symbol(ParserSym.LOOP,"LOOP"));
+        stringTable.put("AND", new Symbol(ParserSym.AND,"AND"));
+        stringTable.put("OR", new Symbol(ParserSym.OR,"OR"));
+        stringTable.put("NOT", new Symbol(ParserSym.NOT,"NOT"));
+        stringTable.put("TRUE", new Symbol(ParserSym.TRUE,"TRUE"));
+        stringTable.put("FALSE", new Symbol(ParserSym.FALSE,"FALSE"));
+        stringTable.put("NULL", new Symbol(ParserSym.NULL,"NULL"));
+        stringTable.put("RETURN", new Symbol(ParserSym.RETURN,"RETURN"));
+        stringTable.put("END", new Symbol(ParserSym.END,"END"));
+        stringTable.put("MAIN", new Symbol(ParserSym.MAIN,"MAIN"));
+        stringTable.put("STRING", new Symbol(ParserSym.STRING,"STRING"));
+        stringTable.put("OUTPAR", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
+        stringTable.put("VAR", new Symbol(ParserSym.VAR,"VAR"));
+        stringTable.put("OUT", new Symbol(ParserSym.OUT,"OUT"));
     }
 
 
@@ -340,27 +383,28 @@ StringBuffer string = new StringBuffer();
    */
   public Lexer(java.io.Reader in) {
   // inserimento delle parole chiavi nella stringTable per evitare di scrivere un diagramma di transizione per ciascuna di esse (le parole chiavi verranno "catturate" dal diagramma di transizione e gestite e di conseguenza).
-    stringTable.put("if", new Symbol(ParserSym.IF,"IF"));
-    stringTable.put("then", new Symbol(ParserSym.THEN,"THEN"));
-    stringTable.put("else", new Symbol(ParserSym.ELSE,"ELSE"));
-    stringTable.put("while", new Symbol(ParserSym.WHILE,"WHILE"));
-    stringTable.put("integer", new Symbol(ParserSym.INTEGER,"INTEGER"));
-    stringTable.put("real", new Symbol(ParserSym.REAL,"REAL"));
-    stringTable.put("bool", new Symbol(ParserSym.BOOL,"BOOL"));
-    stringTable.put("fun", new Symbol(ParserSym.FUN,"FUN"));
-    stringTable.put("do", new Symbol(ParserSym.LOOP,"LOOP"));
-    stringTable.put("and", new Symbol(ParserSym.AND,"AND"));
-    stringTable.put("or", new Symbol(ParserSym.OR,"OR"));
-    stringTable.put("not", new Symbol(ParserSym.NOT,"NOT"));
-    stringTable.put("true", new Symbol(ParserSym.TRUE,"TRUE"));
-    stringTable.put("false", new Symbol(ParserSym.FALSE,"FALSE"));
-    stringTable.put("null", new Symbol(ParserSym.NULL,"NULL"));
-    stringTable.put("return", new Symbol(ParserSym.RETURN,"RETURN"));
-    stringTable.put("div", new Symbol(ParserSym.DIVINT,"DIVINT"));
-    stringTable.put("end", new Symbol(ParserSym.END,"END"));
-    stringTable.put("main", new Symbol(ParserSym.MAIN,"MAIN"));
-    stringTable.put("string", new Symbol(ParserSym.STRING,"STRING"));
-    stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
+    stringTable.put("IF", new Symbol(ParserSym.IF,"IF"));
+    stringTable.put("THEN", new Symbol(ParserSym.THEN,"THEN"));
+    stringTable.put("ELSE", new Symbol(ParserSym.ELSE,"ELSE"));
+    stringTable.put("WHILE", new Symbol(ParserSym.WHILE,"WHILE"));
+    stringTable.put("INTEGER", new Symbol(ParserSym.INTEGER,"INTEGER"));
+    stringTable.put("REAL", new Symbol(ParserSym.REAL,"REAL"));
+    stringTable.put("BOOL", new Symbol(ParserSym.BOOL,"BOOL"));
+    stringTable.put("FUN", new Symbol(ParserSym.FUN,"FUN"));
+    stringTable.put("LOOP", new Symbol(ParserSym.LOOP,"LOOP"));
+    stringTable.put("AND", new Symbol(ParserSym.AND,"AND"));
+    stringTable.put("OR", new Symbol(ParserSym.OR,"OR"));
+    stringTable.put("NOT", new Symbol(ParserSym.NOT,"NOT"));
+    stringTable.put("TRUE", new Symbol(ParserSym.TRUE,"TRUE"));
+    stringTable.put("FALSE", new Symbol(ParserSym.FALSE,"FALSE"));
+    stringTable.put("NULL", new Symbol(ParserSym.NULL,"NULL"));
+    stringTable.put("RETURN", new Symbol(ParserSym.RETURN,"RETURN"));
+    stringTable.put("END", new Symbol(ParserSym.END,"END"));
+    stringTable.put("MAIN", new Symbol(ParserSym.MAIN,"MAIN"));
+    stringTable.put("STRING", new Symbol(ParserSym.STRING,"STRING"));
+    stringTable.put("OUTPAR", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
+    stringTable.put("VAR", new Symbol(ParserSym.VAR,"VAR"));
+    stringTable.put("OUT", new Symbol(ParserSym.OUT,"OUT"));
     this.zzReader = in;
   }
 
@@ -756,167 +800,219 @@ StringBuffer string = new StringBuffer();
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
             zzDoEOF();
-              {
-                return Symbol(ParserSym.EOF);
-              }
+            switch (zzLexicalState) {
+            case YYINITIAL: {
+              return Symbol(ParserSym.EOF);
+            }  // fall though
+            case 57: break;
+            default:
+          { 	return Symbol(ParserSym.EOF);
+ }
+        }
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return Symbol(ParserSym.STRING_CONST, yytext());
-            }
-            // fall through
-          case 32: break;
-          case 2:
-            { return installID(yytext());
-            }
-            // fall through
-          case 33: break;
-          case 3:
-            { return Symbol(ParserSym.READ, "READ");
-            }
-            // fall through
-          case 34: break;
-          case 4:
-            { return Symbol(ParserSym.STR_CONCAT,"STR_CONCAT");
-            }
-            // fall through
-          case 35: break;
-          case 5:
-            { return Symbol(ParserSym.LPAR, "LPAR");
-            }
-            // fall through
-          case 36: break;
-          case 6:
-            { return Symbol(ParserSym.RPAR, "RPAR");
-            }
-            // fall through
-          case 37: break;
-          case 7:
-            { return Symbol(ParserSym.TIMES, "TIMES");
-            }
-            // fall through
-          case 38: break;
-          case 8:
-            { return Symbol(ParserSym.PLUS, "PLUS");
-            }
-            // fall through
-          case 39: break;
-          case 9:
-            { return Symbol(ParserSym.COMMA, "COMMA");
-            }
-            // fall through
-          case 40: break;
-          case 10:
-            { return Symbol(ParserSym.MINUS, "MINUS");
-            }
-            // fall through
-          case 41: break;
-          case 11:
             { return Symbol(ParserSym.ERROR, "ERROR");
             }
             // fall through
-          case 42: break;
-          case 12:
-            { return Symbol(ParserSym.DIV, "DIV");
-            }
-            // fall through
-          case 43: break;
-          case 13:
-            { return Symbol(ParserSym.INTEGER_CONST, yytext());
-            }
-            // fall through
-          case 44: break;
-          case 14:
-            { return Symbol(ParserSym.COLON, "COLON");
-            }
-            // fall through
-          case 45: break;
-          case 15:
-            { return Symbol(ParserSym.SEMI, "SEMI");
-            }
-            // fall through
-          case 46: break;
-          case 16:
-            { return Symbol(ParserSym.LT, "LT");
-            }
-            // fall through
-          case 47: break;
-          case 17:
-            { return Symbol(ParserSym.EQ, "EQ");
-            }
-            // fall through
-          case 48: break;
-          case 18:
-            { return Symbol(ParserSym.GT, "GT");
-            }
-            // fall through
-          case 49: break;
-          case 19:
-            { return Symbol(ParserSym.WRITE, "WRITE");
-            }
-            // fall through
-          case 50: break;
-          case 20:
-            { return Symbol(ParserSym.OUTPAR,"OUTPAR");
-            }
-            // fall through
-          case 51: break;
-          case 21:
-            { return Symbol(ParserSym.POW,"POW");
-            }
-            // fall through
-          case 52: break;
-          case 22:
+          case 41: break;
+          case 2:
             { 
             }
             // fall through
+          case 42: break;
+          case 3:
+            { string.setLength(0); yybegin(STRING);
+            }
+            // fall through
+          case 43: break;
+          case 4:
+            { return installID(yytext());
+            }
+            // fall through
+          case 44: break;
+          case 5:
+            { return Symbol(ParserSym.READ, "READ");
+            }
+            // fall through
+          case 45: break;
+          case 6:
+            { return Symbol(ParserSym.STR_CONCAT,"STR_CONCAT");
+            }
+            // fall through
+          case 46: break;
+          case 7:
+            { string.setLength(0); yybegin(STRINGSINGLE);
+            }
+            // fall through
+          case 47: break;
+          case 8:
+            { return Symbol(ParserSym.LPAR, "LPAR");
+            }
+            // fall through
+          case 48: break;
+          case 9:
+            { return Symbol(ParserSym.RPAR, "RPAR");
+            }
+            // fall through
+          case 49: break;
+          case 10:
+            { return Symbol(ParserSym.TIMES, "TIMES");
+            }
+            // fall through
+          case 50: break;
+          case 11:
+            { return Symbol(ParserSym.PLUS, "PLUS");
+            }
+            // fall through
+          case 51: break;
+          case 12:
+            { return Symbol(ParserSym.COMMA, "COMMA");
+            }
+            // fall through
+          case 52: break;
+          case 13:
+            { return Symbol(ParserSym.MINUS, "MINUS");
+            }
+            // fall through
           case 53: break;
-          case 23:
-            { return Symbol(ParserSym.NE, "NE");
+          case 14:
+            { return Symbol(ParserSym.DIV, "DIV");
             }
             // fall through
           case 54: break;
-          case 24:
-            { return Symbol(ParserSym.ASSIGN, "ASSIGN");
+          case 15:
+            { return Symbol(ParserSym.INTEGER_CONST, yytext());
             }
             // fall through
           case 55: break;
-          case 25:
-            { return Symbol(ParserSym.LE, "LE");
+          case 16:
+            { return Symbol(ParserSym.COLON, "COLON");
             }
             // fall through
           case 56: break;
-          case 26:
-            { return Symbol(ParserSym.GE, "GE");
+          case 17:
+            { return Symbol(ParserSym.SEMI, "SEMI");
             }
             // fall through
           case 57: break;
-          case 27:
-            { return Symbol(ParserSym.WRITEB, "WRITEB");
+          case 18:
+            { return Symbol(ParserSym.LT, "LT");
             }
             // fall through
           case 58: break;
-          case 28:
-            { return Symbol(ParserSym.WRITELN, "WRITELN");
+          case 19:
+            { return Symbol(ParserSym.EQ, "EQ");
             }
             // fall through
           case 59: break;
-          case 29:
-            { return Symbol(ParserSym.WRITET, "WRITET");
+          case 20:
+            { return Symbol(ParserSym.GT, "GT");
             }
             // fall through
           case 60: break;
-          case 30:
-            { return Symbol(ParserSym.REAL_CONST, yytext());
+          case 21:
+            { return Symbol(ParserSym.WRITE, "WRITE");
             }
             // fall through
           case 61: break;
-          case 31:
-            { return installID(yytest());
+          case 22:
+            { return Symbol(ParserSym.OUTPAR,"OUTPAR");
             }
             // fall through
           case 62: break;
+          case 23:
+            { return Symbol(ParserSym.POW,"POW");
+            }
+            // fall through
+          case 63: break;
+          case 24:
+            { string.append( yytext() );
+            }
+            // fall through
+          case 64: break;
+          case 25:
+            { yybegin(YYINITIAL);
+    return Symbol(ParserSym.STRING_CONST, string.toString());
+            }
+            // fall through
+          case 65: break;
+          case 26:
+            { string.append('\\');
+            }
+            // fall through
+          case 66: break;
+          case 27:
+            { return Symbol(ParserSym.NE, "NE");
+            }
+            // fall through
+          case 67: break;
+          case 28:
+            { return Symbol(ParserSym.ASSIGN, "ASSIGN");
+            }
+            // fall through
+          case 68: break;
+          case 29:
+            { return Symbol(ParserSym.LE, "LE");
+            }
+            // fall through
+          case 69: break;
+          case 30:
+            { return Symbol(ParserSym.GE, "GE");
+            }
+            // fall through
+          case 70: break;
+          case 31:
+            { return Symbol(ParserSym.WRITEB, "WRITEB");
+            }
+            // fall through
+          case 71: break;
+          case 32:
+            { return Symbol(ParserSym.WRITELN, "WRITELN");
+            }
+            // fall through
+          case 72: break;
+          case 33:
+            { return Symbol(ParserSym.WRITET, "WRITET");
+            }
+            // fall through
+          case 73: break;
+          case 34:
+            { string.append('\"');
+            }
+            // fall through
+          case 74: break;
+          case 35:
+            { string.append('\n');
+            }
+            // fall through
+          case 75: break;
+          case 36:
+            { string.append('\r');
+            }
+            // fall through
+          case 76: break;
+          case 37:
+            { string.append('\t');
+            }
+            // fall through
+          case 77: break;
+          case 38:
+            { string.append('\'');
+            }
+            // fall through
+          case 78: break;
+          case 39:
+            { return Symbol(ParserSym.REAL_CONST, yytext());
+            }
+            // fall through
+          case 79: break;
+          case 40:
+            { return Symbol(ParserSym.DIVINT,"DIVINT");
+            }
+            // fall through
+          case 80: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

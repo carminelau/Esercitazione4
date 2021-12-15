@@ -26,6 +26,6 @@ public class PowOperation extends BinaryOperation {
      * @return the visited element
      */
     @Override
-    public <T, P> T accept(Visitor<T, P> visitor, P arg) {return visitor.visit(powOperation: this, arg);
+    public <T, P> T accept(Visitor<T, P> visitor, P arg) {return visitor.visit(this, arg);
     }
 }
