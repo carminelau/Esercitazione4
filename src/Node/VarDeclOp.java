@@ -12,6 +12,10 @@ public class VarDeclOp {
         this.list = list;
     }
 
+    public VarDeclOp(IdListInitOp list) {
+        this.list = list;
+    }
+
     public TypeOp getTipo() {
         return tipo;
     }

@@ -6,10 +6,12 @@ public class ProgramOp {
 
     private VarDeclListOp varDeclOpList;
     private ProcListOp ProcOpList;
+    private MainOp main;
 
-    public ProgramOp(VarDeclListOp varDeclOpList, ProcListOp procOpList) {
+    public ProgramOp(VarDeclListOp varDeclOpList, ProcListOp procOpList, MainOp main) {
         this.varDeclOpList = varDeclOpList;
         this.ProcOpList = procOpList;
+        this.main=main;
     }
 
     public Object accept(Visitor v){
@@ -24,11 +26,16 @@ public class ProgramOp {
         return ProcOpList;
     }
 
+    public MainOp getMain() {
+        return main;
+    }
+
     @Override
     public String toString() {
         return "ProgramOp{" +
-                varDeclOpList +
-                ProcOpList +
+                "varDeclOpList=" + varDeclOpList +
+                ", ProcOpList=" + ProcOpList +
+                ", main=" + main +
                 '}';
     }
 }

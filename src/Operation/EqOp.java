@@ -1,6 +1,6 @@
 package Operation;
 
-public class EqOp extends Operation {
+public class EqOp extends Operations {
 
     private static final String operation = "=";
 

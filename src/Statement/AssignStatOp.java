@@ -1,15 +1,16 @@
 package Statement;
+import Node.Id;
 import Operation.*;
 import Visitor.Visitor;
 
 public class AssignStatOp extends Statement {
-    private IdListOp idList;
-    private ExprListOp exprList;
+    private Id id;
+    private ExprOp expr;
     private static final String operation = ":=";
 
-    public AssignStatOp(IdListOp idList, ExprListOp exprList) {
-        this.idList = idList;
-        this.exprList = exprList;
+    public AssignStatOp(Id id, ExprOp expr) {
+        this.id = id;
+        this.expr = expr;
     }
 
     public Object accept(Visitor visitor) {
@@ -17,12 +18,12 @@ public class AssignStatOp extends Statement {
     }
 
 
-    public IdListOp getIdList() {
-        return idList;
+    public Id getId() {
+        return id;
     }
 
-    public ExprListOp getExprList() {
-        return exprList;
+    public ExprOp getExpr() {
+        return expr;
     }
 
     public static String getOperation() {
@@ -32,8 +33,8 @@ public class AssignStatOp extends Statement {
     @Override
     public String toString() {
         return "Assign{" +
-                "idList=" + idList +
-                ", exprList=" + exprList +
+                "id=" + id +
+                ", expr=" + expr +
                 '}';
     }
 }

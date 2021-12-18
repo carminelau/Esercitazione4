@@ -1,6 +1,6 @@
 package Operation;
 
-public class MulOp extends Operation.Operations {
+public class MulOp extends Operations {
 
     private static final String operation = "*";
 

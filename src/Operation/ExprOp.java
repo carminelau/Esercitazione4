@@ -1,6 +1,5 @@
 package Operation;
 
-import Node.Null;
 import Statement.Statement;
 import Visitor.Visitor;
 import Node.Id;
@@ -8,10 +7,10 @@ import Node.Id;
 public class ExprOp {
 
     private Object var;
-    private Operation operation;
+    private Operations operation;
     private Statement statement;
 
-    public ExprOp(Operation operation) {
+    public ExprOp(Operations operation) {
         this.operation = operation;
     }
     public ExprOp(Statement statement) {
@@ -37,12 +36,7 @@ public class ExprOp {
         this.var = aFloatConst;
     }
 
-    public ExprOp(Null value) {
-        this.var = value;
-    }
-
-
-    public Operation getOperation() {
+    public Operations getOperation() {
         return operation;
     }
 

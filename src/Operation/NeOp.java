@@ -1,9 +1,9 @@
 package Operation;
 
-public class NeOp extends Operation.Operations {
+public class NeOp extends Operations {
 
 
-    private static final String operation = "<>";
+    private static final String operation = "<>"; // !=
 
     public NeOp(ExprOp e1, ExprOp e2) {
         super(e1,e2);

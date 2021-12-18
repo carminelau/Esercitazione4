@@ -1,7 +1,7 @@
 package Operation;
 
 
-public class AddOp extends Operation{
+public class AddOp extends Operations{
 
     public AddOp(ExprOp e1, ExprOp e2) {
         super(e1,e2);

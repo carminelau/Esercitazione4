@@ -1,20 +1,16 @@
 package Operation;
 
-public class LeOp extends Operations {
+public class FunctionParamOp extends Operations{
 
-    private static final String operation = "<=";
-
-    public LeOp(ExprOp e1, ExprOp e2) {
-        super(e1,e2);
+    public FunctionParamOp(ExprOp e1) {
+        super(e1);
     }
 
     @Override
     public String toString() {
-        return "LeOp{" +
+        return "FunctionParamOp{" +
                 "e1=" + super.getE1() +
                 ", e2=" + super.getE2() +
-
                 '}';
     }
-
 }

@@ -3,12 +3,12 @@
 
   ************* Specifica grammaticale ****************
 
-    Program ::= VarDeclList FunList Main
+    Program ::= VarDeclList FunList MainOp
 
     VarDeclList ::= /* empty */
     /*	| VardDecl VarDeclList
 
-    Main ::= MAIN VarDeclList StatList END MAIN SEMI
+    MainOp ::= MAIN VarDeclList StatList END MAIN SEMI
 
     FunList ::= /* empty */
     /*	| Fun FunList
@@ -174,11 +174,10 @@ terminal String MAIN,
                	AND,
                	OR,
                	NOT,
-                STRING_CONST,
+               	NULL,
+               	STRING_CONST,
                 SEMI,
                	COMMA,
-               	NULL,
-               	ERROR,
                	RETURN,
                	OUTPAR,
                	OUT,
@@ -190,31 +189,31 @@ terminal String TRUE, FALSE;
 
 //Non terminali
 
-non terminal      Program         	             Program;
-non terminal      ArrayList<VarDecl>             VarDeclList;
-non terminal      Main                           Main;
-non terminal      ArrayList<Fun>                 FunList;
-non terminal      VarDecl                        VarDecl;
-non terminal      Type                           Type;
-non terminal      ArrayList<AssignStatement>     IdListInit;
-non terminal      ArrayList<AssignStatement>     IdListInitObbl;
+non terminal      ProgramOp       	             Program;
+non terminal      VarDeclListOp                  VarDeclList;
+non terminal      MainOp                         Main;
+non terminal      ProcListOp                     FunList;
+non terminal      VarDeclOp                      VarDecl;
+non terminal      TypeOp                         Type;
+non terminal      IdListInitOp                   IdListInit;
+non terminal      IdListInitOp                   IdListInitObbl;
 non terminal      ExprOp                         Const ;
-non terminal      Fun                            Fun;
-non terminal      ArrayList<ParDecl>             ParamDeclList;
-non terminal      ArrayList<ParDecl>             NonEmptyParamDeclList ;
-non terminal      ParDecl                        ParDecl;
-non terminal      ArrayList<Statement>           StatList;
-non terminal      Statement                      Stat;
-non terminal      IfStatement                    IfStat;
-non terminal      ElseStatement                  Else;
-non terminal      WhileStatement                 WhileStat;
-non terminal      ReadStatement                  ReadStat;
-non terminal      WriteStatement                 WriteStat;
-non terminal      AssignStatement                AssignStat;
+non terminal      ProcOp                         Fun;
+non terminal      ParamDeclListOp                ParamDeclList;
+non terminal      ParamDeclListOp                NonEmptyParamDeclList ;
+non terminal      ParDeclOp                      ParDecl;
+non terminal      StatListOp                     StatList;
+non terminal      StatOp                         Stat;
+non terminal      IfStatOp                       IfStat;
+non terminal      ElseOp                         Else;
+non terminal      WhileStatOp                    WhileStat;
+non terminal      ReadStatOp                     ReadStat;
+non terminal      WriteStatOp                    WriteStat;
+non terminal      AssignStatOp                   AssignStat;
 non terminal      CallProcOp                     CallFun;
-non terminal      ArrayList<ExprOp>              ExprList;
+non terminal      ExprListOp                     ExprList;
 non terminal      ExprOp                         Expr;
-non terminal      ArrayList<Id>                  IdList;
+non terminal      IdListOp                       IdList;
 
 // Precendenze:: partendo dal basso (precedenza maggiore) a salire (precedenza minore)
 precedence left OR;
@@ -233,150 +232,244 @@ Program ::= VarDeclList:varList ProcList:procList {:RESULT = new ProgramOp(varLi
 VarDeclList ::=   {:RESULT = new VarDeclListOp(new ArrayList<VarDeclOp>());:}
                 |VarDecl:varDecl VarDeclList:varDecList {:RESULT = varDecList.add(varDecl);:}
                 ;
+*/
 
-ProcList ::=        {:RESULT = new ProcListOp(new ArrayList<ProcOp>());:}
-             |Proc:Node ProcList:list{:RESULT = list.add(Node);:}
+//Program ::= VarDeclList FunList MainOp
+    Program ::= VarDeclList:vars FunList:funlist Main:main {:RESULT = new ProgramOp(vars,funlist,main);:};
+
+/*VarDeclList ::= *//* empty *//*
+*//*	| VardDecl VarDeclList*/
+    VarDeclList ::= {:RESULT = new VarDeclListOp(new ArrayList<VarDeclOp>());:}
+        |VarDecl:varDecl VarDeclList:varDecList {:RESULT = varDecList.add(varDecl);:};
+
+//MainOp ::= MAIN VarDeclList StatList END MAIN SEMI
+    Main ::= MAIN VarDeclList:vars StatList:stats END MAIN SEMI {:RESULT = new MainOp(vars,stats);:};
+
+/*FunList ::= *//* empty *//*
+*//*	| Fun FunList*/
+    FunList ::= {:RESULT = new ProcListOp(new ArrayList<ProcOp>());:}
+        	| Fun:f FunList:list {:RESULT = list.add(f);:};
+
+/*VarDecl ::= Type IdListInit SEMI
+    | VAR IdListInitObbl SEMI*/
+
+    VarDecl ::= Type:t IdListInit:list SEMI {:RESULT = new VarDeclOp(t,list);:}
+            | VAR IdListInitObbl:list SEMI {:RESULT = new VarDeclOp(list);:};
+
+//Type ::= INTEGER | REAL | STRING | BOOL
+
+    Type ::= INTEGER:i {:RESULT = new TypeOp("integer");:}
+            | BOOL:b {:RESULT = new TypeOp("bool");:}
+            | REAL:r {:RESULT = new TypeOp("real");:}
+            | STRING:s {:RESULT = new TypeOp("string");:};
+
+/*IdListInit ::= ID
+        | IdListInit COMMA ID
+        | ID ASSIGN Expr
+        | IdListInit COMMA ID ASSIGN Expr*/
+
+    IdListInit ::= ID:id
+            {:
+                HashMap<String,ExprOp> list = new HashMap<String,ExprOp>();
+                list.put(id,new ExprOp((Operations) null));
+                RESULT = new IdListInitOp(list);
+            :}
+            | IdListInit:list COMMA ID:id {:RESULT = list.put(id,new ExprOp((Operations) null));:}
+            | ID:id ASSIGN Expr:e
+            {:
+                 HashMap<String,ExprOp> list = new HashMap<String,ExprOp>();
+                 list.put(id,e);
+                 RESULT = new IdListInitOp(list);
+             :}
+            | IdListInit:list COMMA ID:id ASSIGN Expr:e
+            {:
+                 RESULT = list.put(id,e);
+            :}
             ;
 
-VarDecl ::= Type:t IdListInit:list SEMI {:RESULT = new VarDeclOp(t,list);:}
+/*IdListInitObbl ::= ID ASSIGN Const
+    | IdListInitObbl COMMA ID ASSIGN Const*/
+    IdListInitObbl ::= ID:id ASSIGN Const:c
+            {:
+                HashMap<String,ExprOp> list = new HashMap<String,ExprOp>();
+                list.put(id,c);
+                RESULT = new IdListInitOp(list);
+            :}
+            | IdListInitObbl:list COMMA ID:id ASSIGN Const:c
+            {:
+                 RESULT = list.put(id,c);
+            :}
             ;
 
-Type ::= INT:i {:RESULT = new TypeOp("int");:}
-         |BOOL:b {:RESULT = new TypeOp("bool");:}
-         |FLOAT:f {:RESULT = new TypeOp("float");:}
-         |STRING:s {:RESULT = new TypeOp("string");:}
-         ;
+//Const ::= INTEGER_CONST | REAL_CONST | STRING_CONST | TRUE | FALSE
+    Const ::= INTEGER_CONST:intConst {:RESULT = new ExprOp(intConst);:}
+                | REAL_CONST:realConst {:RESULT = new ExprOp(realConst);:}
+                | STRING_CONST:stringConst {:RESULT = new ExprOp(stringConst);:}
+                | TRUE:value {:RESULT = new ExprOp(value);:}
+                | FALSE:value {:RESULT = new ExprOp(value);:};
 
-IdListInit ::= 	ID:id {:
-                        HashMap<String,ExprOp> list = new HashMap<String,ExprOp>();
-                        list.put(id,new ExprOp(new Null()));
-                        RESULT = new IdListInitOp(list);
-                      :}
-			|IdListInit:list COMMA ID:id {:RESULT = list.put(id,new ExprOp(new Null()));:}
-			|ID:id ASSIGN Expr:e {:
-			                         HashMap<String,ExprOp> list = new HashMap<String,ExprOp>();
-			                         list.put(id,e);
-                                     RESULT = new IdListInitOp(list);
-                                   :}
-			|IdListInit:list COMMA ID:id ASSIGN Expr:e {:
-			                                             RESULT = list.put(id,e);
-			                                           :}
-			;
+/*Fun ::= FUN ID LPAR ParamDeclList RPAR COLON Type
+            VarDeclList StatList END FUN SEMI
+        | FUN ID LPAR ParamDeclList RPAR
+            VarDeclList StatList END FUN SEMI*/
 
-Proc ::= 	PROC ID:id LPAR ParamDeclList:paramList RPAR ResultTypeList:resultList COLON VarDeclList:varList StatList:statList RETURN ReturnExprs:returnExprs CORP SEMI{:RESULT = new ProcOp(id,paramList, resultList,  varList,  statList,  returnExprs);:}
-			|PROC ID:id LPAR RPAR ResultTypeList:resultList COLON VarDeclList:varList StatList:statList RETURN ReturnExprs:returnExprs CORP SEMI{:  ArrayList<ParDeclOp> l = new ArrayList<ParDeclOp>();
-			                                                                                                                                        l.add(new ParDeclOp(new TypeOp("Void")));
-			                                                                                                                                        ParamDeclListOp param = new ParamDeclListOp(l);
-			                                                                                                                                        RESULT = new ProcOp( id,  param,  resultList,  varList,  returnExprs);:}
-			|PROC ID:id LPAR ParamDeclList:paramList RPAR ResultTypeList:resultList COLON VarDeclList:varList RETURN ReturnExprs:returnExprs CORP SEMI{:RESULT = new ProcOp(id,paramList, resultList,  varList,  returnExprs);:}
-			|PROC ID:id LPAR RPAR ResultTypeList:resultList COLON VarDeclList:varList RETURN ReturnExprs:returnExprs CORP SEMI{:ArrayList<ParDeclOp> l = new ArrayList<ParDeclOp>();
-                                                                                                                                l.add(new ParDeclOp(new TypeOp("Void")));
-                                                                                                                                ParamDeclListOp param = new ParamDeclListOp(l);
-                                                                                                                                RESULT = new ProcOp( id,  param,  resultList,  varList,  null,  returnExprs);:}
-			;
+    Fun ::= FUN ID:id LPAR ParamDeclList:list RPAR COLON Type:t
+                VarDeclList:vars StatList:stats END FUN SEMI {:RESULT = new ProcOp(new Id(id),list,t, vars, stats);:}
+            | FUN ID:id LPAR ParamDeclList:list RPAR
+                VarDeclList:vars StatList:stats END FUN SEMI {:RESULT = new ProcOp(new Id(id),list, vars, stats);:};
 
-ResultTypeList ::= 	ResultType:r {:
-                                   ArrayList<ResultTypeOp> list = new ArrayList<ResultTypeOp>();
-                                   list.add(r);
-                                   RESULT = new ResultTypeListOp(list);
-                                  :}
-					|ResultType:r COMMA ResultTypeList:list {:RESULT = list.add(r);:}
-					;
+/*ParamDeclList ::= *//*empty *//*
+*//*	| NonEmptyParamDeclList*/
 
-ReturnExprs ::= ExprList:list {:RESULT = new ReturnExprsOp(list);:}
-                |{:RESULT = null;:}
-                ;
+    ParamDeclList ::= {: RESULT = null;:}
+        | NonEmptyParamDeclList:list {:RESULT = list;:};
 
-ExprList ::=   Expr:e {:
-                        ArrayList<ExprOp> l = new ArrayList<ExprOp>();
-                        l.add(0,e);
-                        RESULT = new ExprListOp(l);
-                       :}
-                |Expr:e COMMA ExprList:list {:RESULT = list.add(e);:}
-                ;
+/*NonEmptyParamDeclList ::= ParDecl
+    | NonEmptyParamDeclList COMMA ParDecl*/
 
-ParamDeclList ::= ParDecl:Node {:
-                                ArrayList<ParDeclOp> l = new ArrayList<ParDeclOp>();
-                                l.add(0,Node);
-                                RESULT = new ParamDeclListOp(l);
-                             :}
-                  |ParamDeclList:list SEMI ParDecl:Node {:RESULT = list.add(Node);:}
-                  ;
+    NonEmptyParamDeclList ::= ParDecl:par
+        {: ArrayList<ParDeclOp> l = new ArrayList<ParDeclOp>();
+         l.add(0,par);
+         RESULT = new ParamDeclListOp(l);
+        :}
+        | NonEmptyParamDeclList:list COMMA ParDecl:par {: RESULT = list.add(par);:}
+        ;
 
-ParDecl ::= Type:t IdList:list {:RESULT = new ParDeclOp(t,list);:}
-            ;
+/*ParDecl ::= Type ID
+    | OUT Type ID*/
 
-IdList ::= ID:id {:
-                    ArrayList<String> l = new ArrayList<String>();
-                    l.add(0,id);
-                    RESULT = new IdListOp(l);
-                 :}
-           |IdList:list COMMA ID:id {:RESULT = list.add(id);:}
-           ;
-
-ResultType ::= Type:t {:RESULT = new ResultTypeOp(t);:}
-              |VOID:v {:RESULT = new ResultTypeOp(new TypeOp("void"));:}
-                ;
+    ParDecl ::= Type:t ID:id {:RESULT = new ParDeclOp(t,new Id(id)); :}
+        | OUT Type:t ID:id {:RESULT = new ParDeclOp("OUT",t,new Id(id)); :};
 
 //STATEMENT
 
-StatList ::= Stat:stat {:
-                         ArrayList l = new ArrayList<Statement>();
-                         l.add(0,stat);
-                         RESULT = new StatListOp(l);
-                       :}
-            | Stat:stat StatList:list {:RESULT = list.add(stat);:}
+/*StatList ::= Stat StatList
+        | EMPTY*/
+
+StatList ::= Stat:stat StatList:list {:RESULT = list.add(stat);:}
+            | {: RESULT = null;:}
             ;
 
+
+/*Statement ::= IfStatement SEMI
+        | WhileStatement SEMI
+        | ReadStatement SEMI
+        | WriteStatement SEMI
+        | AssignStatement SEMI
+        | CallFun SEMI
+        | RETURN Expr SEMI*/
+
 Stat ::=	AssignStat:assign SEMI      {:RESULT = new StatOp(assign);:}
-			|CallProc:call SEMI         {:RESULT = new StatOp(call);:}
-            |ReadlnStat:read SEMI       {:RESULT = new StatOp(read);:}
+			|CallFun:call SEMI         {:RESULT = new StatOp(call);:}
+            |ReadStat:read SEMI       {:RESULT = new StatOp(read);:}
             |WriteStat:write SEMI       {:RESULT = new StatOp(write);:}
             |WhileStat:whileStat SEMI   {:RESULT = new StatOp(whileStat);:}
             |IfStat:ifStat SEMI	        {:RESULT = new StatOp(ifStat);:}
+            |RETURN Expr:e SEMI          {:RESULT = new StatOp(e);:}
 			;
 
-IfStat ::= IF Expr:e THEN StatList:statList ElifList:elifList Else:elseStat FI {:RESULT = new IfStatOp(e,statList,elifList,elseStat);:}
+//IfStatement ::= IF Expr THEN VarDeclList StatList ElseStatement END IF
+IfStat ::= IF Expr:e THEN VarDeclList:vars StatList:statList Else:elseStat END IF {:RESULT = new IfStatOp(e,vars,statList,elseStat);:}
            ;
 
-ElifList ::= {:RESULT = new ElifListOp(new ArrayList<ElifOp>());:}
-             |Elif:elif ElifList:list {:RESULT = list.add(elif);:}
-             ;
-
-Elif ::= ELIF Expr:e THEN StatList:list {:RESULT = new ElifOp(e,list);:}
-        ;
-
+//ElseStatement ::= /* empty */
+// | ELSE VarDeclList  StatList
 Else ::= {:RESULT = null;:} //empty
-         |ELSE StatList:list {:RESULT = new ElseOp(list);:}
+         |ELSE VarDeclList:vars StatList:list {:RESULT = new ElseOp(vars,list);:}
          ;
 
-WhileStat ::=   WHILE StatList:list1 RETURN Expr:e DO StatList:list2 OD {:RESULT = new WhileStatOp(e,list1,list2);:}
-                |WHILE Expr:e DO StatList:list OD {:RESULT = new WhileStatOp(e,list);:}
+/*WhileStat ::= WHILE Expr LOOP VarDeclList  StatList END LOOP*/
+WhileStat ::= WHILE Expr:e LOOP VarDeclList:vars StatList:list END LOOP {:RESULT = new WhileStatOp(e,vars,list);:};
+
+/*ReadStat ::= READ IdList Expr // Expr deve essere di tipo stringa
+        | READ IdList*/
+
+ReadStat ::= READ IdList:list Expr:e  {:RESULT = new ReadStatOp(list,e);:}
+                | READ IdList:list {:RESULT = new ReadStatOp(list);:}
                 ;
 
-ReadlnStat ::= READ LPAR IdList:list RPAR  {:RESULT = new ReadlnStatOp(list);:}
+/*IdList ::= ID
+        | IdList COMMA ID*/
+IdList ::= ID:id {:
+           ArrayList<String> l = new ArrayList<String>();
+           l.add(0,id);
+           RESULT = new IdListOp(l);
+        :}
+        |IdList:list COMMA ID:id {:RESULT = list.add(id);:}
+        ;
+/*WriteStatement ::=  WRITE  Expr
+        | WRITELN  Expr
+        | WRITET  Expr
+        | WRITEB  Expr*/
+WriteStat ::= WRITE Expr:expr {:RESULT = new WriteStatOp(expr,"WRITE_");:}
+            | WRITELN Expr:expr {:RESULT = new WriteStatOp(expr,"WRITE_LN");:}
+            | WRITET Expr:expr {:RESULT = new WriteStatOp(expr,"WRITE_T");:}
+            | WRITEB Expr:expr {:RESULT = new WriteStatOp(expr,"WRITE_B");:}
                 ;
-
-WriteStat ::= WRITE LPAR ExprList:list RPAR {:RESULT = new WriteStatOp(list);:}
-                ;
-
-AssignStat ::= IdList:idList ASSIGN ExprList:exprList {:RESULT = new AssignStatOp(idList,exprList);:}
+//AssignStat ::=  ID ASSIGN Expr
+AssignStat ::= ID:id ASSIGN Expr:expr {:RESULT = new AssignStatOp(new Id(id),expr);:}
                 ;
 
 //CHIAMATA PROCEDURA
+/*    CallFun ::= ID LPAR ExprList RPAR
+        | ID LPAR RPAR*/
 
-CallProc ::=    ID:id LPAR ExprList:list RPAR {:RESULT = new CallProcOp(id,list);:}
-                |ID:id LPAR RPAR   {:RESULT = new CallProcOp(id);:}
-                ;
-
-*/
+CallFun ::=    ID:id LPAR ExprList:list RPAR {:RESULT = new CallProcOp(id,list);:}
+            |ID:id LPAR RPAR   {:RESULT = new CallProcOp(id);:}
+            ;
 
 //ESPRESSIONI
+
+/*ExprList ::= Expr
+        | Expr COMMA ExprList
+        | OUTPAR ID
+        | OUTPAR ID COMMA ExprList*/
+
+ExprList ::= Expr:e1
+            {:
+                ArrayList<ExprOp> l = new ArrayList<ExprOp>();
+                l.add(0,e1);
+                RESULT = new ExprListOp(l);
+            :}
+        | Expr:e1 COMMA ExprList:list {: RESULT = list.add(e1); :}
+        | OUTPAR ID:id
+            {: ArrayList<ExprOp> l = new ArrayList<ExprOp>();
+               l.add(0,new ExprOp(new Id(id)));
+               RESULT = new ExprListOp(l);
+            :}
+        | OUTPAR ID:id COMMA ExprList:list {: RESULT = list.add(new ExprOp(new Id(id)));:}
+        ;
+
+/*Expr ::= TRUE
+        | FALSE
+        | INTEGER_CONST
+        | REAL_CONST
+        | STRING_CONST
+        | ID
+        | CallFun
+        | Expr  PLUS Expr
+        | Expr  MINUS Expr
+        | Expr  TIMES Expr
+        | Expr  DIV Expr
+        | Expr  DIVINT Expr
+        | Expr  AND Expr
+        | Expr POW Expr
+        | Expr STR_CONCAT Expr
+        | Expr  OR Expr
+        | Expr  GT Expr
+        | Expr  GE Expr
+        | Expr  LT Expr
+        | Expr  LE Expr
+        | Expr  EQ Expr
+        | Expr  NE Expr
+        | MINUS Expr
+        | NOT Expr
+        | LPAR Expr RPAR*/
 
 Expr ::= TRUE:value {:RESULT = new ExprOp(value);:}
         |FALSE:value {:RESULT = new ExprOp(value);:}
         |INTEGER_CONST:intConst {:RESULT = new ExprOp(intConst);:}
-        |REAL_CONST:floatConst {:RESULT = new ExprOp(floatConst);:}
+        |REAL_CONST:realConst {:RESULT = new ExprOp(realConst);:}
         |STRING_CONST:string {:RESULT = new ExprOp(string);:}
         |ID:id  {:RESULT = new ExprOp(new Id(id));:}
         |Expr:e1 PLUS Expr:e2 {:RESULT = new ExprOp(new AddOp(e1,e2));:}
@@ -392,6 +485,10 @@ Expr ::= TRUE:value {:RESULT = new ExprOp(value);:}
         |Expr:e1 LE Expr:e2   {:RESULT = new ExprOp(new LeOp(e1,e2));:}
         |Expr:e1 EQ Expr:e2   {:RESULT = new ExprOp(new EqOp(e1,e2));:}
         |Expr:e1 NE Expr:e2   {:RESULT = new ExprOp(new NeOp(e1,e2));:}
+        |Expr:e1 POW Expr:e2   {:RESULT = new ExprOp(new PowOp(e1,e2));:}
+        |Expr:e1 STR_CONCAT Expr:e2   {:RESULT = new ExprOp(new StrConcatOp(e1,e2));:}
+        |MINUS Expr:e1  {:RESULT = new ExprOp(new DiffOp(e1));:}
+        |LPAR Expr:e1 RPAR   {:RESULT = new ExprOp(new FunctionParamOp(e1));:}
         |NOT Expr:e           {:RESULT = new ExprOp(new NotOp(e));:}
         |CallFun:c           {:RESULT = new ExprOp(c);:}
         ;

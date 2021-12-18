@@ -1,19 +1,25 @@
 package Statement;
 
+import Operation.ExprOp;
 import Visitor.Visitor;
-import Visitor.XmlGenerator;
 
-public class ReadlnStatOp extends Statement{
+public class ReadStatOp extends Statement{
 
     private IdListOp idList;
+    private ExprOp expr;
 
-    public ReadlnStatOp(IdListOp list) {
+    public ReadStatOp(IdListOp list) {
         this.idList = list;
+    }
+
+    public ReadStatOp(IdListOp list, ExprOp expr) {
+        this.idList = list;
+        this.expr =expr;
     }
 
     @Override
     public String toString() {
-        return "ReadlnStatOp{" +
+        return "ReadStatOp{" +
                 "idList=" + idList +
                 '}';
     }

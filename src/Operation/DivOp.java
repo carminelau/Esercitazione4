@@ -1,6 +1,6 @@
 package Operation;
 
-public class DivOp extends Operation {
+public class DivOp extends Operations {
 
 
     private static final String operation = "/";

@@ -1,28 +1,25 @@
 package Statement;
 
+import Node.VarDeclListOp;
 import Operation.ExprOp;
 import Visitor.Visitor;
 import Visitor.XmlGenerator;
 
 public class WhileStatOp extends Statement {
     private StatListOp statListOp;
-    private StatListOp statListOp1;
+    private VarDeclListOp vars;
     private ExprOp e;
 
-    public WhileStatOp(ExprOp e,StatListOp statListOp) {
+    public WhileStatOp(ExprOp e,VarDeclListOp vars,StatListOp statListOp) {
         this.statListOp = statListOp;
-        this.e = e;
-    }
-    
-    public WhileStatOp(ExprOp e,StatListOp statListOp1,StatListOp statListOp) {
-        this.statListOp = statListOp;
-        this.statListOp1 = statListOp1;
+        this.vars=vars;
         this.e = e;
     }
 
     @Override
     public String toString() {
         return "WhileStatOp{" +
+                "vardecllist" + vars +
                 "statListOp=" + statListOp +
                 ", e=" + e +
                 '}';
@@ -32,8 +29,8 @@ public class WhileStatOp extends Statement {
         return statListOp;
     }
     
-    public StatListOp getStatListOp1() {
-        return statListOp1;
+    public VarDeclListOp getVarDeclList() {
+        return vars;
     }
     
     public ExprOp getE() {

@@ -18,15 +18,13 @@ public interface Visitor {
 
     Object visit(CallProcOp callProcOp);
 
-    Object visit(ElifOp elifOp);
+    Object visit(MainOp main);
 
     Object visit(StatListOp statListOp);
 
-    Object visit(ResultTypeListOp resultTypeListOp);
-
     Object visit(ElseOp elseOp);
 
-    Object visit(Operation operationp);
+    Object visit(Operations operationp);
 
     Object visit(ExprOp exprOp);
 
@@ -38,9 +36,7 @@ public interface Visitor {
 
     Object visit(ProcOp procOp);
 
-    Object visit(ReadlnStatOp readlnStatOp);
-
-    Object visit(ReturnExprsOp returnExprsOp);
+    Object visit(ReadStatOp readlnStatOp);
 
     Object visit(StatOp statOp);
 
@@ -56,5 +52,5 @@ public interface Visitor {
 
     Object visit(WriteStatOp writeStatOp);
 
-    Object visit(ElifListOp elifListOp);
+    Object visit(Id id);
 }

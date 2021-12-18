@@ -1,5 +1,6 @@
 package Statement;
 
+import Node.VarDeclListOp;
 import Operation.ExprOp;
 import Visitor.Visitor;
 import Visitor.XmlGenerator;
@@ -8,13 +9,13 @@ public class IfStatOp extends Statement{
 
     private ExprOp e;
     private StatListOp statList;
-    private ElifListOp elifList;
+    private VarDeclListOp vars;
     private ElseOp elseStat;
 
-    public IfStatOp(ExprOp e, StatListOp statList,ElifListOp elifList,ElseOp elseStat) {
+    public IfStatOp(ExprOp e, VarDeclListOp vars,StatListOp statList,ElseOp elseStat) {
         this.e = e;
         this.statList = statList;
-        this.elifList = elifList;
+        this.vars = vars;
         this.elseStat = elseStat;
     }
 
@@ -26,8 +27,8 @@ public class IfStatOp extends Statement{
         return statList;
     }
 
-    public ElifListOp getElifList() {
-        return elifList;
+    public VarDeclListOp getVars() {
+        return vars;
     }
 
     public ElseOp getElseStat() {
@@ -39,7 +40,7 @@ public class IfStatOp extends Statement{
         return "IfStatOp{" +
                  e +
                 "," + statList +
-                "," + elifList +
+                "," + vars +
                 "," + elseStat +
                 '}';
     }

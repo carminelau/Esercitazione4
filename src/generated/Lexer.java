@@ -374,10 +374,10 @@ StringBuffer string = new StringBuffer();
         stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
         stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
         stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
-        stringTable.put("write", new Symbol(ParserSym.OUT,"WRITE"));
-        stringTable.put("writet", new Symbol(ParserSym.OUT,"WRITET"));
-        stringTable.put("writeln", new Symbol(ParserSym.OUT,"WRITELN"));
-        stringTable.put("writeb", new Symbol(ParserSym.OUT,"WRITEB"));
+        stringTable.put("write", new Symbol(ParserSym.WRITE,"WRITE"));
+        stringTable.put("writet", new Symbol(ParserSym.WRITET,"WRITET"));
+        stringTable.put("writeln", new Symbol(ParserSym.WRITELN,"WRITELN"));
+        stringTable.put("writeb", new Symbol(ParserSym.WRITEB,"WRITEB"));
     }
 
 
@@ -410,10 +410,10 @@ StringBuffer string = new StringBuffer();
     stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
     stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
     stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
-    stringTable.put("write", new Symbol(ParserSym.OUT,"WRITE"));
-    stringTable.put("writet", new Symbol(ParserSym.OUT,"WRITET"));
-    stringTable.put("writeln", new Symbol(ParserSym.OUT,"WRITELN"));
-    stringTable.put("writeb", new Symbol(ParserSym.OUT,"WRITEB"));
+    stringTable.put("write", new Symbol(ParserSym.WRITE,"WRITE"));
+    stringTable.put("writet", new Symbol(ParserSym.WRITET,"WRITET"));
+    stringTable.put("writeln", new Symbol(ParserSym.WRITELN,"WRITELN"));
+    stringTable.put("writeb", new Symbol(ParserSym.WRITEB,"WRITEB"));
     this.zzReader = in;
   }
 

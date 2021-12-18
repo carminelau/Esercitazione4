@@ -2,70 +2,82 @@ package Node;
 
 import Statement.StatListOp;
 import Visitor.Visitor;
-import Visitor.XmlGenerator;
 
 public class ProcOp {
-    private String id;
-    private ParamDeclListOp paramList;
-    private ResultTypeListOp resultTypeList;
-    private VarDeclListOp varList;
-    private StatListOp statList;
-    private ReturnExprsOp returnList;
+    private Id id;
+    private ParamDeclListOp list;
+    private TypeOp t;
+    private VarDeclListOp vars;
+    private StatListOp stats;
 
-    public ProcOp(String id, ParamDeclListOp paramList, ResultTypeListOp resultTypeList, VarDeclListOp varList, StatListOp statList, ReturnExprsOp returnList) {
+    public ProcOp(Id id, ParamDeclListOp paramList, TypeOp t, VarDeclListOp vars, StatListOp stats) {
         this.id = id;
-        this.paramList = paramList;
-        this.resultTypeList = resultTypeList;
-        this.varList = varList;
-        this.statList = statList;
-        this.returnList = returnList;
+        this.list = paramList;
+        this.t = t;
+        this.vars = vars;
+        this.stats = stats;
     }
 
-    public ProcOp(String id, ParamDeclListOp paramList, ResultTypeListOp resultTypeList, VarDeclListOp varList, ReturnExprsOp returnList) {
+    public ProcOp(Id id, ParamDeclListOp paramList, VarDeclListOp vars, StatListOp stats) {
         this.id = id;
-        this.paramList = paramList;
-        this.resultTypeList = resultTypeList;
-        this.varList = varList;
-        this.returnList = returnList;
+        this.list = paramList;
+        this.vars = vars;
+        this.stats = stats;
     }
 
-    public String getId() {
+
+    public Object accept(Visitor visitor) {
+        return visitor.visit(this);
+    }
+
+    public Id getId() {
         return id;
     }
 
-    public ParamDeclListOp getParamList() {
-        return paramList;
+    public void setId(Id id) {
+        this.id = id;
     }
 
-    public ResultTypeListOp getResultTypeList() {
-        return resultTypeList;
+    public ParamDeclListOp getList() {
+        return list;
     }
 
-    public VarDeclListOp getVarList() {
-        return varList;
+    public void setList(ParamDeclListOp list) {
+        this.list = list;
     }
 
-    public StatListOp getStatList() {
-        return statList;
+    public TypeOp getT() {
+        return t;
     }
 
-    public ReturnExprsOp getReturnExprs() {
-        return returnList;
+    public void setT(TypeOp t) {
+        this.t = t;
+    }
+
+    public VarDeclListOp getVars() {
+        return vars;
+    }
+
+    public void setVars(VarDeclListOp vars) {
+        this.vars = vars;
+    }
+
+    public StatListOp getStats() {
+        return stats;
+    }
+
+    public void setStats(StatListOp stats) {
+        this.stats = stats;
     }
 
     @Override
     public String toString() {
         return "ProcOp{" +
-                "id='" + id + '\'' +
-                ", paramList=" + paramList +
-                ", resultTypeList=" + resultTypeList +
-                ", varList=" + varList +
-                ", statList=" + statList +
-                ", returnExprs=" + returnList +
+                "id=" + id +
+                ", list=" + list +
+                ", t=" + t +
+                ", vars=" + vars +
+                ", stats=" + stats +
                 '}';
-    }
-
-    public Object accept(Visitor visitor) {
-        return visitor.visit(this);
     }
 }

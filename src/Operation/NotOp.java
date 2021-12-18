@@ -1,8 +1,8 @@
 package Operation;
 
-public class NotOp extends Operation.Operations {
+public class NotOp extends Operations {
 
-    private static final String operation = "!";
+    private static final String operation = "not";
 
     public NotOp(ExprOp e) {
         super(e);

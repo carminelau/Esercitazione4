@@ -6,11 +6,18 @@ import Visitor.XmlGenerator;
 import org.w3c.dom.Node;
 
 public class ParDeclOp {
+    private String out;
     private TypeOp t;
-    private IdListOp list;
-    public ParDeclOp(TypeOp t, IdListOp list) {
-        this.list = list;
+    private Id id;
+    public ParDeclOp(TypeOp t, Id id) {
+        this.id = id;
         this.t = t;
+    }
+
+    public ParDeclOp(String out,TypeOp t, Id id) {
+        this.id = id;
+        this.t = t;
+        this.out = out;
     }
 
     public ParDeclOp(TypeOp t) {
@@ -21,13 +28,13 @@ public class ParDeclOp {
         return t;
     }
 
-    public IdListOp getList() {
-        return list;
+    public Id getId() {
+        return id;
     }
 
     @Override
     public String toString() {
-        return t + "" + list;
+        return t + "" + id;
     }
 
     public Object accept(Visitor visitor) {

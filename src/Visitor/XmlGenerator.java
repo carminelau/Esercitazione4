@@ -87,15 +87,12 @@ public class XmlGenerator implements Visitor {
     @Override
     public Object visit(ProcOp proc) {
         Element procElement = document.createElement("procOp");
-        procElement.appendChild(document.createTextNode(proc.getId()));//nome funzione
-        procElement.appendChild((Element) proc.getParamList().accept(this));//parameetri funzione
-        procElement.appendChild((Element) proc.getResultTypeList().accept(this));//tipo di ritorno
-        procElement.appendChild((Element) proc.getVarList().accept(this)); // variabili locali alla funzione
-        if (proc.getStatList() != null) {
-            procElement.appendChild((Element) proc.getStatList().accept(this));//statement funzione
-        }
-        if (proc.getReturnExprs() != null) {
-            procElement.appendChild((Element) proc.getReturnExprs().accept(this)); //valori di ritorno funzione
+        procElement.appendChild(document.createTextNode(proc.getId().toString()));//nome funzione
+        procElement.appendChild((Element) proc.getList().accept(this));//parameetri funzione
+        procElement.appendChild((Element) proc.getT().accept(this));//tipo di ritorno
+        procElement.appendChild((Element) proc.getVars().accept(this)); // variabili locali alla funzione
+        if (proc.getStats() != null) {
+            procElement.appendChild((Element) proc.getStats().accept(this));//statement funzione
         }
 
         return procElement;
@@ -115,7 +112,7 @@ public class XmlGenerator implements Visitor {
         Element paramElement = document.createElement("ParDeclOp");
         paramElement.appendChild(document.createTextNode("(type,\"" + parDecl.getT().getTipo() + "\")"));
         if (!parDecl.getT().getTipo().equals("Void")) {
-            paramElement.appendChild((Element) parDecl.getList().accept(this));
+            paramElement.appendChild((Element) parDecl.getId().accept(this));
         }
         return paramElement;
     }
@@ -127,15 +124,6 @@ public class XmlGenerator implements Visitor {
             idListElement.appendChild(document.createTextNode("\n(ID,\"" + s + "\")\n"));
         }
         return idListElement;
-    }
-
-    @Override
-    public Object visit(ResultTypeListOp resultTypeListOp) {
-        Element resultTypeListElement = document.createElement("ResultTypeLstOp");
-        for (ResultTypeOp resultType : resultTypeListOp.getList()) {
-            resultTypeListElement.appendChild(document.createTextNode("\n(" + resultType.getT().getTipo() + ")\n"));
-        }
-        return resultTypeListElement;
     }
 
     @Override
@@ -159,8 +147,8 @@ public class XmlGenerator implements Visitor {
         } else if (stat.getStatement() instanceof WhileStatOp) {
             WhileStatOp whileStat = (WhileStatOp) stat.getStatement();
             statElement = (Element) whileStat.accept(this);
-        } else if (stat.getStatement() instanceof ReadlnStatOp) {
-            ReadlnStatOp readlnStat = (ReadlnStatOp) stat.getStatement();
+        } else if (stat.getStatement() instanceof ReadStatOp) {
+            ReadStatOp readlnStat = (ReadStatOp) stat.getStatement();
             statElement = (Element) readlnStat.accept(this);
         } else if (stat.getStatement() instanceof WriteStatOp) {//writeOp
             WriteStatOp writeStat = (WriteStatOp) stat.getStatement();
@@ -179,8 +167,8 @@ public class XmlGenerator implements Visitor {
         Element idListElement;
         Element ExprListElement;
 
-        idListElement = (Element) assignStatOp.getIdList().accept(this);
-        ExprListElement = (Element) assignStatOp.getExprList().accept(this);
+        idListElement = (Element) assignStatOp.getId().accept(this);
+        ExprListElement = (Element) assignStatOp.getExpr().accept(this);
 
         statElement.appendChild(idListElement);
         statElement.appendChild(ExprListElement);
@@ -205,35 +193,10 @@ public class XmlGenerator implements Visitor {
         Element statElement = document.createElement("IfStatOp");
         statElement.appendChild((Element) ifStatOp.getE().accept(this));// da finire le EXPR
         statElement.appendChild((Element) ifStatOp.getStatList().accept(this));//già implementato
-        statElement.appendChild((Element) ifStatOp.getElifList().accept(this));//elifstat
+        statElement.appendChild((Element) ifStatOp.getVars().accept(this));//elifstat
         if(ifStatOp.getElseStat()!=null) {
             statElement.appendChild((Element) ifStatOp.getElseStat().accept(this));//else
         }
-        return statElement;
-    }
-
-    @Override
-    public Object visit(ElifListOp elifListOp) {
-        Element statElement = document.createElement("ElifListOp");
-        for (ElifOp elif : elifListOp.getList()) {
-            statElement.appendChild((Element) elif.accept(this));
-        }
-        return statElement;
-    }
-
-    @Override
-    public Object visit(ElifOp elifOp) {
-        Element statElement = document.createElement("ElifOp");
-
-        Element exprelement;
-        Element StatListElement;
-
-        exprelement = ((Element) elifOp.getE().accept(this));//expr da finire
-        StatListElement = ((Element) elifOp.getList().accept(this));//statlistOP già implementato
-
-        statElement.appendChild(exprelement);
-        statElement.appendChild(StatListElement);
-
         return statElement;
     }
 
@@ -248,8 +211,8 @@ public class XmlGenerator implements Visitor {
     @Override
     public Object visit(WhileStatOp whileStat) {
         Element statElement = document.createElement("WhileStatOp");
-        if(whileStat.getStatListOp1() != null){
-        	statElement.appendChild((Element) whileStat.getStatListOp1().accept(this));//statlistOP già implementato
+        if(whileStat.getVarDeclList() != null){
+        	statElement.appendChild((Element) whileStat.getVarDeclList().accept(this));//statlistOP già implementato
         }
         statElement.appendChild((Element) whileStat.getE().accept(this));
         statElement.appendChild((Element) whileStat.getStatListOp().accept(this));//statlistOP già implementato
@@ -257,8 +220,8 @@ public class XmlGenerator implements Visitor {
     }
 
     @Override
-    public Object visit(ReadlnStatOp readlnStatOp) {
-        Element statElement = document.createElement("ReadlnStatOp");
+    public Object visit(ReadStatOp readlnStatOp) {
+        Element statElement = document.createElement("ReadStatOp");
         statElement.appendChild((Element) readlnStatOp.getIdList().accept(this));//IdList già implementato
         return statElement;
     }
@@ -268,6 +231,11 @@ public class XmlGenerator implements Visitor {
         Element statElement = document.createElement("WriteStatOp");
         statElement.appendChild((Element) writeStatOp.getExprList().accept(this));//Exprlist già implementato
         return statElement;
+    }
+
+    @Override
+    public Object visit(Id id) {
+        return id.toString();
     }
 
     @Override
@@ -281,15 +249,22 @@ public class XmlGenerator implements Visitor {
     }
 
     @Override
-    public Object visit(ReturnExprsOp returnExprsOp) {
-        Element returnExprsElement = document.createElement("ReturnExprsOp");
-        returnExprsElement.appendChild((Element) returnExprsOp.getList().accept(this));//Exprlist già implementato
-        return returnExprsElement;
+    public Object visit(MainOp main) {
+        Element programElement = document.createElement("ProgramOp");
+
+        Element e = (Element) main.getVarDeclOpList().accept(this);
+        programElement.appendChild(e);
+
+        Element e1 = (Element) main.getStats().accept(this);
+        programElement.appendChild(e1);
+        document.appendChild(programElement);
+
+        return document;
     }
 
     public Object visit(ExprOp expr) {
         Element exprElement = document.createElement("ExprOp");
-        Operation operation = expr.getOperation();
+        Operations operation = expr.getOperation();
         CallProcOp statement =(CallProcOp) expr.getStatement();
         Element e;
         if(statement != null){
@@ -311,7 +286,7 @@ public class XmlGenerator implements Visitor {
     }
 
     @Override
-    public Object visit(Operation operation) {
+    public Object visit(Operations operation) {
         Element exprElement = null;
         Element e1 = null;
         Element e2 = null;
@@ -339,8 +314,6 @@ public class XmlGenerator implements Visitor {
             exprElement = document.createElement("EqOp");
         }else if (operation instanceof NeOp) {
             exprElement = document.createElement("NeOp");
-        }else if (operation instanceof UminusOp) {
-            exprElement = document.createElement("UminusOp");
         }else if (operation instanceof NotOp) {
             exprElement = document.createElement("NotOp");
         }

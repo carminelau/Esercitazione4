@@ -1,6 +1,6 @@
 package Operation;
 
-public class GtOp extends Operation.Operations {
+public class GtOp extends Operations {
 
 
         private static final String operation = ">";
