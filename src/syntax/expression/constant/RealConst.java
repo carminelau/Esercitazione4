@@ -12,9 +12,9 @@ public class RealConst extends Expr implements Leaf<Float> {
      * @param rightPosition the right position
      * @param value the value
      */
-    public RealConst(int leftPosition, int rightPosition, float value) {
+    public RealConst(int leftPosition, int rightPosition, String value) {
         super(leftPosition, rightPosition);
-        this.value = value;
+        this.value = Float.parseFloat(value);
     }
 
 

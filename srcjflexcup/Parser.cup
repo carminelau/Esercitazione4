@@ -184,7 +184,6 @@ terminal String MAIN,
                 STRING_CONST,
                 SEMI,
                	COMMA,
-               	UMINUS,
                	NULL,
                	ERROR,
                	RETURN,
@@ -194,7 +193,7 @@ terminal String MAIN,
 
 terminal String INTEGER_CONST;
 terminal String REAL_CONST;
-terminal boolean TRUE, FALSE;
+terminal String TRUE, FALSE;
 
 //Non terminali
 
@@ -235,7 +234,7 @@ precedence left TIMES,DIV, DIVINT;
 precedence right POW;
 precedence left LPAR, RPAR;
 
-
+/*
 //Program ::= VarDeclList FunList Main
 Program ::= VarDeclList:vardecllist_ FunList:funlist_ Main:main_
             {:
@@ -447,7 +446,7 @@ IdListInitObbl ::= ID:id_ ASSIGN Const:const_
     :}
     ;
 
-
+*/
 //Stat ::= IfStat SEMI
   //        | WhileStat SEMI
   //        | ReadStat SEMI
@@ -566,15 +565,12 @@ WriteStat ::=  WRITE  Expr:expr_
         :}
         ;
 
-
 //AssignStatement ::=  ID ASSIGN Expr
 AssignStat ::=  ID:id_ ASSIGN Expr: expr_
         {:
             RESULT = new AssignStatement(expr_left, expr_right,new Id(id_left,id_right,id_),expr_);
         :}
         ;
-
-
 
 //CallFun ::= ID LPAR ExprList RPAR
   //        | ID LPAR RPAR
@@ -588,7 +584,6 @@ CallFun ::= ID:id_ LPAR ExprList:exprlist_ RPAR
             RESULT = new CallingFun(id_left, id_right, new Id(id_left,id_right,id_));
         :}
         ;
-
 
 //ExprList ::= Expr
   //        | Expr COMMA ExprList
@@ -621,22 +616,22 @@ ExprList::= Expr:expr_
 
 Expr ::= TRUE:true_
         {:
-            RESULT = new BooleanConst(true_left, true_right, true);
+            RESULT = new BooleanConst(true_left, true_right, true_);
         :}
         |
         FALSE:false_
         {:
-            RESULT = new BooleanConst(false_left, false_right, false);
+            RESULT = new BooleanConst(false_left, false_right, false_);
         :}
         |
         INTEGER_CONST:intconst_
         {:
-            RESULT = new IntegerConst(intconst_left, intconst_right, Integer.parseInt(intconst_));
+            RESULT = new IntegerConst(intconst_left, intconst_right, intconst_);
         :}
         |
         REAL_CONST:realconst_
         {:
-            RESULT = new RealConst(realconst_left, realconst_right, Float.parseFloat(realconst_));
+            RESULT = new RealConst(realconst_left, realconst_right, realconst_);
         :}
         |
         STRING_CONST:stringconst_
@@ -728,12 +723,6 @@ Expr ::= TRUE:true_
         {:
             RESULT = new NotEqualsRelOperation(expr_left,expr_right,expr_,expr1_);
         :}
-        |
-        UMINUS Expr:expr_
-        {:
-            RESULT = new UminusExpression(expr_left, expr_right, expr_);
-        :}
-        %prec UMINUS
         |
         NOT Expr:expr_
         {:

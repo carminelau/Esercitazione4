@@ -36,6 +36,10 @@ import java_cup.runtime.Symbol;
     stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
     stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
     stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
+    stringTable.put("write", new Symbol(ParserSym.OUT,"WRITE"));
+    stringTable.put("writet", new Symbol(ParserSym.OUT,"WRITET"));
+    stringTable.put("writeln", new Symbol(ParserSym.OUT,"WRITELN"));
+    stringTable.put("writeb", new Symbol(ParserSym.OUT,"WRITEB"));
 %init}
 
 %{
@@ -99,6 +103,10 @@ StringBuffer string = new StringBuffer();
         stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
         stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
         stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
+        stringTable.put("write", new Symbol(ParserSym.OUT,"WRITE"));
+        stringTable.put("writet", new Symbol(ParserSym.OUT,"WRITET"));
+        stringTable.put("writeln", new Symbol(ParserSym.OUT,"WRITELN"));
+        stringTable.put("writeb", new Symbol(ParserSym.OUT,"WRITEB"));
     }
 %}
 
@@ -192,6 +200,10 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
     var {return installID(yytext());}
     out {return installID(yytext());}
     outpar {return installID(yytext());}
+    write {return installID(yytext()); }
+    writeln {return installID(yytext());}
+    writeb {return installID(yytext());}
+    writet {return installID(yytext());}
 
     //NUMBER
     {INTEGER_CONST} { return Symbol(ParserSym.INTEGER_CONST, yytext()); }

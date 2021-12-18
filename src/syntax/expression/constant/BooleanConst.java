@@ -13,17 +13,17 @@ public class BooleanConst extends Expr implements Leaf<Boolean> {
      * @param rightPosition the right position
      * @param value the value
      */
-    public BooleanConst(int leftPosition, int rightPosition, Boolean value) {
+    public BooleanConst(int leftPosition, int rightPosition, String value) {
         super(leftPosition, rightPosition);
-        this.value = value;
-    }
+        this.value = Boolean.valueOf(value);
+        }
 
     /**
      * @return the value
      */
     @Override
     public Boolean getValue() {
-        return value;
+        return this.value;
     }
 
     /**

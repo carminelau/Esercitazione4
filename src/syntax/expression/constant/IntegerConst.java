@@ -12,9 +12,9 @@ public class IntegerConst extends Expr implements Leaf<Integer> {
      * @param rightPosition the right position
      * @param value the value
      */
-    public IntegerConst(int leftPosition, int rightPosition, int value) {
+    public IntegerConst(int leftPosition, int rightPosition, String value) {
         super(leftPosition, rightPosition);
-        this.value = value;
+        this.value = Integer.parseInt(value);
     }
 
 

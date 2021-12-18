@@ -374,6 +374,10 @@ StringBuffer string = new StringBuffer();
         stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
         stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
         stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
+        stringTable.put("write", new Symbol(ParserSym.OUT,"WRITE"));
+        stringTable.put("writet", new Symbol(ParserSym.OUT,"WRITET"));
+        stringTable.put("writeln", new Symbol(ParserSym.OUT,"WRITELN"));
+        stringTable.put("writeb", new Symbol(ParserSym.OUT,"WRITEB"));
     }
 
 
@@ -384,28 +388,32 @@ StringBuffer string = new StringBuffer();
    */
   public Lexer(java.io.Reader in) {
   // inserimento delle parole chiavi nella stringTable per evitare di scrivere un diagramma di transizione per ciascuna di esse (le parole chiavi verranno "catturate" dal diagramma di transizione e gestite e di conseguenza).
-    stringTable.put("IF", new Symbol(ParserSym.IF,"IF"));
-    stringTable.put("THEN", new Symbol(ParserSym.THEN,"THEN"));
-    stringTable.put("ELSE", new Symbol(ParserSym.ELSE,"ELSE"));
-    stringTable.put("WHILE", new Symbol(ParserSym.WHILE,"WHILE"));
-    stringTable.put("INTEGER", new Symbol(ParserSym.INTEGER,"INTEGER"));
-    stringTable.put("REAL", new Symbol(ParserSym.REAL,"REAL"));
-    stringTable.put("BOOL", new Symbol(ParserSym.BOOL,"BOOL"));
-    stringTable.put("FUN", new Symbol(ParserSym.FUN,"FUN"));
-    stringTable.put("LOOP", new Symbol(ParserSym.LOOP,"LOOP"));
-    stringTable.put("AND", new Symbol(ParserSym.AND,"AND"));
-    stringTable.put("OR", new Symbol(ParserSym.OR,"OR"));
-    stringTable.put("NOT", new Symbol(ParserSym.NOT,"NOT"));
-    stringTable.put("TRUE", new Symbol(ParserSym.TRUE,"TRUE"));
-    stringTable.put("FALSE", new Symbol(ParserSym.FALSE,"FALSE"));
-    stringTable.put("NULL", new Symbol(ParserSym.NULL,"NULL"));
-    stringTable.put("RETURN", new Symbol(ParserSym.RETURN,"RETURN"));
-    stringTable.put("END", new Symbol(ParserSym.END,"END"));
-    stringTable.put("MAIN", new Symbol(ParserSym.MAIN,"MAIN"));
-    stringTable.put("STRING", new Symbol(ParserSym.STRING,"STRING"));
-    stringTable.put("OUTPAR", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
-    stringTable.put("VAR", new Symbol(ParserSym.VAR,"VAR"));
-    stringTable.put("OUT", new Symbol(ParserSym.OUT,"OUT"));
+    stringTable.put("if", new Symbol(ParserSym.IF,"IF"));
+    stringTable.put("then", new Symbol(ParserSym.THEN,"THEN"));
+    stringTable.put("else", new Symbol(ParserSym.ELSE,"ELSE"));
+    stringTable.put("while", new Symbol(ParserSym.WHILE,"WHILE"));
+    stringTable.put("integer", new Symbol(ParserSym.INTEGER,"INTEGER"));
+    stringTable.put("real", new Symbol(ParserSym.REAL,"REAL"));
+    stringTable.put("bool", new Symbol(ParserSym.BOOL,"BOOL"));
+    stringTable.put("fun", new Symbol(ParserSym.FUN,"FUN"));
+    stringTable.put("loop", new Symbol(ParserSym.LOOP,"LOOP"));
+    stringTable.put("and", new Symbol(ParserSym.AND,"AND"));
+    stringTable.put("or", new Symbol(ParserSym.OR,"OR"));
+    stringTable.put("not", new Symbol(ParserSym.NOT,"NOT"));
+    stringTable.put("true", new Symbol(ParserSym.TRUE,"TRUE"));
+    stringTable.put("false", new Symbol(ParserSym.FALSE,"FALSE"));
+    stringTable.put("null", new Symbol(ParserSym.NULL,"NULL"));
+    stringTable.put("return", new Symbol(ParserSym.RETURN,"RETURN"));
+    stringTable.put("end", new Symbol(ParserSym.END,"END"));
+    stringTable.put("main", new Symbol(ParserSym.MAIN,"MAIN"));
+    stringTable.put("string", new Symbol(ParserSym.STRING,"STRING"));
+    stringTable.put("outpar", new Symbol(ParserSym.OUTPAR,"OUTPAR"));
+    stringTable.put("var", new Symbol(ParserSym.VAR,"VAR"));
+    stringTable.put("out", new Symbol(ParserSym.OUT,"OUT"));
+    stringTable.put("write", new Symbol(ParserSym.OUT,"WRITE"));
+    stringTable.put("writet", new Symbol(ParserSym.OUT,"WRITET"));
+    stringTable.put("writeln", new Symbol(ParserSym.OUT,"WRITELN"));
+    stringTable.put("writeb", new Symbol(ParserSym.OUT,"WRITEB"));
     this.zzReader = in;
   }
 
