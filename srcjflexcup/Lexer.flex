@@ -110,9 +110,9 @@ StringBuffer string = new StringBuffer();
     }
 %}
 
-%eofval{
-	return Symbol(ParserSym.EOF);
-%eofval}
+//%eofval{
+//	return Symbol(ParserSym.EOF);
+//%eofval}
 
 //WhiteSpaces
 InputChar = [^\n\r]
@@ -137,11 +137,6 @@ REAL_CONST = ( {Float1} | {Float2} )
 
 //Identifiers
 Ident = [$_A-Za-z][$_A-Za-z0-9]*
-
-//String
-//String = {StringWithDoubleApex} | {StringWithApex}
-//StringWithDoubleApex = [\\\^\\\".*\\\"\\\$]
-//StringWithApex = [^\\\'.*'\$]
 
 /*Declares a lexical state STRING */
 
@@ -173,6 +168,8 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
   \\r { string.append('\r'); }
   \\\' { string.append('\''); }
   \\  { string.append('\\'); }
+
+  <<EOF>>     {throw new Error("Stringa non completa\n"+"riga: "+riga+"\ncolonna:"+colonna);}
 }
 
 <YYINITIAL> {

@@ -809,15 +809,7 @@ StringBuffer string = new StringBuffer();
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
             zzDoEOF();
-            switch (zzLexicalState) {
-            case YYINITIAL: {
-              return Symbol(ParserSym.EOF);
-            }  // fall though
-            case 57: break;
-            default:
-          { 	return Symbol(ParserSym.EOF);
- }
-        }
+          { return new java_cup.runtime.Symbol(ParserSym.EOF); }
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {

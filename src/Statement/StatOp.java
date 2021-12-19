@@ -22,7 +22,10 @@ public class StatOp {
 
     @Override
     public String toString() {
-        return statement.toString();
+        if (statement != null) {
+            return statement.toString();
+        }
+        return "Statement Null";
     }
 
     public Object accept(Visitor visitor) {

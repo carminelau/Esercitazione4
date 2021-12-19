@@ -912,7 +912,7 @@ class CUP$Parser$actions {
           case 26: // ParamDeclList ::= 
             {
               ParamDeclListOp RESULT =null;
-		 RESULT = null;
+		 ArrayList<ParDeclOp> l = new ArrayList<ParDeclOp>();
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("ParamDeclList",10, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -999,7 +999,14 @@ class CUP$Parser$actions {
 		int listleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int listright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		StatListOp list = (StatListOp)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		RESULT = list.add(stat);
+		
+                if(stat != null){
+                RESULT = list.add(stat);
+                }
+                else {
+                    RESULT = new StatListOp();
+                }
+            
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("StatList",13, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1008,7 +1015,7 @@ class CUP$Parser$actions {
           case 33: // StatList ::= 
             {
               StatListOp RESULT =null;
-		 RESULT = null;
+		 RESULT = new StatListOp();
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("StatList",13, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

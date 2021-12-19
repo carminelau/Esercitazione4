@@ -321,7 +321,7 @@ VarDeclList ::=   {:RESULT = new VarDeclListOp(new ArrayList<VarDeclOp>());:}
 /*ParamDeclList ::= *//*empty *//*
 *//*	| NonEmptyParamDeclList*/
 
-    ParamDeclList ::= {: RESULT = null;:}
+    ParamDeclList ::= {: ArrayList<ParDeclOp> l = new ArrayList<ParDeclOp>();:}
         | NonEmptyParamDeclList:list {:RESULT = list;:};
 
 /*NonEmptyParamDeclList ::= ParDecl
@@ -346,8 +346,16 @@ VarDeclList ::=   {:RESULT = new VarDeclListOp(new ArrayList<VarDeclOp>());:}
 /*StatList ::= Stat StatList
         | EMPTY*/
 
-StatList ::= Stat:stat StatList:list {:RESULT = list.add(stat);:}
-            | {: RESULT = null;:}
+StatList ::= Stat:stat StatList:list
+            {:
+                if(stat != null){
+                RESULT = list.add(stat);
+                }
+                else {
+                    RESULT = new StatListOp();
+                }
+            :}
+            | {: RESULT = new StatListOp();:}
             ;
 
 

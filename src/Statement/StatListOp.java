@@ -6,11 +6,16 @@ import Visitor.XmlGenerator;
 import java.util.ArrayList;
 
 public class StatListOp {
-    private ArrayList<StatOp> statements;
+    private ArrayList statements;
 
     public StatListOp(ArrayList<StatOp> statements) {
         this.statements = statements;
     }
+
+    public StatListOp() {
+        statements = new ArrayList<StatOp>();
+    }
+
     public StatListOp add(StatOp statement){
         statements.add(0,statement);
         return this;
