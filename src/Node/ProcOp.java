@@ -26,9 +26,7 @@ public class ProcOp {
     }
 
 
-    public Object accept(Visitor visitor) {
-        return visitor.visit(this);
-    }
+    public Object accept(Visitor visitor) { return visitor.visit(this); }
 
     public Id getId() {
         return id;

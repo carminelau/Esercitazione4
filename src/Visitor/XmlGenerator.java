@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 
 import org.w3c.dom.Element;
 import Node.*;
+import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,8 +55,10 @@ public class XmlGenerator implements Visitor {
     @Override
     public Object visit(VarDeclOp varDecl) {
         Element varDeclElement = document.createElement("varDecOp");
-
-        varDeclElement.appendChild(document.createTextNode((String) varDecl.getTipo().accept(this)));
+        if(varDecl.getTipo() != null)
+            varDeclElement.appendChild(document.createTextNode((String) varDecl.getTipo().accept(this)));
+        else
+            varDeclElement.appendChild(document.createTextNode(varDecl.getT()));
         varDeclElement.appendChild((Element) varDecl.getList().accept(this));
         return varDeclElement;
     }
@@ -89,7 +92,7 @@ public class XmlGenerator implements Visitor {
         Element procElement = document.createElement("procOp");
         procElement.appendChild(document.createTextNode(proc.getId().toString()));//nome funzione
         procElement.appendChild((Element) proc.getList().accept(this));//parameetri funzione
-        procElement.appendChild((Element) proc.getT().accept(this));//tipo di ritorno
+        procElement.appendChild(document.createTextNode(proc.getT().getTipo()));//nome funzione
         procElement.appendChild((Element) proc.getVars().accept(this)); // variabili locali alla funzione
         if (proc.getStats() != null) {
             procElement.appendChild((Element) proc.getStats().accept(this));//statement funzione
@@ -111,9 +114,7 @@ public class XmlGenerator implements Visitor {
     public Object visit(ParDeclOp parDecl) {
         Element paramElement = document.createElement("ParDeclOp");
         paramElement.appendChild(document.createTextNode("(type,\"" + parDecl.getT().getTipo() + "\")"));
-        if (!parDecl.getT().getTipo().equals("Void")) {
-            paramElement.appendChild((Element) parDecl.getId().accept(this));
-        }
+        paramElement.appendChild(document.createTextNode(parDecl.getId().toString()));//nome funzione
         return paramElement;
     }
 
@@ -164,13 +165,10 @@ public class XmlGenerator implements Visitor {
     public Object visit(AssignStatOp assignStatOp) {
         Element statElement = document.createElement("AssignStatOp");
 
-        Element idListElement;
         Element ExprListElement;
 
-        idListElement = (Element) assignStatOp.getId().accept(this);
+        statElement.appendChild(document.createTextNode(assignStatOp.getId().toString()));//nome funzione
         ExprListElement = (Element) assignStatOp.getExpr().accept(this);
-
-        statElement.appendChild(idListElement);
         statElement.appendChild(ExprListElement);
         return statElement;
     }
@@ -234,11 +232,6 @@ public class XmlGenerator implements Visitor {
     }
 
     @Override
-    public Object visit(Id id) {
-        return id.toString();
-    }
-
-    @Override
     public Object visit(CallProcOp callProcOp) {
         Element statElement = document.createElement("CallProcOp");
         statElement.appendChild(document.createTextNode("\n(ID,\"" + callProcOp.getId() + "\")\n"));
@@ -278,7 +271,9 @@ public class XmlGenerator implements Visitor {
                 exprElement.appendChild(document.createTextNode("(" + expr.getType() + ")"));
             } else {
                 exprElement.appendChild(document.createTextNode("(" + expr.getType()));
-                exprElement.appendChild(document.createTextNode(",\"" + expr.getVar().toString() + "\")"));
+                if (expr.getVar() != null) {
+                    exprElement.appendChild(document.createTextNode(",\"" + expr.getVar().toString() + "\")"));
+                }
             }
         }
 

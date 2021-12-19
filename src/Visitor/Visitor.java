@@ -51,6 +51,4 @@ public interface Visitor {
     Object visit(WhileStatOp whileStatOp);
 
     Object visit(WriteStatOp writeStatOp);
-
-    Object visit(Id id);
 }

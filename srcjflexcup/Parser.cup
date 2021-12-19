@@ -1,116 +1,3 @@
-/*Specifiche grammaticali e lessicali del nostro linguaggio MyFun
-
-
-  ************* Specifica grammaticale ****************
-
-    Program ::= VarDeclList FunList MainOp
-
-    VarDeclList ::= /* empty */
-    /*	| VardDecl VarDeclList
-
-    MainOp ::= MAIN VarDeclList StatList END MAIN SEMI
-
-    FunList ::= /* empty */
-    /*	| Fun FunList
-
-    VarDecl ::= Type IdListInit SEMI
-        | VAR IdListInitObbl SEMI
-
-    Type ::= INTEGER | BOOL | REAL | STRING
-
-    IdListInit ::= ID
-        | IdListInit COMMA ID
-        | ID ASSIGN Expr
-        | IdListInit COMMA ID ASSIGN Expr
-
-    IdListInitObbl ::= ID ASSIGN Const
-        | IdListInitObbl COMMA ID ASSIGN Const
-
-    Const ::= INTEGER_CONST | REAL_CONST | BOOL_CONST | STRING_CONST
-
-    Fun := FUN ID LPAR ParamDeclList RPAR COLON Type
-            VarDeclList StatList END FUN SEMI
-        | FUN ID LPAR ParamDeclList RPAR
-            VarDeclList StatList END FUN SEMI
-
-
-    ParamDeclList ::= /*empty */
-    /*	| NonEmptyParamDeclList
-
-    NonEmptyParamDeclList ::= ParDecl
-        | NonEmptyParamDeclList COMMA ParDecl
-
-    ParDecl ::= Type ID
-        | OUT Type ID
-
-    StatList ::= Statement
-         | Statement StatList
-
-    Statement ::= IfStatement SEMI
-        | WhileStatement SEMI
-        | ReadStatement SEMI
-        | WriteStatement SEMI
-        | AssignStatement SEMI
-        | CallFun SEMI
-        | RETURN Expr SEMI
-        | /* empty */
-    /*
-    IfStatement ::= IF Expr THEN VarDeclList StatList ElseStatement END IF
-
-    ElseStatement ::= /* empty */
-    /*	| ELSE VarDeclList  StatList
-
-    WhileStatement ::= WHILE Expr LOOP VarDeclList  StatList END LOOP
-
-    ReadStatement ::= READ IdList Expr // Expr deve essere di tipo stringa
-        | READ IdList
-
-    IdList ::= ID
-        | IdList COMMA ID
-
-    WriteStatement ::=  WRITE  Expr
-        | WRITELN  Expr
-        | WRITET  Expr
-        | WRITEB  Expr
-
-
-    AssignStatement ::=  ID ASSIGN Expr
-
-    CallFun ::= ID LPAR ExprList RPAR
-        | ID LPAR RPAR
-
-    ExprList ::= Expr
-        | Expr COMMA ExprList
-        | OUTPAR ID
-        | OUTPAR ID COMMA ExprList
-
-    Expr ::= TRUE
-        | FALSE
-        | INTEGER_CONST
-        | REAL_CONST
-        | STRING_CONST
-        | ID
-        | CallFun
-        | Expr  PLUS Expr
-        | Expr  MINUS Expr
-        | Expr  TIMES Expr
-        | Expr  DIV Expr
-        | Expr  DIVINT Expr
-        | Expr  AND Expr
-        | Expr POW Expr
-        | Expr STR_CONCAT Expr
-        | Expr  OR Expr
-        | Expr  GT Expr
-        | Expr  GE Expr
-        | Expr  LT Expr
-        | Expr  LE Expr
-        | Expr  EQ Expr
-        | Expr  NE Expr
-        | MINUS Expr
-        | NOT Expr
-        | LPAR Expr RPAR
-*/
-
 package generated;
 import java_cup.runtime.*;
 import java.util.*;
@@ -226,14 +113,6 @@ precedence left TIMES,DIV, DIVINT;
 precedence right POW;
 precedence left LPAR, RPAR;
 
-/*
-Program ::= VarDeclList:varList ProcList:procList {:RESULT = new ProgramOp(varList,procList);:};
-
-VarDeclList ::=   {:RESULT = new VarDeclListOp(new ArrayList<VarDeclOp>());:}
-                |VarDecl:varDecl VarDeclList:varDecList {:RESULT = varDecList.add(varDecl);:}
-                ;
-*/
-
 //Program ::= VarDeclList FunList MainOp
     Program ::= VarDeclList:vars FunList:funlist Main:main {:RESULT = new ProgramOp(vars,funlist,main);:};
 
@@ -254,7 +133,7 @@ VarDeclList ::=   {:RESULT = new VarDeclListOp(new ArrayList<VarDeclOp>());:}
     | VAR IdListInitObbl SEMI*/
 
     VarDecl ::= Type:t IdListInit:list SEMI {:RESULT = new VarDeclOp(t,list);:}
-            | VAR IdListInitObbl:list SEMI {:RESULT = new VarDeclOp(list);:};
+            | VAR IdListInitObbl:list SEMI {:RESULT = new VarDeclOp("var",list);:};
 
 //Type ::= INTEGER | REAL | STRING | BOOL
 

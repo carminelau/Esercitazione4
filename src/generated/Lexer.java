@@ -332,7 +332,7 @@ StringBuffer string = new StringBuffer();
         if(stringTable.containsKey(lex)){
             System.err.println( "Obtain token " + ParserSym.terminalNames[stringTable.get(lex).sym] + " \"" + lex + "\"" );
 
-            return new Symbol(stringTable.get(lex).sym);
+            return new Symbol(stringTable.get(lex).sym,lex);
         }
         else{
             sym = new Symbol(ParserSym.ID,lex);
@@ -809,7 +809,14 @@ StringBuffer string = new StringBuffer();
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
             zzDoEOF();
+            switch (zzLexicalState) {
+            case YYINITIAL: {
+              return Symbol(ParserSym.EOF);
+            }  // fall though
+            case 57: break;
+            default:
           { return new java_cup.runtime.Symbol(ParserSym.EOF); }
+        }
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {

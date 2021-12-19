@@ -61,7 +61,7 @@ StringBuffer string = new StringBuffer();
         if(stringTable.containsKey(lex)){
             System.err.println( "Obtain token " + ParserSym.terminalNames[stringTable.get(lex).sym] + " \"" + lex + "\"" );
 
-            return new Symbol(stringTable.get(lex).sym);
+            return new Symbol(stringTable.get(lex).sym,lex);
         }
         else{
             sym = new Symbol(ParserSym.ID,lex);
@@ -168,8 +168,6 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
   \\r { string.append('\r'); }
   \\\' { string.append('\''); }
   \\  { string.append('\\'); }
-
-  <<EOF>>     {throw new Error("Stringa non completa\n"+"riga: "+riga+"\ncolonna:"+colonna);}
 }
 
 <YYINITIAL> {

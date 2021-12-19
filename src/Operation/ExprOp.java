@@ -52,16 +52,22 @@ public class ExprOp {
         return v.visit(this);
     }
 
-    public  String getType(){
-        String regex = "(\\.)";
-        String type = var.getClass().toString();
-        for(String s : type.split(regex)){
-            type=s;
+    public String getType(){
+        if(var != null) {
+            String regex = "(\\.)";
+            String type = var.getClass().toString();
+            for (String s : type.split(regex)) {
+                type = s;
+            }
+            if (!type.equals("Id") && !type.equals("Null")) {
+                type += "_const";
+            }
+            return type;
         }
-        if(!type.equals("Id") && !type.equals("Null")){
-            type+="_const";
+        else {
+            System.out.println("ciao");
+            return "var is null";
         }
-        return type;
     }
 
     @Override
