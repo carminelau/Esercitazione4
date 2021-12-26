@@ -30,16 +30,5 @@ public class XmlTester {
         DOMSource domSource = new DOMSource(doc);
         StreamResult streamResult = new StreamResult(new File(System.getProperty("user.dir")+"\\albero_sintattico.xml"));
         transformer.transform(domSource, streamResult);
-        /*Symbol token;
-        while ((token = lexer.next_token())!= null) {
-            if(token.sym == sym.EOF){
-                break;
-            }
-            String s = "<" + sym.terminalNames[token.sym] +
-                    (token.value == null ? ">" : ("," + token.value + ">"));
-            System.out.println(s);
-        }*/
-
-
     }
 }

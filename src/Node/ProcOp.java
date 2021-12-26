@@ -70,12 +70,15 @@ public class ProcOp {
 
     @Override
     public String toString() {
-        return "ProcOp{" +
+        String pippo= "ProcOp{" +
                 "id=" + id +
-                ", list=" + list +
-                ", t=" + t +
-                ", vars=" + vars +
+                ", list=" + list;
+                if (t != null){
+                    pippo += ", t=" + t;
+                }
+                pippo += ", vars=" + vars +
                 ", stats=" + stats +
                 '}';
+                return  pippo;
     }
 }

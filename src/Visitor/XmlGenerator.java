@@ -10,7 +10,6 @@ import org.w3c.dom.Document;
 
 import org.w3c.dom.Element;
 import Node.*;
-import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +91,8 @@ public class XmlGenerator implements Visitor {
         Element procElement = document.createElement("procOp");
         procElement.appendChild(document.createTextNode(proc.getId().toString()));//nome funzione
         procElement.appendChild((Element) proc.getList().accept(this));//parameetri funzione
-        procElement.appendChild(document.createTextNode(proc.getT().getTipo()));//nome funzione
+        if (proc.getT() != null)
+            procElement.appendChild(document.createTextNode(proc.getT().getTipo()));//nome funzione
         procElement.appendChild((Element) proc.getVars().accept(this)); // variabili locali alla funzione
         if (proc.getStats() != null) {
             procElement.appendChild((Element) proc.getStats().accept(this));//statement funzione
@@ -131,7 +131,7 @@ public class XmlGenerator implements Visitor {
     public Object visit(StatListOp statListOp) {
         Element statListElement = document.createElement("StatListOp");
         for (StatOp stat : statListOp.getStatements()) {
-            statListElement.appendChild((Element) stat.accept(this));
+            statListElement.appendChild(document.createTextNode(stat.toString()));
         }
         return statListElement;
     }
@@ -229,6 +229,11 @@ public class XmlGenerator implements Visitor {
         Element statElement = document.createElement("WriteStatOp");
         statElement.appendChild((Element) writeStatOp.getExprList().accept(this));//Exprlist già implementato
         return statElement;
+    }
+
+    @Override
+    public Object visit(ReturnStatOp returnStatOp) {
+        return null;
     }
 
     @Override

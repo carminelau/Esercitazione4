@@ -117,9 +117,8 @@ StringBuffer string = new StringBuffer();
 //%eofval}
 
 //WhiteSpaces
-InputChar = [^\n\r]
-LineTerminator = \n|\r|\r\n
-WhiteSpace = {LineTerminator} | [ \t\f]
+LineTerminator = (\r|\n|\r\n)
+WhiteSpace = ({LineTerminator}|[ \t\f])+
 
 //Numbers
 Zero = 0
@@ -164,6 +163,17 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
   \\\' { string.append('\''); }
   \\  { string.append('\\'); }
 }
+//COMMENT
+    <COMMENT> {
+       "#"     {yybegin(YYINITIAL);}
+       [^"#"]  {/* ignore */}
+    }
+
+    <COMMENT_LINE> {
+       {LineTerminator}    { yybegin(YYINITIAL); }
+        [^\r\n\r\n]+       { /* Do Nothing */}
+    }
+
 
 <YYINITIAL> {
 
@@ -195,6 +205,9 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
     writeb {return installID(yytext());}
     writet {return installID(yytext());}
 
+    //WHITESPACE
+    {WhiteSpace} { }
+
     //NUMBER
     {INTEGER_CONST} { return Symbol(ParserSym.INTEGER_CONST, yytext()); }
     {REAL_CONST} { return Symbol(ParserSym.REAL_CONST, yytext()); }
@@ -219,7 +232,7 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
     "=" { return Symbol(ParserSym.EQ, "EQ"); }
     ">" { return Symbol(ParserSym.GT, "GT"); }
     "<=" { return Symbol(ParserSym.LE, "LE"); }
-    "<>" { return Symbol(ParserSym.NE, "NE"); }
+    "<>" | "!=" { return Symbol(ParserSym.NE, "NE"); }
     "!=" { return Symbol(ParserSym.NE, "NE"); }
     ":=" { return Symbol(ParserSym.ASSIGN, "ASSIGN"); }
     ">=" { return Symbol(ParserSym.GE, "GE"); }
@@ -234,30 +247,15 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
     "@" { return Symbol(ParserSym.OUTPAR,"OUTPAR"); }
     "div" {return Symbol(ParserSym.DIVINT,"DIVINT");}
 
-    //WHITESPACE
-    "//"{InputChar}* { }
-    {WhiteSpace} { }
 
-    //{String} {return installID(yytext()); }
 
     //IDENTIFIERS
     {Ident} { return installID(yytext()); }
 
     //COMMEMTS
+    "#*"  {yybegin(COMMENT);}
     "#"   {yybegin(COMMENT_LINE);}
     "//"  {yybegin(COMMENT_LINE);}
-
-    //COMMENT
-    <COMMENT> {
-       "#"     {yybegin(YYINITIAL);}
-       [^"#"]  {/* ignore */}
-    }
-
-//    <COMMENT_LINE> {
-//       {LineTerminator}    { yybegin(YYINITIAL); }
-//        [^\r\n\r\n]+       { /* Do Nothing */}
-//
-//    }
 
     //ERRORS
     <<EOF>> { return Symbol(ParserSym.EOF); }

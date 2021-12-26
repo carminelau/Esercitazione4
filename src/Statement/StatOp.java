@@ -12,8 +12,8 @@ public class StatOp {
         this.statement = statement;
     }
 
-    public StatOp(ExprOp e) {
-        this.expr=e;
+    public StatOp(String statement, ExprOp e) {
+        this.statement = new ReturnStatOp(e);
     }
 
     public Statement getStatement() {

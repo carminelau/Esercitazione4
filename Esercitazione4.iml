@@ -8,5 +8,6 @@
     <orderEntry type="jdk" jdkName="17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="java_cup_v11_draw_tree" level="project" />
+    <orderEntry type="library" name="jdom-2.0.6.1" level="project" />
   </component>
 </module>
