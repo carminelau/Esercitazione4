@@ -9,6 +9,8 @@ import java_cup.runtime.Symbol;
 %line
 %column
 %unicode
+%state COMMENT
+%state COMMENT_LINE
 %state STRING
 %state STRINGSINGLE
 
@@ -118,13 +120,6 @@ StringBuffer string = new StringBuffer();
 InputChar = [^\n\r]
 LineTerminator = \n|\r|\r\n
 WhiteSpace = {LineTerminator} | [ \t\f]
-
-//Comment
-//Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
-//TraditionalComment   = "#" [^*] ~{LineTerminator}
-//EndOfLineComment     = "//" {InputChar} * {LineTerminator}?
-//DocumentationComment = "#" {CommentContent}
-//CommentContent       = ( [^*] | \*+ [^#] )*
 
 //Numbers
 Zero = 0
@@ -247,6 +242,22 @@ Ident = [$_A-Za-z][$_A-Za-z0-9]*
 
     //IDENTIFIERS
     {Ident} { return installID(yytext()); }
+
+    //COMMEMTS
+    "#"   {yybegin(COMMENT_LINE);}
+    "//"  {yybegin(COMMENT_LINE);}
+
+    //COMMENT
+    <COMMENT> {
+       "#"     {yybegin(YYINITIAL);}
+       [^"#"]  {/* ignore */}
+    }
+
+//    <COMMENT_LINE> {
+//       {LineTerminator}    { yybegin(YYINITIAL); }
+//        [^\r\n\r\n]+       { /* Do Nothing */}
+//
+//    }
 
     //ERRORS
     <<EOF>> { return Symbol(ParserSym.EOF); }

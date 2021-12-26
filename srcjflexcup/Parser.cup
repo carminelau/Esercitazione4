@@ -132,8 +132,12 @@ precedence left LPAR, RPAR;
 /*VarDecl ::= Type IdListInit SEMI
     | VAR IdListInitObbl SEMI*/
 
-    VarDecl ::= Type:t IdListInit:list SEMI {:RESULT = new VarDeclOp(t,list);:}
-            | VAR IdListInitObbl:list SEMI {:RESULT = new VarDeclOp("var",list);:};
+//    VarDecl ::= Type:t IdListInit:list SEMI {:RESULT = new VarDeclOp(t,list);:}
+//            | VAR IdListInitObbl:list SEMI {:RESULT = new VarDeclOp("var",list);:};
+
+
+    VarDecl ::= Type:t IdListInit:list SEMI {:RESULT = new VarDeclOp(t, list);:}
+            | VAR:var IdListInitObbl:list SEMI {: RESULT = new VarDeclOp(new TypeOp(var),list);:};
 
 //Type ::= INTEGER | REAL | STRING | BOOL
 
@@ -246,7 +250,7 @@ StatList ::= Stat:stat StatList:list
         | CallFun SEMI
         | RETURN Expr SEMI*/
 
-Stat ::=	AssignStat:assign SEMI      {:RESULT = new StatOp(assign);:}
+Stat::=	AssignStat:assign SEMI      {:RESULT = new StatOp(assign);:}
 			|CallFun:call SEMI         {:RESULT = new StatOp(call);:}
             |ReadStat:read SEMI       {:RESULT = new StatOp(read);:}
             |WriteStat:write SEMI       {:RESULT = new StatOp(write);:}
