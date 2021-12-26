@@ -65,7 +65,6 @@ public class ExprOp {
             return type;
         }
         else {
-            System.out.println("ciao");
             return "var is null";
         }
     }

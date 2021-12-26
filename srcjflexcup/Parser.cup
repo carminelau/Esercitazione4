@@ -256,7 +256,7 @@ Stat::=	AssignStat:assign SEMI      {:RESULT = new StatOp(assign);:}
             |WriteStat:write SEMI       {:RESULT = new StatOp(write);:}
             |WhileStat:whileStat SEMI   {:RESULT = new StatOp(whileStat);:}
             |IfStat:ifStat SEMI	        {:RESULT = new StatOp(ifStat);:}
-            |RETURN:returnStat Expr:e SEMI          {:RESULT = new StatOp(returnStat,e);:}
+            |RETURN Expr:e SEMI          {:RESULT = new StatOp(new ReturnStatOp(e));:}
 			;
 
 //IfStatement ::= IF Expr THEN VarDeclList StatList ElseStatement END IF

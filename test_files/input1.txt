@@ -9,20 +9,56 @@
 var c := 1;
 
 
-# fa somma e restituisce anche la taglia del numero, oltre che il risultato
-fun sommac(integer a, real b, out string size): real
+# fa somma e restituisce il risultato
+fun sommac(real a, real b): real
 
 	real result;
-	
-	result  :=  a + b + c;
 
-	if result > 100 then
-		var valore := 'grande';
- 		size := valore;
-	else 	
-		var valore := 'piccola';
- 		size := valore;
-	end if;
+	result  :=  a + b;
+
+	return result;
+
+end fun;
+
+# fa differenza e restituisce il risultato
+fun differenzac(real a, real b): real
+
+	real result;
+
+	result  :=  a - b;
+
+	return result;
+
+end fun;
+
+# fa moltiplicazione e restituisce il risultato
+fun moltiplicazionec(real a, real b): real
+
+	real result;
+
+	result  :=  a * b;
+
+	return result;
+
+end fun;
+
+# fa divisione e restituisce il risultato
+fun divisionec(real a, real b): real
+
+	real result;
+
+	result  :=  a / b;
+
+	return result;
+
+end fun;
+
+# fa potenza e restituisce il risultato
+fun potenzac(real a, real b): real
+
+	real result;
+
+	result  :=  a ^ b;
 
 	return result;
 
@@ -44,23 +80,42 @@ end fun;
 
 #programma main
 main
-	var a := 1, b := 2.2;
-	string taglia;
-	var ans := 'no';
-	real risultato := sommac(a, b, @taglia);
+	var a := 0, b := 0;
+	var ans := 'si';
+	var op := 0;
+	real risultato := 0;
 
-	stampa('la somma di ' & a & ' e ' & b & ' incrementata di ' & c & ' è ' & taglia);
-	stampa('ed è pari a ' & risultato);
+    while ans = 'si' loop
+        ?: 'Scegli operazione 1 ADD 2 DIFF 3 MUL 4 DIV 5 POW';
+        %op;
+        ?: 'Inserisci il primo valore:';
+        % a;
+        ?: 'Inserisci il secondo valore:';
+        % b;
+        if op = 1 then
+            risultato := sommac(a,b);
+            stampa('la somma di ' & a & ' e ' & b &  ' è ' & risultato);
+        end if;
+        if op = 2 then
+            risultato := differenzac(a,b);
+            stampa('la differenza di ' & a & ' e ' & b &  ' è ' & risultato);
+        end if;
+        if op = 3 then
+            risultato := moltiplicazionec(a,b);
+            stampa('la moltiplicazione di ' & a & ' e ' & b &  ' è ' & risultato);
+        end if;
+        if op = 4 then
+            risultato := divisionec(a,b);
+            stampa('la divisione di ' & a & ' e ' & b &  ' è ' & risultato);
+        end if;
+        if op = 5 then
+            risultato := potenzac(a,b);
+            stampa('la potenza di ' & a & ' elevato a ' & b &  ' è ' & risultato);
+        end if;
 
-	?: 'vuoi continuare? (si/no)';
-	% ans;
-	while ans = 'si' loop
-		% a 'inserisci un intero:';
-		% b 'inserisci un reale:';
-		risultato := sommac(a, b, @taglia);
-		stampa('la somma di ' & a & ' e ' & b &  ' incrementata di ' & c & ' è ' & taglia);
-		stampa(' ed è pari a ' & risultato);
-		% ans 'vuoi continuare? (si/no):\t';
+        ?: 'Vuoi continuare ? si/no';
+        %ans;
+
 	end loop;
 	
 	?. '';

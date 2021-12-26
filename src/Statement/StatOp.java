@@ -4,16 +4,12 @@ import Operation.ExprOp;
 import Visitor.Visitor;
 import Visitor.XmlGenerator;
 
-public class StatOp {
+public class StatOp extends Statement{
     private Statement statement;
     private ExprOp expr;
 
     public StatOp(Statement statement) {
         this.statement = statement;
-    }
-
-    public StatOp(String statement, ExprOp e) {
-        this.statement = new ReturnStatOp(e);
     }
 
     public Statement getStatement() {

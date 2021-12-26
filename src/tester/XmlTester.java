@@ -19,7 +19,6 @@ public class XmlTester {
         FileReader inFile = new FileReader(args[0]);
         Lexer lexer = new Lexer(inFile);
         Parser p = new Parser(lexer);
-        //System.out.println(p.debug_parse().parse_state);
         ProgramOp prog =  (ProgramOp) p.parse().value;
 
         XmlGenerator xml = new XmlGenerator();

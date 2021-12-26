@@ -30,8 +30,8 @@ public class MainOp {
         return stats;
     }
 
-    public Object accept(Visitor v){
-        return v.visit(this);
+    public Object accept(Visitor visitor) {
+        return visitor.visit(this);
     }
 
 }
